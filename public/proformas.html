@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+  <title>Faturas Proforma - Kwanza Manipulus</title>
+  <link rel="shortcut icon" type="image/x-icon" href="assets/img/logo.png">
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
+  <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/feathericon.min.css">
+  <link rel="stylesheet" href="assets/plugins/morris/morris.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .header{ background:#fff; }
+    .header-left{ background:#000 !important; }
+    .page-header h3{ color:#066fe3; font-weight:600; }
+    .btn-primary{ background:#0ab5b3; border-color:#0ab5b3; }
+    
+    /* Modal mais largo, alto e com rolagem suave */
+    .modal-xl {
+      max-width: 98% !important;
+      width: 98%;
+      margin: 0.5rem auto;
+      max-height: 95vh;
+    }
+    
+    .modal-content {
+      min-height: 90vh;
+    }
+    
+    .modal-body {
+      max-height: calc(90vh - 150px);
+      overflow-y: auto;
+      padding: 20px;
+      margin-bottom: 15px;
+    }
+    
+    /* Melhorar a visualização em telas menores */
+    @media (max-width: 768px) {
+      .modal-xl {
+        max-width: 100% !important;
+        width: 100%;
+        margin: 0;
+      }
+      
+      .modal-content {
+        min-height: 100vh;
+        border-radius: 0;
+      }
+      
+      .modal-body {
+        max-height: calc(100vh - 200px);
+      }
+    }
+    
+    /* Melhorar espaçamento dos campos */
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    
+    /* Garantir que os inputs ocupem toda a largura */
+    .form-control, .form-select {
+      width: 100%;
+    }
+    
+    /* Sidebar styling - white text */
+    .sidebar{ background:#1a1a1a; }
+    .sidebar .sidebar-menu ul li a{ color:#ffffff !important; }
+    .sidebar .sidebar-menu ul li a:hover{ background:#0ab5b3; color:#ffffff !important; }
+    .sidebar .sidebar-menu ul li.active > a{ background:#0ab5b3; color:#ffffff !important; }
+    .sidebar .sidebar-menu .menu-title span{ color:#ffffff; opacity:0.7; }
+    .sidebar .sidebar-menu ul li.submenu ul li a{ color:#e0e0e0 !important; }
+    .sidebar .sidebar-menu ul li.submenu ul li a:hover{ color:#ffffff !important; background:#0ab5b3; }
+    
+    .sidebar .sidebar-menu > ul > li > a i {
+      color: #ffffff !important;
+      font-size: 15px;
+      margin-right: 6px;
+    }
+    
+    /* Modal fixes */
+    .modal-backdrop {
+      background-color: rgba(0, 0, 0, 0.5) !important;
+      z-index: 1040 !important;
+      pointer-events: none !important;
+    }
+    .modal {
+      z-index: 1050 !important;
+      pointer-events: none !important;
+    }
+    .modal-dialog {
+      z-index: 1060 !important;
+      position: relative;
+      pointer-events: auto !important;
+    }
+    .modal-content {
+      background-color: #ffffff !important;
+      color: #333333 !important;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      pointer-events: auto !important;
+    }
+    .modal-header {
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #dee2e6;
+    }
+    .modal-title {
+      color: #333333 !important;
+      font-weight: 600;
+    }
+    .modal-body {
+      background-color: #ffffff;
+    }
+    .modal-body label {
+      color: #495057 !important;
+      font-weight: 500;
+    }
+    .modal-body input,
+    .modal-body select,
+    .modal-body textarea {
+      color: #495057 !important;
+      background-color: #ffffff !important;
+      border: 1px solid #ced4da;
+    }
+    .modal-footer {
+      background-color: #f8f9fa;
+      border-top: 1px solid #dee2e6;
+    }
+    
+    .proforma-card {
+      border: 1px solid #e3e6f0;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      transition: all 0.3s;
+    }
+    .proforma-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+    .badge-proforma {
+      font-size: 11px;
+      padding: 4px 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="main-wrapper">
+    <!-- Header -->
+    <div class="header">
+			<div class="header-left">
+				<a href="dashboard.html" class="logo"> <img src="assets/img/kwanzaWhite.svg" width="50" height="70" alt="logo"> <span class="logoclass"></span> </a>
+				<a href="dashboard.html" class="logo logo-small"> <img src="assets/img/kwanzaWhite.svg" alt="Logo" width="30" height="30"> </a>
+			</div>
+			<a href="javascript:void(0);" id="toggle_btn"> <i class="fe fe-text-align-left"></i> </a>
+			<a class="mobile_btn" id="mobile_btn"> <i class="fas fa-bars"></i> </a>
+			<ul class="nav user-menu">
+				<li class="nav-item dropdown has-arrow">
+					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown"> <span class="user-img"><img class="rounded-circle" src="assets/img/profiles/avatar-01.jpg" width="31" alt=""></span> </a>
+					<div class="dropdown-menu">
+						<div class="user-header">
+							<div class="avatar avatar-sm"> <img src="foto do perfil" alt="User Image" class="avatar-img rounded-circle"> </div>
+							<div class="user-text">
+								<div class="muted" style="font-size:11px">Bem-vindo(a), </div>
+								<h6><span id="userName">usuário</span></h6>
+							</div>
+						</div> <a class="dropdown-item" href="profile.html">Perfil</a> <a class="dropdown-item" href="settings.html">configurações da conta</a> <a class="dropdown-item" id="logoutBtn" href="#">Sair</a> </div>
+				</li>
+			</ul>
+			<div class="top-nav-search">
+				<form>
+					<input type="text" class="form-control" placeholder="procurar">
+					<button class="btn" type="submit"><i class="fas fa-search"></i></button>
+				</form>
+			</div>
+		</div>
+		<div class="sidebar" id="sidebar">
+			<div class="sidebar-inner slimscroll">
+				<div id="sidebar-menu" class="sidebar-menu">
+					<ul>
+						<li> <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a> </li>
+						<li> <a href="clientes_clientes.html"><i class="fas fa-user"></i> <span>Clientes</span></a></li>
+						<li class="submenu"> <a href="#" data-toggle="collapse"><i class="fas fa-user"></i> <span> Empresa </span> <span class="menu-arrow"></span></a>
+							<ul class="submenu_class" style="display: none;">
+								<li><a href="rh_funcionarios.html">Funcionários</a></li>
+								<li><a href="rh_departamentos.html">Departamentos & Cargos</a></li>
+								<li><a href="rh_ferias.html">Férias</a></li>
+								<li><a href="users.html">Utilizadores</a></li>
+							</ul>
+						</li>
+						
+						<li class="submenu"> <a href="#" data-toggle="collapse"><i class="fas fa-user"></i> <span> Fornecedores</span> <span class="menu-arrow"></span></a>
+							<ul class="submenu_class" style="display: none;">
+								<li><a href="fornecedor.html">Lista de Fornecedores </a></li>
+							</ul>
+						</li>
+						<li> <a href="financas.html#bancos"><i class="fas fa-university"></i> <span> Bancos</span></a> </li>
+						<li> <a href="financas.html#pagamentos"><i class="fas fa-money-bill-alt"></i> <span> Pagamentos</span></a> </li>
+            <li> <a href="faturas.html"><i class="fas fa-file-invoice"></i> <span>Faturas</span></a> </li>
+						<li> <a href="projectos.html"><i class="fas fa-cube"></i> <span>Projectos Kwanza </span></a> </li>
+					</ul>
+				</div>
+			</div>
+		</div>
+    <!-- /Sidebar -->
+
+    <!-- Page Content -->
+    <div class="page-wrapper">
+      <div class="content container-fluid">
+        <div class="page-header">
+          <div class="row align-items-center">
+            <div class="col">
+              <h3 class="page-title"><i class="fas fa-file-invoice-dollar text-info"></i> Faturas Proforma</h3>
+              <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="financas.html#pagamentos">Pagamentos</a></li>
+                <li class="breadcrumb-item active">Faturas Proforma</li>
+              </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+              <button class="btn btn-info" id="btnNovaProforma">
+                <i class="fa fa-plus"></i> Nova Proforma
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-info">
+          <i class="fas fa-info-circle"></i> <strong>Faturas Proforma</strong> são documentos preliminares que indicam a intenção de venda. Não têm valor fiscal e podem ser convertidas em faturas oficiais.
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body text-center">
+                <h4 class="text-info"><i class="fas fa-file-invoice-dollar"></i></h4>
+                <h3 id="totalProformas">0</h3>
+                <p class="text-muted mb-0">Total Proformas</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body text-center">
+                <h4 class="text-success"><i class="fas fa-check-circle"></i></h4>
+                <h3 id="proformasAprovadas">0</h3>
+                <p class="text-muted mb-0">Aprovadas</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body text-center">
+                <h4 class="text-warning"><i class="fas fa-clock"></i></h4>
+                <h3 id="proformasPendentes">0</h3>
+                <p class="text-muted mb-0">Pendentes</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title mb-0">Lista de Faturas Proforma</h5>
+              </div>
+              <div class="card-body">
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <input type="text" id="searchProforma" class="form-control" placeholder="Pesquisar por número, cliente...">
+                  </div>
+                  <div class="col-md-6 text-right">
+                    <select id="filterEstado" class="form-control" style="width: auto; display: inline-block;">
+                      <option value="">Todos os Estados</option>
+                      <option value="Pendente">Pendente</option>
+                      <option value="Aprovada">Aprovada</option>
+                      <option value="Convertida">Convertida</option>
+                      <option value="Expirada">Expirada</option>
+                      <option value="Cancelada">Cancelada</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-hover table-striped" id="tblProformas">
+                    <thead>
+                      <tr>
+                        <th>Nº Proforma</th>
+                        <th>Cliente</th>
+                        <th>Data Emissão</th>
+                        <th>Validade</th>
+                        <th>Total</th>
+                        <th>Moeda</th>
+                        <th>Estado</th>
+                        <th>Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody id="proformasTableBody">
+                      <!-- Dados serão carregados via JavaScript -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Nova Fatura Proforma -->
+  <div class="modal fade" id="modalNovaProforma" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-info text-white">
+          <h5 class="modal-title"><i class="fas fa-file-invoice-dollar"></i> Nova Fatura Proforma</h5>
+          <button type="button" class="close text-white" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="formNovaProforma">
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label>Número da Proforma *</label>
+                <input name="numero" type="text" class="form-control form-control-sm" required placeholder="Ex: PRF-2025-001">
+              </div>
+              <div class="form-group col-md-8">
+                <label>Cliente *</label>
+                <select name="cliente" class="form-control form-control-sm" required id="selectCliente">
+                  <option value="">Selecione um cliente...</option>
+                </select>
+                <small class="form-text text-muted">Clientes cadastrados na tabela Terceiros</small>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label>Data de Emissão *</label>
+                <input name="dataEmissao" type="date" class="form-control form-control-sm" required>
+              </div>
+              <div class="form-group col-md-6">
+                <label>Validade (dias)</label>
+                <input name="validade" type="number" class="form-control form-control-sm" placeholder="30" value="30">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label>Subtotal *</label>
+                <input name="subtotal" type="number" step="0.01" class="form-control form-control-sm" required placeholder="0.00">
+              </div>
+              <div class="form-group col-md-4">
+                <label>Impostos</label>
+                <input name="impostos" type="number" step="0.01" class="form-control form-control-sm" placeholder="0.00" value="0">
+              </div>
+              <div class="form-group col-md-4">
+                <label>Total *</label>
+                <input name="total" type="number" step="0.01" class="form-control form-control-sm" required placeholder="0.00" readonly>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label>Moeda</label>
+                <select name="moeda" class="form-control form-control-sm">
+                  <option value="Kz">Kwanza (Kz)</option>
+                  <option value="USD">Dólar Americano (USD)</option>
+                  <option value="EUR">Euro (EUR)</option>
+                </select>
+              </div>
+              <div class="form-group col-md-6">
+                <label>Estado</label>
+                <select name="estado" class="form-control form-control-sm">
+                  <option value="Pendente">Pendente</option>
+                  <option value="Aprovada">Aprovada</option>
+                  <option value="Convertida">Convertida em Fatura</option>
+                  <option value="Expirada">Expirada</option>
+                  <option value="Cancelada">Cancelada</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Condições de Pagamento</label>
+              <input name="condicoesPagamento" type="text" class="form-control form-control-sm" placeholder="Ex: 50% antecipado, 50% na entrega">
+            </div>
+
+            <div class="form-group">
+              <label>Descrição/Itens</label>
+              <textarea name="descricao" class="form-control form-control-sm" rows="4" placeholder="Descrição detalhada dos serviços/produtos..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Observações</label>
+              <textarea name="observacoes" class="form-control form-control-sm" rows="2" placeholder="Observações adicionais..."></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" id="btnSalvarProforma" class="btn btn-info">Salvar Proforma</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/jquery-3.5.1.min.js"></script>
+  <script src="assets/js/popper.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+  <script src="assets/js/script.js"></script>
+  <!-- Carrega o avatar do usuário -->
+  <script src="js/profile-avatar.js"></script>
+  
+  <script>
+    // Verificar autenticação
+    const token = localStorage.getItem('token');
+    if (!token) {
+      window.location.href = '/';
+    }
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = '/';
+    });
+
+    // Carregar clientes da tabela de clientes
+    async function carregarClientes() {
+      try {
+        console.log('Iniciando carregamento de clientes...');
+        
+        // 1. Primeiro, tenta buscar da rota /api/clientes
+        console.log('Tentando buscar clientes de /api/clientes...');
+        let response = await fetch('/api/clientes', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        // Se der 404, tenta buscar diretamente da tabela terceiros
+        if (response.status === 404) {
+          console.log('Rota /api/clientes não encontrada. Tentando /api/terceiros...');
+          response = await fetch('/api/terceiros?tipo=Cliente', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+        }
+
+        console.log('Resposta da API:', response.status, response.statusText);
+        
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`Erro na API: ${response.status} - ${errorText}`);
+        }
+
+        const data = await response.json();
+        console.log('Dados recebidos da API:', data);
+        
+        // Verifica diferentes formatos de resposta
+        let clientes = [];
+        if (Array.isArray(data)) {
+          // Se for um array direto
+          clientes = data;
+        } else if (data.items && Array.isArray(data.items)) {
+          // Se for um objeto com propriedade 'items'
+          clientes = data.items;
+        } else if (data.data && Array.isArray(data.data)) {
+          // Se for um objeto com propriedade 'data'
+          clientes = data.data;
+        } else if (data.terceiros && Array.isArray(data.terceiros)) {
+          // Se for um objeto com propriedade 'terceiros'
+          clientes = data.terceiros;
+        }
+        
+        console.log(`Total de clientes encontrados: ${clientes.length}`, clientes);
+        
+        const selectCliente = document.getElementById('selectCliente');
+        if (!selectCliente) {
+          console.error('Elemento selectCliente não encontrado no DOM');
+          return;
+        }
+        
+        // Limpar opções existentes (exceto a primeira)
+        selectCliente.innerHTML = '<option value="">Selecione um cliente...</option>';
+        
+        if (clientes.length === 0) {
+          const option = document.createElement('option');
+          option.value = '';
+          option.textContent = 'Nenhum cliente cadastrado';
+          option.disabled = true;
+          selectCliente.appendChild(option);
+          console.warn('Nenhum cliente encontrado');
+          return;
+        }
+        
+        // Adicionar clientes ao dropdown
+        clientes.forEach((cliente, index) => {
+          const option = document.createElement('option');
+          // Tenta diferentes campos para o nome do cliente
+          const nomeCliente = cliente.nome_firma || cliente.nome || cliente.razaoSocial || 
+                             cliente.nomeFantasia || `Cliente ${cliente.nif || (index + 1)}`;
+          
+          option.value = nomeCliente;
+          option.textContent = nomeCliente;
+          
+          // Armazenar dados adicionais como atributos de dados
+          if (cliente.id) option.dataset.clienteId = cliente.id;
+          if (cliente.nif) option.dataset.clienteNif = cliente.nif;
+          if (cliente.email) option.dataset.clienteEmail = cliente.email;
+          
+          selectCliente.appendChild(option);
+          console.log(`Cliente adicionado:`, { 
+            id: cliente.id, 
+            nome: nomeCliente,
+            nif: cliente.nif,
+            tipo: cliente.tipo
+          });
+        });
+        
+        console.log('Clientes carregados com sucesso!');
+      } catch (error) {
+        console.error('Erro ao buscar clientes:', error);
+        alert('Erro ao carregar clientes. Verifique o console para mais detalhes.');
+      }
+    }
+
+    function parseNumeroProforma(str){
+      const s = (str||'').toString();
+      const m = s.match(/(\d+)/);
+      return m ? parseInt(m[1], 10) : null;
+    }
+
+    function formatNumeroProforma(n){
+      return 'PROF' + String(n).padStart(4, '0');
+    }
+
+    // Abrir modal Nova Proforma com número automático
+    document.getElementById('btnNovaProforma').addEventListener('click', () => {
+      const form = document.getElementById('formNovaProforma');
+      if (form) form.reset();
+      const hoje = new Date().toISOString().split('T')[0];
+      const elData = document.querySelector('#formNovaProforma input[name="dataEmissao"]');
+      if (elData) elData.value = hoje;
+
+      const elNumero = document.querySelector('#formNovaProforma input[name="numero"]');
+      if (elNumero){
+        if (window.__nextProformaNumero && typeof window.__nextProformaNumero === 'string'){
+          elNumero.value = window.__nextProformaNumero;
+        } else {
+          elNumero.value = formatNumeroProforma(1);
+        }
+      }
+
+      carregarClientes(); // Carregar clientes ao abrir o modal
+      $('#modalNovaProforma').modal('show');
+    });
+
+    // Calcular total automaticamente
+    const calcularTotal = () => {
+      const subtotalEl = document.querySelector('#formNovaProforma input[name="subtotal"]');
+      const impostosEl = document.querySelector('#formNovaProforma input[name="impostos"]');
+      const totalEl = document.querySelector('#formNovaProforma input[name="total"]');
+      
+      if (subtotalEl && impostosEl && totalEl) {
+        const subtotal = parseFloat(subtotalEl.value) || 0;
+        const impostos = parseFloat(impostosEl.value) || 0;
+        totalEl.value = (subtotal + impostos).toFixed(2);
+      }
+    };
+
+    const subtotalEl = document.querySelector('#formNovaProforma input[name="subtotal"]');
+    const impostosEl = document.querySelector('#formNovaProforma input[name="impostos"]');
+    if (subtotalEl) subtotalEl.addEventListener('input', calcularTotal);
+    if (impostosEl) impostosEl.addEventListener('input', calcularTotal);
+
+    // Salvar proforma
+    document.getElementById('btnSalvarProforma').addEventListener('click', async () => {
+      const form = document.getElementById('formNovaProforma');
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      const formData = new FormData(form);
+      const proforma = {
+        numero: formData.get('numero'),
+        cliente: formData.get('cliente'),
+        dataEmissao: formData.get('dataEmissao'),
+        validade: parseInt(formData.get('validade')) || 30,
+        subtotal: parseFloat(formData.get('subtotal')) || 0,
+        impostos: parseFloat(formData.get('impostos')) || 0,
+        total: parseFloat(formData.get('total')) || 0,
+        moeda: formData.get('moeda'),
+        estado: formData.get('estado'),
+        condicoesPagamento: formData.get('condicoesPagamento') || '',
+        descricao: formData.get('descricao') || '',
+        observacoes: formData.get('observacoes') || '',
+        tipo: 'Proforma'
+      };
+
+      try {
+        const response = await fetch('/api/faturas/proforma', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(proforma)
+        });
+
+        if (response.ok) {
+          alert('Fatura Proforma criada com sucesso!');
+          $('#modalNovaProforma').modal('hide');
+          fetchProformas();
+        } else {
+          const error = await response.json();
+          alert('Erro ao criar proforma: ' + (error.message || 'Erro desconhecido'));
+        }
+      } catch (error) {
+        console.error('Erro ao salvar proforma:', error);
+        alert('Erro ao salvar proforma. Verifique a conexão.');
+      }
+    });
+
+    // Buscar e exibir proformas, e calcular próximo número
+    async function fetchProformas() {
+      try {
+        const response = await fetch('/api/faturas/proforma', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (response.ok) {
+          const proformas = await response.json();
+          const tbody = document.getElementById('proformasTableBody');
+          tbody.innerHTML = '';
+
+          // Atualizar estatísticas
+          document.getElementById('totalProformas').textContent = proformas.length;
+          document.getElementById('proformasAprovadas').textContent = proformas.filter(p => p.estado === 'Aprovada').length;
+          document.getElementById('proformasPendentes').textContent = proformas.filter(p => p.estado === 'Pendente').length;
+
+          let maxNum = 0;
+
+          proformas.forEach(p => {
+            const tr = document.createElement('tr');
+            const dataEmissao = p.dataEmissao ? new Date(p.dataEmissao).toLocaleDateString('pt-PT') : '';
+            const badgeClass = getBadgeClass(p.estado);
+            
+            tr.innerHTML = `
+              <td><strong>${p.numero || ''}</strong></td>
+              <td>${p.cliente || ''}</td>
+              <td>${dataEmissao}</td>
+              <td>${p.validade || 30} dias</td>
+              <td><strong>${(p.total || 0).toLocaleString('pt-PT', {minimumFractionDigits: 2})}</strong></td>
+              <td>${p.moeda || 'Kz'}</td>
+              <td><span class="badge badge-${badgeClass}">${p.estado || 'Pendente'}</span></td>
+              <td>
+                <button class="btn btn-sm btn-info" onclick="verProforma('${p._id}')"><i class="fas fa-eye"></i></button>
+                <button class="btn btn-sm btn-warning" onclick="editarProforma('${p._id}')"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-sm btn-danger" onclick="deletarProforma('${p._id}')"><i class="fas fa-trash"></i></button>
+              </td>
+            `;
+            tbody.appendChild(tr);
+
+            const parsed = parseNumeroProforma(p.numero);
+            if (parsed && parsed > maxNum) maxNum = parsed;
+          });
+
+          const next = maxNum + 1;
+          window.__nextProformaNumero = formatNumeroProforma(next);
+        }
+      } catch (error) {
+        console.error('Erro ao buscar proformas:', error);
+      }
+    }
+
+    function getBadgeClass(estado) {
+      switch(estado) {
+        case 'Aprovada': return 'success';
+        case 'Pendente': return 'warning';
+        case 'Convertida': return 'primary';
+        case 'Expirada': return 'danger';
+        case 'Cancelada': return 'secondary';
+        default: return 'secondary';
+      }
+    }
+
+    // Carregar proformas ao iniciar
+    fetchProformas();
+  </script>
+</body>
+</html>

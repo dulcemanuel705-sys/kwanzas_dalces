@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
+  <title>Detalhe do Projecto | Kwanza Manipulus</title>
+  <link rel="shortcut icon" type="image/x-icon" href="assets/img/logo.png" />
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css" />
+  <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/feathericon.min.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap4.min.css" />
+  <style>
+    .header{ background:#fff; }
+    .header-left{ background:#000 !important; }
+    .page-header h3{ color:#066fe3; font-weight:600; }
+    .btn-primary{ background:#0ab5b3; border-color:#0ab5b3; }
+    .sidebar{ background:#1a1a1a; }
+    .sidebar .sidebar-menu ul li a{ color:#ffffff !important; }
+    .sidebar .sidebar-menu ul li a:hover{ background:#0ab5b3; color:#ffffff !important; }
+    .sidebar .sidebar-menu ul li.active > a{ background:#0ab5b3; color:#ffffff !important; }
+    .sidebar .sidebar-menu .menu-title span{ color:#ffffff; opacity:0.7; }
+    .sidebar .sidebar-menu ul li.submenu ul li a{ color:#e0e0e0 !important; }
+    .sidebar .sidebar-menu ul li.submenu ul li a:hover{ color:#ffffff !important; background:#0ab5b3; }
+    
+    .sidebar .sidebar-menu > ul > li > a i {
+      color: #ffffff !important;
+      font-size: 15px;
+      margin-right: 6px;
+    }
+    .page-wrapper{ padding-top:80px; }
+    @media (max-width:768px){ .page-wrapper{ padding-top:90px; } }
+
+    /* Detalhe do projecto - melhorar visual das secções */
+    .nav-tabs .nav-link{ font-size:13px; font-weight:500; }
+    .nav-tabs .nav-link.active{ color:#0b1120; }
+
+    .tab-pane .card{ border-radius:10px; border-color:#e5e7eb; box-shadow:0 4px 10px rgba(15,23,42,0.06); }
+    .tab-pane .card-header{ background:linear-gradient(135deg,#0b1120,#020617); color:#e5e7eb; padding:0.55rem 0.9rem; }
+    .tab-pane .card-header .card-title{ font-size:13px; font-weight:600; letter-spacing:.02em; }
+    .tab-pane .card-header .btn{ font-size:11px; padding:.25rem .6rem; }
+
+    .tab-pane .card-body{ padding:0.8rem 0.9rem 1rem; }
+    .tab-pane .card-body p.text-muted{ margin-bottom:0.55rem; }
+
+    .tab-pane table.table-sm th,
+    .tab-pane table.table-sm td{ font-size:11px; vertical-align:middle; }
+    .tab-pane table.table-sm thead.thead-light th{ background:#f3f4f6; border-color:#e5e7eb; }
+
+    .tab-pane table tbody tr:nth-child(even){ background:#f9fafb; }
+    .tab-pane table tbody tr:hover{ background:#eef2ff; }
+  </style>
+  <script>
+    function getQueryParam(key){ return new URLSearchParams(window.location.search).get(key); }
+    const API = {
+      headers(){
+        const t = localStorage.getItem('token');
+        return { 'Content-Type': 'application/json', ...(t ? { Authorization: `Bearer ${t}` } : {}) };
+      },
+      async getJSON(path){
+        const res = await fetch(path, { headers: this.headers() });
+        if(!res.ok) throw new Error('http_' + res.status);
+        return res.json();
+      }
+    };
+  </script>
+</head>
+<body>
+  <div class="main-wrapper">
+    <div class="header">
+      <div class="header-left">
+        <a href="dashboard.html" class="logo"><img src="assets/img/kwanzaWhite.svg" width="50" height="70" alt="logo"><span class="logoclass"></span></a>
+        <a href="dashboard.html" class="logo logo-small"><img src="assets/img/kwanzaWhite.svg" alt="Logo" width="30" height="30"></a>
+      </div>
+
+  <!-- Modal editar projecto -->
+  <div class="modal fade" id="modalEditProjeto" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Editar projecto</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="formEditProjeto">
+            <div class="form-group">
+              <label>Descrição / Job Description</label>
+              <input type="text" class="form-control" name="descricao" />
+            </div>
+            <div class="form-group">
+              <label>Cliente</label>
+              <input type="text" class="form-control" name="cliente" />
+            </div>
+            <div class="form-group">
+              <label>Valor Cotação (AOA)</label>
+              <input type="number" step="0.01" class="form-control" name="valorCotacao" />
+            </div>
+            <div class="form-group">
+              <label>Data Início</label>
+              <input type="date" class="form-control" name="dataInicio" />
+            </div>
+            <div class="form-group">
+              <label>Data Fim</label>
+              <input type="date" class="form-control" name="dataFim" />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button id="btnSalvarProjeto" type="button" class="btn btn-primary">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+      <a href="javascript:void(0);" id="toggle_btn"><i class="fe fe-text-align-left"></i></a>
+      <a class="mobile_btn" id="mobile_btn"><i class="fas fa-bars"></i></a>
+      <ul class="nav user-menu">
+        <li class="nav-item dropdown has-arrow">
+          <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown"><span class="user-img"><img class="rounded-circle" src="assets/img/profiles/avatar-01.jpg" width="31" alt=""></span></a>
+          <div class="dropdown-menu">
+            <div class="user-header">
+              <div class="avatar avatar-sm"><img src="foto do perfil" alt="User Image" class="avatar-img rounded-circle"></div>
+              <div class="user-text">
+                <div class="muted" style="font-size:11px">Bem-vindo(a), </div>
+                <h6><span id="userName">usuário</span></h6>
+              </div>
+            </div>
+            <a class="dropdown-item" href="profile.html">Perfil</a>
+            <a class="dropdown-item" href="settings.html">configurações da conta</a>
+            <a class="dropdown-item" id="logoutBtn" href="#">Sair</a>
+          </div>
+        </li>
+      </ul>
+      <div class="top-nav-search">
+        <form>
+          <input type="text" class="form-control" placeholder="procurar" />
+          <button class="btn" type="submit"><i class="fas fa-search"></i></button>
+        </form>
+      </div>
+    </div>
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-inner slimscroll">
+        <div id="sidebar-menu" class="sidebar-menu">
+          <ul>
+            <li> <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a> </li>
+            <li> <a href="clientes_clientes.html"><i class="fas fa-user"></i> <span>Clientes</span></a></li>
+            <li class="submenu"> <a href="#" data-toggle="collapse"><i class="fas fa-user"></i> <span> Empresa </span> <span class="menu-arrow"></span></a>
+              <ul class="submenu_class" style="display: none;">
+                <li><a href="rh_funcionarios.html">Funcionários</a></li>
+                <li><a href="rh_departamentos.html">Departamentos &amp; Cargos</a></li>
+                <li><a href="rh_ferias.html">Férias</a></li>
+                <li><a href="users.html">Utilizadores</a></li>
+              </ul>
+            </li>
+            
+            <li class="submenu"> <a href="#" data-toggle="collapse"><i class="fas fa-user"></i> <span> Fornecedores</span> <span class="menu-arrow"></span></a>
+              <ul class="submenu_class" style="display: none;">
+                <li><a href="fornecedor.html">Lista de Fornecedores </a></li>
+              </ul>
+            </li>
+            <li> <a href="financas.html#bancos"><i class="fas fa-university"></i> <span> Bancos</span></a> </li>
+            <li> <a href="financas.html#pagamentos"><i class="fas fa-money-bill-alt"></i> <span> Pagamentos</span></a> </li>
+            <li> <a href="faturas.html"><i class="fas fa-file-invoice"></i> <span>Faturas</span></a> </li>
+            <li class="active"> <a href="projectos.html"><i class="fas fa-cube"></i> <span>Projectos Kwanza </span></a> </li>
+            <li> <a href="#"><i class="fas fa-cog"></i> <span>Configurações</span></a> </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="page-wrapper">
+      <div class="content container-fluid">
+        <div class="page-header">
+          <div class="row align-items-center">
+            <div class="col">
+              <h3 class="page-title">Detalhe do Projecto</h3>
+              <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="projectos.html">Projectos</a></li>
+                <li class="breadcrumb-item active">Detalhe</li>
+              </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+              <a href="projectos.html" class="btn btn-outline-secondary mr-2"><i class="fa fa-arrow-left"></i> Voltar</a>
+              <button id="btnEditProjeto" type="button" class="btn btn-primary mr-2"><i class="fa fa-edit"></i> Editar</button>
+              <button id="btnDeleteProjeto" type="button" class="btn btn-danger"><i class="fa fa-trash"></i> Eliminar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cabeçalho de informações gerais do projecto -->
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6 mb-2">
+                <h4 id="projDescricao" class="mb-1">Projecto</h4>
+                <div class="text-muted" style="font-size:12px;">
+                  <span class="mr-2"><strong>ID:</strong> <span id="projId">1</span></span>
+                  <span><strong>Estado:</strong> <span id="projStatus">1</span></span>
+                </div>
+              </div>
+              <div class="col-md-6 mb-2 text-md-right">
+                <div><strong>Cliente:</strong> <span id="projCliente">1</span></div>
+                <div><strong>Período:</strong> <span id="projPeriodo">1</span></div>
+              </div>
+            </div>
+            <hr class="my-2" />
+            <div class="row">
+              <div class="col-md-4 mb-1">
+                <small class="text-muted d-block">Cotação / Orçamento</small>
+                <span id="projCotacao">1</span>
+              </div>
+              <div class="col-md-4 mb-1">
+                <small class="text-muted d-block">Valor Total Orçamento</small>
+                <span id="projOrcamento">1</span>
+              </div>
+              <div class="col-md-4 mb-1">
+                <small class="text-muted d-block">Valor Total Contrato</small>
+                <span id="projContrato">1</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Abas de secções do projecto -->
+        <ul class="nav nav-tabs mb-3" id="projTabs" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="tab-trabalhos-tab" data-toggle="tab" href="#tab-trabalhos" role="tab" aria-controls="tab-trabalhos" aria-selected="true">Trabalhos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="tab-cotacoes-tab" data-toggle="tab" href="#tab-cotacoes" role="tab" aria-controls="tab-cotacoes" aria-selected="false">Cotações</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="tab-contratos-tab" data-toggle="tab" href="#tab-contratos" role="tab" aria-controls="tab-contratos" aria-selected="false">Contratos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="tab-servicos-tab" data-toggle="tab" href="#tab-servicos" role="tab" aria-controls="tab-servicos" aria-selected="false">Serviços/Entregas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="tab-faturas-tab" data-toggle="tab" href="#tab-faturas" role="tab" aria-controls="tab-faturas" aria-selected="false">Faturas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="tab-observacoes-tab" data-toggle="tab" href="#tab-observacoes" role="tab" aria-controls="tab-observacoes" aria-selected="false">Observações</a>
+          </li>
+        </ul>
+
+        <div class="tab-content" id="projTabsContent">
+          <!-- Aba Trabalhos: reaproveita a tabela existente -->
+          <div class="tab-pane fade show active" id="tab-trabalhos" role="tabpanel" aria-labelledby="tab-trabalhos-tab">
+            <div class="card">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">Trabalhos / Tarefas (Service Tickets)</h5>
+                <div class="btn-group">
+                  <button id="btnAddTicket" type="button" class="btn btn-sm btn-primary">Adicionar trabalho/tarefa</button>
+                  <button id="btnSeedTickets" type="button" class="btn btn-sm btn-outline-info">Criar tarefas de teste</button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table id="tblTickets" class="table table-striped table-bordered table-sm" style="width:100%">
+                    <colgroup>
+                      <col style="width: 4%;">   <!-- # -->
+                      <col style="width: 10%;">  <!-- ID Trabalho -->
+                      <col style="width: 26%;">  <!-- Descrição -->
+                      <col style="width: 10%;">  <!-- Status -->
+                      <col style="width: 10%;">  <!-- Início -->
+                      <col style="width: 10%;">  <!-- Fim -->
+                      <col style="width: 8%;">   <!-- Prioridade -->
+                      <col style="width: 8%;">   <!-- % Conclusão -->
+                      <col style="width: 12%;">  <!-- Responsável -->
+                      <col style="width: 10%;">  <!-- Horas Est./Reais -->
+                      <col style="width: 10%;">  <!-- Ações -->
+                    </colgroup>
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>ID Trabalho</th>
+                        <th>Descrição do trabalho</th>
+                        <th>Status</th>
+                        <th>Data início</th>
+                        <th>Data fim</th>
+                        <th>Prioridade</th>
+                        <th>% Conclusão</th>
+                        <th>Responsável</th>
+                        <th>Horas (Est./Reais)</th>
+                        <th>Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                      <tr>
+                        <th colspan="9" style="text-align:right">Total de horas (reais):</th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Aba Cotações -->
+          <div class="tab-pane fade" id="tab-cotacoes" role="tabpanel" aria-labelledby="tab-cotacoes-tab">
+            <div class="card">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">Cotações do Projeto</h5>
+                <button id="btnAddCotacao" type="button" class="btn btn-sm btn-primary">Adicionar cotação</button>
+              </div>
+              <div class="card-body">
+                <p class="text-muted" style="font-size: 13px;">
+                  Registo das diferentes cotações associadas ao projeto. Os termos de pagamento aqui podem ser
+                  diferentes dos termos de pagamento do contrato.
+                </p>
+                <div class="table-responsive">
+                  <table class="table table-sm table-bordered mb-0">
+                    <thead class="thead-light">
+                      <tr>
+                        <th style="width: 14%;">Nº Cotação</th>
+                        <th style="width: 12%;">Data da Cotação</th>
+                        <th style="width: 16%;">Valor Cotação (AOA)</th>
+                        <th style="width: 18%;">Termos de Pagamento</th>
+                        <th style="width: 16%;">Status</th>
+                        <th>Observações</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbodyCotacoesProjeto">
+                      <tr>
+                        <td colspan="6" class="text-center text-muted">Nenhuma cotação registada para este projeto.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Aba Contratos -->
+          <div class="tab-pane fade" id="tab-contratos" role="tabpanel" aria-labelledby="tab-contratos-tab">
+            <div class="card">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">Contratos do Projeto</h5>
+                <button id="btnAddContrato" type="button" class="btn btn-sm btn-primary">Adicionar contrato</button>
+              </div>
+              <div class="card-body">
+                <p class="text-muted" style="font-size: 13px;">
+                  Esta secção mostra os dados de contrato associados ao projeto. Os termos de pagamento aqui podem
+                  ser diferentes dos termos de pagamento da cotação.
+                </p>
+                <div class="table-responsive">
+                  <table class="table table-sm table-bordered mb-0">
+                    <thead class="thead-light">
+                      <tr>
+                        <th style="width: 14%;">Nº Contrato (PO/SO)</th>
+                        <th style="width: 12%;">Data do Contrato</th>
+                        <th style="width: 16%;">Valor do Contrato (AOA)</th>
+                        <th style="width: 18%;">Termos de Pagamento</th>
+                        <th>Conteúdo do Contrato / Notas</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbodyContratosProjeto">
+                      <tr>
+                        <td colspan="5" class="text-center text-muted">Nenhum contrato registado para este projeto.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Aba Serviços/Entregas -->
+          <div class="tab-pane fade" id="tab-servicos" role="tabpanel" aria-labelledby="tab-servicos-tab">
+            <div class="card">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">Serviços / Entregas</h5>
+                <button id="btnAddServico" type="button" class="btn btn-sm btn-primary">Adicionar serviço/entrega</button>
+              </div>
+              <div class="card-body">
+                <p class="text-muted" style="font-size: 13px;">
+                  Registo das entregas, serviços executados, milestones e notas de serviço associadas ao projeto.
+                </p>
+                <div class="table-responsive">
+                  <table class="table table-sm table-bordered mb-0">
+                    <thead class="thead-light">
+                      <tr>
+                        <th style="width: 14%;">Ref. Serviço/Entrega</th>
+                        <th style="width: 12%;">Data</th>
+                        <th style="width: 24%;">Descrição</th>
+                        <th style="width: 14%;">Status</th>
+                        <th style="width: 16%;">Valor (AOA)</th>
+                        <th>Observações</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbodyServicosProjeto">
+                      <tr>
+                        <td colspan="6" class="text-center text-muted">Nenhum serviço/entrega registado para este projeto.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Aba Faturas -->
+          <div class="tab-pane fade" id="tab-faturas" role="tabpanel" aria-labelledby="tab-faturas-tab">
+            <div class="card">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">Faturas do Projeto</h5>
+                <button id="btnAddFatura" type="button" class="btn btn-sm btn-primary">Adicionar fatura</button>
+              </div>
+              <div class="card-body">
+                <p class="text-muted" style="font-size: 13px;">
+                  Controlo das faturas emitidas e do seu estado de pagamento relativamente a este projeto.
+                </p>
+                <div class="table-responsive">
+                  <table class="table table-sm table-bordered mb-0">
+                    <thead class="thead-light">
+                      <tr>
+                        <th style="width: 16%;">Nº Fatura</th>
+                        <th style="width: 12%;">Data da Fatura</th>
+                        <th style="width: 16%;">Valor (AOA)</th>
+                        <th style="width: 14%;">Status</th>
+                        <th style="width: 16%;">Data de Pagamento</th>
+                        <th>Observações</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbodyFaturasProjeto">
+                      <tr>
+                        <td colspan="6" class="text-center text-muted">Nenhuma fatura registada para este projeto.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Aba Observações -->
+          <div class="tab-pane fade" id="tab-observacoes" role="tabpanel" aria-labelledby="tab-observacoes-tab">
+            <div class="card">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">Observações gerais</h5>
+                <button id="btnAddObservacao" type="button" class="btn btn-sm btn-primary">Adicionar observação</button>
+              </div>
+              <div class="card-body">
+                <p class="text-muted" style="font-size: 13px;">
+                  Notas internas e observações relevantes sobre o andamento e decisões tomadas no projeto.
+                </p>
+                <div class="table-responsive">
+                  <table class="table table-sm table-bordered mb-0">
+                    <thead class="thead-light">
+                      <tr>
+                        <th style="width: 14%;">Data</th>
+                        <th style="width: 18%;">Tipo/Origem</th>
+                        <th>Descrição da Observação</th>
+                        <th style="width: 16%;">Registado por</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbodyObservacoesProjeto">
+                      <tr>
+                        <td colspan="4" class="text-center text-muted">Nenhuma observação registada para este projeto.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal adicionar trabalho/tarefa -->
+  <div class="modal fade" id="modalAddTicket" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Adicionar trabalho/tarefa</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="formAddTicket">
+            <div class="section-card">
+              <div class="section-header">Informações do Trabalho</div>
+              <div class="section-body">
+                <div class="form-row">
+                  <div class="form-group col-md-8">
+                    <label>Descrição do trabalho <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="descricao" placeholder="Descreva a tarefa/atividade" required />
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Responsável</label>
+                    <select class="form-control" name="responsavel">
+                      <option value="">Selecione o responsável</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label>Data de Início</label>
+                    <input type="date" class="form-control" name="dataInicio" />
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Data Prevista de Término</label>
+                    <input type="date" class="form-control" name="dataFim" />
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Prioridade</label>
+                    <select class="form-control" name="prioridade">
+                      <option value="baixa">Baixa</option>
+                      <option value="media" selected>Média</option>
+                      <option value="alta">Alta</option>
+                      <option value="critica">Crítica</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label>Status</label>
+                    <select class="form-control" name="status">
+                      <option value="planeado" selected>Planeado</option>
+                      <option value="em curso">Em Curso</option>
+                      <option value="concluido">Concluído</option>
+                      <option value="cancelado">Cancelado</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>% Conclusão</label>
+                    <div class="d-flex align-items-center">
+                      <input type="number" class="form-control" name="progresso" min="0" max="100" value="0" />
+                    </div>
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label>Horas Estimadas</label>
+                    <input type="number" step="0.25" min="0" class="form-control" name="horasEstimadas" />
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label>Horas Reais</label>
+                    <input type="number" step="0.25" min="0" class="form-control" name="horasReais" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-card">
+              <div class="section-header">Cotação</div>
+              <div class="section-body">
+                <div class="form-row">
+                  <div class="form-group col-md-3">
+                    <label>Nº Cotação</label>
+                    <input type="text" class="form-control" name="numCotacao" />
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Data Cotação</label>
+                    <input type="date" class="form-control" name="dataCotacao" />
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Valor Cotação (AOA)</label>
+                    <input type="number" step="0.01" class="form-control" name="valorCotacao" />
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Termos de Pagto</label>
+                    <input type="text" class="form-control" name="termosPagamentoCotacao" />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label>Incoterms</label>
+                    <input type="text" class="form-control" name="incoterms" />
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Validade da Proposta</label>
+                    <input type="date" class="form-control" name="validadeProposta" />
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Status da Cotação</label>
+                    <select class="form-control" name="statusCotacao">
+                      <option value="rascunho">Rascunho</option>
+                      <option value="enviada">Enviada</option>
+                      <option value="aprovada">Aprovada</option>
+                      <option value="recusada">Recusada</option>
+                      <option value="cancelada">Cancelada</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-card">
+              <div class="section-header">Nota de Serviço</div>
+              <div class="section-body">
+                <div class="form-row">
+                  <div class="form-group col-md-3">
+                    <label>Nº Nota Serviço</label>
+                    <input type="number" class="form-control" name="notaServico" />
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Data Nota</label>
+                    <input type="date" class="form-control" name="dataNota" />
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Valor (AOA)</label>
+                    <input type="number" step="0.01" class="form-control" name="valorNota" />
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Status</label>
+                    <select class="form-control" name="statusNota">
+                      <option value="pendente">Pendente</option>
+                      <option value="enviada">Enviada</option>
+                      <option value="paga">Paga</option>
+                      <option value="atrasada">Atrasada</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-12">
+                    <label>Descrição dos Serviços Executados</label>
+                    <textarea class="form-control" name="descricaoServicos" rows="2"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-card">
+              <div class="section-header">Anexos e Observações</div>
+              <div class="section-body">
+                <div class="form-group">
+                  <label>Anexar Documentos</label>
+                  <input type="file" class="form-control-file" name="anexos" multiple />
+                  <small class="form-text text-muted">Anexe documentos relacionados à tarefa (máx. 5MB por arquivo)</small>
+                </div>
+                <div class="form-group">
+                  <label>Observações Adicionais</label>
+                  <textarea class="form-control" name="observacoes" rows="2"></textarea>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-outline-primary">Salvar como Rascunho</button>
+          <button id="btnSalvarTicket" type="button" class="btn btn-primary">Salvar Tarefa</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/jquery-3.5.1.min.js"></script>
+  <script src="assets/js/popper.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/js/script.js"></script>
+  <!-- Carrega o avatar do usuário -->
+  <script src="js/profile-avatar.js"></script>
+  <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    // Helper function to get badge class based on status
+    function getStatusBadgeClass(status) {
+      if (!status) return 'badge-secondary';
+      const statusMap = {
+        'concluído': 'badge-success',
+        'concluido': 'badge-success',
+        'em andamento': 'badge-primary',
+        'pendente': 'badge-warning',
+        'cancelado': 'badge-danger',
+        'pago': 'badge-success',
+        'faturado': 'badge-info',
+        'planeado': 'badge-secondary',
+        'enviado': 'badge-info',
+        'executado': 'badge-primary'
+      };
+      return statusMap[status.toLowerCase()] || 'badge-secondary';
+    }
+
+    let currentProjectId = null;
+    let ticketsTable = null;
+    let currentProjectData = null;
+
+    async function carregarProjectoEPopulartabela(){
+      const id = currentProjectId;
+      if (!id){ alert('ID do projecto em falta'); return; }
+      try{
+        const p = await API.getJSON(`/api/projectos/${encodeURIComponent(id)}`);
+        currentProjectData = p;
+
+        // Cabeçalho geral
+        const elDesc = document.getElementById('projDescricao');
+        if (elDesc) elDesc.textContent = p.descricao || p.jobDescription || p.descricaoProjeto || 'Projecto';
+
+        const elId = document.getElementById('projId');
+        if (elId) elId.textContent = p.projectId || p.id || p.id_projecto || '—';
+
+        const elStatus = document.getElementById('projStatus');
+        if (elStatus) elStatus.textContent = p.jobStatus || p.status || '—';
+
+        const elCliente = document.getElementById('projCliente');
+        if (elCliente) elCliente.textContent = p.cliente || '—';
+
+        const fmtMoney = v => {
+          const n = v != null ? Number(v) : null;
+          return n != null && !isNaN(n) ? n.toLocaleString('pt-PT',{style:'currency',currency:'AOA'}) : '—';
+        };
+
+        const vc = p.valorCotacao != null ? Number(p.valorCotacao) : null;
+        const elCot = document.getElementById('projCotacao');
+        if (elCot) elCot.textContent = vc != null && !isNaN(vc) ? vc.toLocaleString('pt-PT',{style:'currency',currency:'AOA'}) : '—';
+
+        const elOrc = document.getElementById('projOrcamento');
+        if (elOrc) elOrc.textContent = fmtMoney(p.valorTotalOrcamento || p.valorOrcamento);
+
+        const elCtr = document.getElementById('projContrato');
+        if (elCtr) elCtr.textContent = fmtMoney(p.valorTotalContrato || p.valorContrato);
+
+        // Preencher aba Contratos com dados do contrato do projecto
+        const tbodyContratos = document.getElementById('tbodyContratosProjeto');
+        if (tbodyContratos) {
+          const numContrato = p.numContrato || '';
+          const dataContrato = p.dataContrato || '';
+          const valorContrato = p.valorContrato != null ? fmtMoney(p.valorContrato) : '';
+          const termosPagamentoContrato = p.termosPagamentoContrato || '';
+          const conteudoContrato = p.conteudoContrato || '';
+
+          const todosVazios = !numContrato && !dataContrato && !valorContrato && !termosPagamentoContrato && !conteudoContrato;
+
+          if (todosVazios) {
+            tbodyContratos.innerHTML = `
+              <tr>
+                <td colspan="5" class="text-center text-muted">Nenhum contrato registado para este projeto.</td>
+              </tr>
+            `;
+          } else {
+            const fmtDataContrato = dataContrato ? new Date(dataContrato).toLocaleDateString('pt-PT') : '';
+            tbodyContratos.innerHTML = `
+              <tr>
+                <td>${numContrato || '—'}</td>
+                <td>${fmtDataContrato || '—'}</td>
+                <td>${valorContrato || '—'}</td>
+                <td>${termosPagamentoContrato || '—'}</td>
+                <td>${conteudoContrato || '—'}</td>
+              </tr>
+            `;
+          }
+        }
+
+        // Preencher aba Cotações com dados da cotação principal do projecto
+        const tbodyCotacoes = document.getElementById('tbodyCotacoesProjeto');
+        if (tbodyCotacoes) {
+          const numCotacao = p.numCotacao || '';
+          const dataCotacao = p.dataCotacao || '';
+          const valorCotacao = p.valorCotacao != null ? fmtMoney(p.valorCotacao) : '';
+          const termosPagamentoCotacao = p.termosPagamentoCotacao || '';
+          const statusCotacao = p.statusCotacao || '';
+          const observacoesCotacao = p.observacoesCotacao || '';
+
+          const todasVazias = !numCotacao && !dataCotacao && !valorCotacao && !termosPagamentoCotacao && !statusCotacao && !observacoesCotacao;
+
+          if (todasVazias) {
+            tbodyCotacoes.innerHTML = `
+              <tr>
+                <td colspan="6" class="text-center text-muted">Nenhuma cotação registada para este projeto.</td>
+              </tr>
+            `;
+          } else {
+            const fmtDataCotacao = dataCotacao ? new Date(dataCotacao).toLocaleDateString('pt-PT') : '';
+            tbodyCotacoes.innerHTML = `
+              <tr>
+                <td>${numCotacao || '—'}</td>
+                <td>${fmtDataCotacao || '—'}</td>
+                <td>${valorCotacao || '—'}</td>
+                <td>${termosPagamentoCotacao || '—'}</td>
+                <td>${statusCotacao || '—'}</td>
+                <td>${observacoesCotacao || '—'}</td>
+              </tr>
+            `;
+          }
+        }
+
+        const di = p.dataInicio || p.dataInicioEstimada;
+        const df = p.dataFim || p.dataFimEstimada;
+        const fmt = d => d ? new Date(d).toLocaleDateString('pt-PT') : '';
+        const elPeriodo = document.getElementById('projPeriodo');
+        if (elPeriodo) elPeriodo.textContent = (fmt(di) || '—') + ' até ' + (fmt(df) || '—');
+
+        const tickets = Array.isArray(p.serviceTickets) ? p.serviceTickets : [];
+        const tbody = document.querySelector('#tblTickets tbody');
+        
+        // Clear existing data
+        tbody.innerHTML = '';
+        
+        // Format date helper
+        const formatDate = (dateStr) => {
+          if (!dateStr) return '';
+          const date = new Date(dateStr);
+          return isNaN(date.getTime()) ? '' : date.toLocaleDateString('pt-PT');
+        };
+        
+        // Format currency helper
+        const formatCurrency = (value) => {
+          if (value === null || value === undefined || value === '') return '0,00';
+          const num = Number(value);
+          return isNaN(num) ? '0,00' : num.toLocaleString('pt-PT', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          });
+        };
+        
+        // Acumulador para total de horas reais
+        let totalHorasReais = 0;
+        
+        // Clear existing data
+        tbody.innerHTML = '';
+        
+        // Prepare data for DataTable segundo novo layout (inclui ID Trabalho e campos brutos do ticket)
+        const rows = tickets.map((t, idx) => {
+          const status = t.estado || t.status || (t.notaPago ? 'Concluído' : (t.notaExecutado ? 'Em Curso' : 'Planeado'));
+          const prioridade = t.prioridade || '';
+          const progresso = t.progresso || t.percentualConclusao || 0;
+          const responsavel = t.responsavel || t.responsavelNome || '';
+          const horasEst = Number(t.horasEstimadas || t.horasPrevistas || 0) || 0;
+          const horasReais = Number(t.horasReais || t.horasExecutadas || 0) || 0;
+          totalHorasReais += horasReais;
+
+          return {
+            idx: idx + 1,
+            idTrabalho: t.id || t.referencia || t.numeroNotaServico || t.notaServico || '',
+            descricao: t.descricao || t.notaExecutado || '',
+            status,
+            statusHtml: `<span class="badge ${getStatusBadgeClass(status)}">${status}</span>` ,
+            dataInicio: formatDate(t.dataInicio),
+            dataFim: formatDate(t.dataFim),
+            prioridade,
+            progresso,
+            progressoHtml: `${Number(progresso) || 0}%`,
+            responsavel,
+            horasTexto: `${horasEst} / ${horasReais}`,
+            horasReais,
+            // Campos brutos do ServiceTicket para edição completa
+            dataInicioRaw: t.dataInicio || null,
+            dataFimRaw: t.dataFim || null,
+            notaServico: t.notaServico || t.numeroNotaServico || '',
+            notaExecutado: t.notaExecutado || t.descricao || '',
+            notaEnviado: t.notaEnviado || '',
+            notaPago: t.notaPago || '',
+            id: t.id || ''
+          };
+        });
+        
+        // Initialize or reinitialize DataTable
+        if (ticketsTable) {
+          ticketsTable.destroy();
+        }
+        
+        // Clear the table and reinitialize it
+        $('#tblTickets').DataTable().destroy();
+        $('#tblTickets thead, #tblTickets tbody, #tblTickets tfoot').empty();
+        
+        // Rebuild the table structure
+        const table = $('#tblTickets');
+        const thead = table.find('thead');
+        const tableBody = table.find('tbody'); // usar nome diferente para não conflitar com tbody acima
+        const tfoot = table.find('tfoot');
+        
+        // Rebuild the header para novo layout (mantém em sincronia com o HTML, incluindo ID Trabalho)
+        thead.html(`
+          <tr>
+            <th>#</th>
+            <th>ID Trabalho</th>
+            <th>Descrição do trabalho</th>
+            <th>Status</th>
+            <th>Data início</th>
+            <th>Data fim</th>
+            <th>Prioridade</th>
+            <th>% Conclusão</th>
+            <th>Responsável</th>
+            <th>Horas (Est./Reais)</th>
+            <th>Ações</th>
+          </tr>
+        `);
+
+        // Rebuild the footer para total de horas reais
+        tfoot.html(`
+          <tr>
+            <th colspan="9" style="text-align:right">Total de horas (reais):</th>
+            <th></th>
+            <th></th>
+          </tr>
+        `);
+        
+        // Initialize DataTable with the data
+        ticketsTable = table.DataTable({
+          data: rows,
+          columns: [
+            {
+              data: 'idx',
+              className: 'text-center',
+              render: function(data, type, row, meta) {
+                return meta.row + 1;
+              }
+            },
+            {
+              data: 'idTrabalho',
+              className: 'text-nowrap'
+            },
+            {
+              data: 'descricao'
+            },
+            {
+              data: 'statusHtml',
+              type: 'string',
+              className: 'text-center'
+            },
+            {
+              data: 'dataInicio',
+              className: 'text-nowrap',
+              type: 'date-eu'
+            },
+            {
+              data: 'dataFim',
+              className: 'text-nowrap',
+              type: 'date-eu'
+            },
+            {
+              data: 'prioridade',
+              className: 'text-center text-nowrap'
+            },
+            {
+              data: 'progressoHtml',
+              className: 'text-center'
+            },
+            {
+              data: 'responsavel',
+              className: 'text-nowrap'
+            },
+            {
+              data: 'horasTexto',
+              className: 'text-center'
+            },
+            {
+              data: null,
+              className: 'text-center',
+              orderable: false,
+              render: function(data, type, row) {
+                return `
+                  <div class="btn-group btn-group-sm">
+                    <button type="button" class="btn btn-sm btn-outline-primary btn-editar-ticket" data-id="${row.id}" title="Editar">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-success btn-concluir-ticket" data-id="${row.id}" title="Marcar como concluído">
+                      <i class="fas fa-check"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-danger btn-excluir-ticket" data-id="${row.id}" title="Excluir">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>`;
+              }
+            }
+          ],
+
+          pageLength: 10,
+          scrollX: true,
+          autoWidth: false,
+          language: { 
+            url: 'https://cdn.datatables.net/plug-ins/1.13.8/i18n/pt-PT.json' 
+          },
+          order: [[4, 'desc']], // Sort by start date by default (coluna Data início)
+          dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+               "<'row'<'col-sm-12'tr>>" +
+               "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+          buttons: [
+            {
+              extend: 'collection',
+              text: '<i class="fas fa-download mr-1"></i> Exportar',
+              className: 'btn btn-sm btn-outline-secondary',
+              buttons: [
+                { extend: 'copy', className: 'dropdown-item' },
+                { extend: 'csv', className: 'dropdown-item', title: 'trabalhos' },
+                { extend: 'excel', className: 'dropdown-item', title: 'trabalhos' },
+                { extend: 'pdf', className: 'dropdown-item', title: 'trabalhos', orientation: 'landscape', pageSize: 'A4' },
+                { extend: 'print', className: 'dropdown-item' }
+              ]
+            },
+            {
+              extend: 'colvis',
+              text: '<i class="fas fa-columns mr-1"></i> Colunas',
+              className: 'btn btn-sm btn-outline-secondary',
+              columns: ':not(.no-export)'
+            }
+          ],
+          columnDefs: [
+            { orderable: false, targets: [0, 10] }, // Disable sorting on # and Ações columns
+            { className: 'no-export', targets: [10] }, // Exclude actions from export
+            { type: 'date-eu', targets: [4, 5] } // Date columns
+          ],
+          footerCallback: function(row, data, start, end, display) {
+            const api = this.api();
+            const totalHoras = data.reduce((acc, row) => acc + (Number(row.horasReais) || 0), 0);
+            $(api.column(9).footer()).html(
+              `<strong>${totalHoras.toLocaleString('pt-PT', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+              })} h</strong>`
+            );
+          },
+          initComplete: function() {
+            // This ensures the table is properly initialized
+            this.api().columns.adjust().draw();
+          },
+          drawCallback: function() {
+            // This ensures the table is properly drawn
+            if (this.api().data().count() === 0) {
+              $('#tblTickets tbody').html('<tr><td colspan="11" class="text-center">Sem trabalhos registados para este projecto.</td></tr>');
+            }
+          }
+        });
+        
+        // Add event delegation for the entire document to handle dynamically added elements
+        $(document).off('click', '#tblTickets tbody tr').on('click', '#tblTickets tbody tr', function(e) {
+          // Don't trigger if clicking on action buttons
+          if ($(e.target).closest('.btn-editar-ticket, .btn-excluir-ticket').length) {
+            return;
+          }
+          
+          const data = ticketsTable.row(this).data();
+          if (data && data.id) {
+            // TODO: Implement row click functionality (e.g., show details)
+            console.log('Row clicked:', data);
+          }
+        });
+        
+        // Add event delegation for edit/delete/complete buttons
+        $(document)
+          .off('click', '.btn-editar-ticket, .btn-excluir-ticket, .btn-concluir-ticket')
+          .on('click', '.btn-editar-ticket', async function(e) {
+            e.stopPropagation();
+            const ticketId = $(this).data('id');
+            if (!ticketId) return;
+
+            const rowData = ticketsTable.row($(this).closest('tr')).data() || {};
+
+            // Converter data em formato yyyy-MM-dd para preencher o input type=date
+            const toDateInput = (raw) => {
+              if (!raw) return '';
+              const d = new Date(raw);
+              if (Number.isNaN(d.getTime())) return '';
+              const m = String(d.getMonth()+1).padStart(2,'0');
+              const day = String(d.getDate()).padStart(2,'0');
+              return `${d.getFullYear()}-${m}-${day}`;
+            };
+            const { value: values } = await Swal.fire({
+              title: 'Editar trabalho/tarefa',
+              html: `
+                <div class="text-left">
+                  <div class="form-group mb-2">
+                    <label class="mb-0">Nº Nota Serviço</label>
+                    <input id="swNotaServico" class="form-control form-control-sm" type="number" value="${(rowData.notaServico || '').toString().replace(/"/g,'&quot;')}">
+                  </div>
+                  <div class="form-group mb-2">
+                    <label class="mb-0">Descrição</label>
+                    <textarea id="swDescTicket" class="form-control form-control-sm" rows="2">${(rowData.notaExecutado || rowData.descricao || '').replace(/</g,'&lt;')}</textarea>
+                  </div>
+                  <div class="form-group mb-2">
+                    <label class="mb-0">Data início</label>
+                    <input id="swDataInicio" class="form-control form-control-sm" type="date" value="${toDateInput(rowData.dataInicioRaw)}">
+                  </div>
+                  <div class="form-group mb-2">
+                    <label class="mb-0">Data fim</label>
+                    <input id="swDataFim" class="form-control form-control-sm" type="date" value="${toDateInput(rowData.dataFimRaw)}">
+                  </div>
+                  <div class="form-group mb-2">
+                    <label class="mb-0">Nota Enviada</label>
+                    <input id="swNotaEnviada" class="form-control form-control-sm" type="text" value="${(rowData.notaEnviado || '').replace(/"/g,'&quot;')}">
+                  </div>
+                  <div class="form-group mb-2">
+                    <label class="mb-0">Nota Pago / Estado</label>
+                    <input id="swStatusTicket" class="form-control form-control-sm" type="text" value="${(rowData.notaPago || rowData.status || '').replace(/"/g,'&quot;')}">
+                  </div>
+                </div>` ,
+              focusConfirm: false,
+              confirmButtonText: 'Guardar',
+              showCancelButton: true,
+              cancelButtonText: 'Cancelar',
+              preConfirm: () => {
+                const notaServico = (document.getElementById('swNotaServico')||{}).value || '';
+                const desc = (document.getElementById('swDescTicket')||{}).value || '';
+                const dataInicio = (document.getElementById('swDataInicio')||{}).value || '';
+                const dataFim = (document.getElementById('swDataFim')||{}).value || '';
+                const notaEnviada = (document.getElementById('swNotaEnviada')||{}).value || '';
+                const status = (document.getElementById('swStatusTicket')||{}).value || '';
+                if (!notaServico && !desc && !dataInicio && !dataFim && !notaEnviada && !status){
+                  Swal.showValidationMessage('Preencha pelo menos um campo');
+                  return false;
+                }
+                return { notaServico, desc, dataInicio, dataFim, notaEnviada, status };
+              }
+            });
+            if (!values) return;
+
+            try{
+              const payload = {
+                notaServico: values.notaServico || null,
+                notaExecutado: values.desc,
+                dataInicio: values.dataInicio || null,
+                dataFim: values.dataFim || null,
+                notaEnviado: values.notaEnviada,
+                notaPago: values.status
+              };
+              const res = await fetch(`/api/projectos/tickets/${encodeURIComponent(ticketId)}`, {
+                method: 'PATCH',
+                headers: API.headers(),
+                body: JSON.stringify(payload)
+              });
+              if (!res.ok){
+                const err = await res.json().catch(()=>({}));
+                alert(err.message || 'Erro ao atualizar trabalho/tarefa');
+                return;
+              }
+              await carregarProjectoEPopulartabela();
+            }catch(err){
+              console.error(err);
+              alert('Erro ao atualizar trabalho/tarefa');
+            }
+          })
+          .on('click', '.btn-excluir-ticket', async function(e) {
+            e.stopPropagation();
+            const ticketId = $(this).data('id');
+            if (!ticketId) return;
+
+            if (!confirm('Tem certeza que deseja excluir este trabalho/tarefa?')) return;
+            try{
+              const res = await fetch(`/api/projectos/tickets/${encodeURIComponent(ticketId)}`, {
+                method: 'DELETE',
+                headers: API.headers()
+              });
+              if (!res.ok && res.status !== 204){
+                const err = await res.json().catch(()=>({}));
+                alert(err.message || 'Erro ao eliminar trabalho/tarefa');
+                return;
+              }
+              await carregarProjectoEPopulartabela();
+            }catch(err){
+              console.error(err);
+              alert('Erro ao eliminar trabalho/tarefa');
+            }
+          })
+          .on('click', '.btn-concluir-ticket', async function(e) {
+            e.stopPropagation();
+            const ticketId = $(this).data('id');
+            if (!ticketId) return;
+
+            if (!confirm('Marcar este trabalho/tarefa como concluído?')) return;
+            try{
+              const payload = { notaPago: 'Concluído' };
+              const res = await fetch(`/api/projectos/tickets/${encodeURIComponent(ticketId)}`, {
+                method: 'PATCH',
+                headers: API.headers(),
+                body: JSON.stringify(payload)
+              });
+              if (!res.ok){
+                const err = await res.json().catch(()=>({}));
+                alert(err.message || 'Erro ao marcar como concluído');
+                return;
+              }
+              await carregarProjectoEPopulartabela();
+            }catch(err){
+              console.error(err);
+              alert('Erro ao marcar como concluído');
+            }
+          });
+      }catch(e){
+        console.error(e);
+        alert('Erro ao carregar detalhe do projecto');
+      }
+    }
+
+    (async function initDetalhe(){
+      const token = localStorage.getItem('token');
+      if (!token){ window.location.href = '/'; return; }
+      try{
+        const me = await fetch('/api/users/me', { headers: { Authorization: `Bearer ${token}` } });
+        if (me.status === 401 || me.status === 403){
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          window.location.href = '/';
+          return;
+        }
+        const meJson = await me.json().catch(()=>({}));
+        const userNameEl = document.getElementById('userName');
+        if (userNameEl) userNameEl.textContent = meJson?.nome || 'usuário';
+      }catch{}
+      document.getElementById('logoutBtn').addEventListener('click', ()=>{
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/';
+      });
+
+      currentProjectId = getQueryParam('id');
+      if (!currentProjectId){ alert('ID do projecto em falta'); return; }
+
+      await carregarProjectoEPopulartabela();
+
+      const btnAdd = document.getElementById('btnAddTicket');
+      if (btnAdd){
+        btnAdd.addEventListener('click', ()=>{
+          const form = document.getElementById('formAddTicket');
+          if (form) form.reset();
+          $('#modalAddTicket').modal('show');
+        });
+      }
+
+      const btnSalvar = document.getElementById('btnSalvarTicket');
+      if (btnSalvar){
+        btnSalvar.addEventListener('click', async ()=>{
+          const form = document.getElementById('formAddTicket');
+          if (!form) return;
+          const fd = new FormData(form);
+          const payload = Object.fromEntries(fd.entries());
+          if (!payload.notaServico){
+            alert('Nº Nota Serviço é obrigatório');
+            return;
+          }
+          try{
+            const res = await fetch(`/api/projectos/${encodeURIComponent(currentProjectId)}/tickets`, {
+              method: 'POST',
+              headers: API.headers(),
+              body: JSON.stringify(payload)
+            });
+            if (!res.ok){
+              const err = await res.json().catch(()=>({}));
+              alert(err.message || 'Erro ao guardar trabalho/tarefa');
+              return;
+            }
+            $('#modalAddTicket').modal('hide');
+            await carregarProjectoEPopulartabela();
+          }catch(e){
+            console.error(e);
+            alert('Erro ao guardar trabalho/tarefa');
+          }
+        });
+      }
+      
+      // Botões de adicionar das outras secções - modais SweetAlert2 (apenas front-end)
+      function limparLinhaPlaceholder(tbody, colSpan){
+        if (!tbody) return;
+        if (tbody.children.length === 1){
+          const onlyRow = tbody.children[0];
+          const placeholder = onlyRow.querySelector('.text-muted');
+          if (placeholder){
+            tbody.innerHTML = '';
+          }
+        }
+      }
+
+      const btnAddCotacao = document.getElementById('btnAddCotacao');
+      if (btnAddCotacao){
+        btnAddCotacao.addEventListener('click', async ()=>{
+          const tbody = document.getElementById('tbodyCotacoesProjeto');
+          if (!tbody) return;
+          const { value: values } = await Swal.fire({
+            title: 'Nova cotação',
+            html: `
+              <div class="text-left">
+                <div class="form-group mb-2">
+                  <label class="mb-0">Nº Cotação</label>
+                  <input id="swNumCotacao" class="form-control form-control-sm" type="text" />
+                </div>
+                <div class="form-group mb-2">
+                  <label class="mb-0">Data da Cotação</label>
+                  <input id="swDataCotacao" class="form-control form-control-sm" type="date" />
+                </div>
+                <div class="form-group mb-2">
+                  <label class="mb-0">Valor Cotação (AOA)</label>
+                  <input id="swValorCotacao" class="form-control form-control-sm" type="number" step="0.01" />
+                </div>
+                <div class="form-group mb-2">
+                  <label class="mb-0">Termos de Pagamento</label>
+                  <input id="swTermosCotacao" class="form-control form-control-sm" type="text" />
+                </div>
+                <div class="form-group mb-2">
+                  <label class="mb-0">Status</label>
+                  <input id="swStatusCotacao" class="form-control form-control-sm" type="text" placeholder="aprovada, enviada, rascunho..." />
+                </div>
+                <div class="form-group mb-0">
+                  <label class="mb-0">Observações</label>
+                  <textarea id="swObsCotacao" class="form-control form-control-sm" rows="2"></textarea>
+                </div>
+              </div>`,
+            focusConfirm: false,
+            confirmButtonText: 'Adicionar',
+            showCancelButton: true,
+            cancelButtonText: 'Cancelar',
+            preConfirm: () => {
+              const num = (document.getElementById('swNumCotacao')||{}).value || '';
+              const data = (document.getElementById('swDataCotacao')||{}).value || '';
+              const valor = (document.getElementById('swValorCotacao')||{}).value || '';
+              const termos = (document.getElementById('swTermosCotacao')||{}).value || '';
+              const status = (document.getElementById('swStatusCotacao')||{}).value || '';
+              const obs = (document.getElementById('swObsCotacao')||{}).value || '';
+              if (!num && !data && !valor && !termos && !status && !obs){
+                Swal.showValidationMessage('Preencha pelo menos um campo');
+                return false;
+              }
+              return { num, data, valor, termos, status, obs };
+            }
+          });
+          if (!values) return;
+          limparLinhaPlaceholder(tbody, 6);
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${values.num || '—'}</td>
+            <td>${values.data || '—'}</td>
+            <td>${values.valor || '—'}</td>
+            <td>${values.termos || '—'}</td>
+            <td>${values.status || '—'}</td>
+            <td>${values.obs || '—'}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      const btnAddContrato = document.getElementById('btnAddContrato');
+      if (btnAddContrato){
+        btnAddContrato.addEventListener('click', async ()=>{
+          const tbody = document.getElementById('tbodyContratosProjeto');
+          if (!tbody) return;
+          const { value: values } = await Swal.fire({
+            title: 'Novo contrato',
+            html: `
+              <div class="text-left">
+                <div class="form-group mb-2">
+                  <label class="mb-0">Nº Contrato (PO/SO)</label>
+                  <input id="swNumContrato" class="form-control form-control-sm" type="text" />
+                </div>
+                <div class="form-group mb-2">
+                  <label class="mb-0">Data do Contrato</label>
+                  <input id="swDataContrato" class="form-control form-control-sm" type="date" />
+                </div>
+                <div class="form-group mb-2">
+                  <label class="mb-0">Valor do Contrato (AOA)</label>
+                  <input id="swValorContrato" class="form-control form-control-sm" type="number" step="0.01" />
+                </div>
+                <div class="form-group mb-2">
+                  <label class="mb-0">Termos de Pagamento</label>
+                  <input id="swTermosContrato" class="form-control form-control-sm" type="text" />
+                </div>
+                <div class="form-group mb-0">
+                  <label class="mb-0">Conteúdo / Notas</label>
+                  <textarea id="swConteudoContrato" class="form-control form-control-sm" rows="2"></textarea>
+                </div>
+              </div>`,
+            focusConfirm: false,
+            confirmButtonText: 'Adicionar',
+            showCancelButton: true,
+            cancelButtonText: 'Cancelar',
+            preConfirm: () => {
+              const num = (document.getElementById('swNumContrato')||{}).value || '';
+              const data = (document.getElementById('swDataContrato')||{}).value || '';
+              const valor = (document.getElementById('swValorContrato')||{}).value || '';
+              const termos = (document.getElementById('swTermosContrato')||{}).value || '';
+              const conteudo = (document.getElementById('swConteudoContrato')||{}).value || '';
+              if (!num && !data && !valor && !termos && !conteudo){
+                Swal.showValidationMessage('Preencha pelo menos um campo');
+                return false;
+              }
+              return { num, data, valor, termos, conteudo };
+            }
+          });
+          if (!values) return;
+          limparLinhaPlaceholder(tbody, 5);
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${values.num || '—'}</td>
+            <td>${values.data || '—'}</td>
+            <td>${values.valor || '—'}</td>
+            <td>${values.termos || '—'}</td>
+            <td>${values.conteudo || '—'}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      const btnAddServico = document.getElementById('btnAddServico');
+      if (btnAddServico){
+        btnAddServico.addEventListener('click', async ()=>{
+          const tbody = document.getElementById('tbodyServicosProjeto');
+          if (!tbody) return;
+          const { value: values } = await Swal.fire({
+            title: 'Novo serviço / entrega',
+            html: `
+              <div class="text-left">
+                <div class="form-group mb-2">
+                  <label class="mb-0">Ref. Serviço/Entrega</label>
+                  <input id="swRefServico" class="form-control form-control-sm" type="text" />
+                </div>
+                <div class="form-group mb-2">
+                  <label class="mb-0">Data</label>
+                  <input id="swDataServico" class="form-control form-control-sm" type="date" />
+                </div>
+                <div class="form-group mb-2">
+                  <label class="mb-0">Descrição</label>
+                  <textarea id="swDescServico" class="form-control form-control-sm" rows="2"></textarea>
+                </div>
+                <div class="form-group mb-2">
+                  <label class="mb-0">Status</label>
+                  <input id="swStatusServico" class="form-control form-control-sm" type="text" />
+                </div>
+                <div class="form-group mb-0">
+                  <label class="mb-0">Valor (AOA)</label>
+                  <input id="swValorServico" class="form-control form-control-sm" type="number" step="0.01" />
+                </div>
+              </div>`,
+            focusConfirm: false,
+            confirmButtonText: 'Adicionar',
+            showCancelButton: true,
+            cancelButtonText: 'Cancelar',
+            preConfirm: () => {
+              const ref = (document.getElementById('swRefServico')||{}).value || '';
+              const data = (document.getElementById('swDataServico')||{}).value || '';
+              const desc = (document.getElementById('swDescServico')||{}).value || '';
+              const status = (document.getElementById('swStatusServico')||{}).value || '';
+              const valor = (document.getElementById('swValorServico')||{}).value || '';
+              if (!ref && !data && !desc && !status && !valor){
+                Swal.showValidationMessage('Preencha pelo menos um campo');
+                return false;
+              }
+              return { ref, data, desc, status, valor };
+            }
+          });
+          if (!values) return;
+          limparLinhaPlaceholder(tbody, 6);
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${values.ref || '—'}</td>
+            <td>${values.data || '—'}</td>
+            <td>${values.desc || '—'}</td>
+            <td>${values.status || '—'}</td>
+            <td>${values.valor || '—'}</td>
+            <td>—</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      const btnAddFatura = document.getElementById('btnAddFatura');
+      if (btnAddFatura){
+        btnAddFatura.addEventListener('click', async ()=>{
+          const tbody = document.getElementById('tbodyFaturasProjeto');
+          if (!tbody) return;
+          const { value: values } = await Swal.fire({
+            title: 'Nova fatura',
+            html: `
+              <div class="text-left">
+                <div class="form-group mb-2">
+                  <label class="mb-0">Nº Fatura</label>
+                  <input id="swNumFatura" class="form-control form-control-sm" type="text" />
+                </div>
+                <div class="form-group mb-2">
+                  <label class="mb-0">Data da Fatura</label>
+                  <input id="swDataFatura" class="form-control form-control-sm" type="date" />
+                </div>
+                <div class="form-group mb-2">
+                  <label class="mb-0">Valor (AOA)</label>
+                  <input id="swValorFatura" class="form-control form-control-sm" type="number" step="0.01" />
+                </div>
+                <div class="form-group mb-2">
+                  <label class="mb-0">Status</label>
+                  <input id="swStatusFatura" class="form-control form-control-sm" type="text" />
+                </div>
+                <div class="form-group mb-0">
+                  <label class="mb-0">Data de Pagamento (opcional)</label>
+                  <input id="swDataPagFatura" class="form-control form-control-sm" type="date" />
+                </div>
+              </div>`,
+            focusConfirm: false,
+            confirmButtonText: 'Adicionar',
+            showCancelButton: true,
+            cancelButtonText: 'Cancelar',
+            preConfirm: () => {
+              const num = (document.getElementById('swNumFatura')||{}).value || '';
+              const data = (document.getElementById('swDataFatura')||{}).value || '';
+              const valor = (document.getElementById('swValorFatura')||{}).value || '';
+              const status = (document.getElementById('swStatusFatura')||{}).value || '';
+              const dataPag = (document.getElementById('swDataPagFatura')||{}).value || '';
+              if (!num && !data && !valor && !status && !dataPag){
+                Swal.showValidationMessage('Preencha pelo menos um campo');
+                return false;
+              }
+              return { num, data, valor, status, dataPag };
+            }
+          });
+          if (!values) return;
+          limparLinhaPlaceholder(tbody, 6);
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${values.num || '—'}</td>
+            <td>${values.data || '—'}</td>
+            <td>${values.valor || '—'}</td>
+            <td>${values.status || '—'}</td>
+            <td>${values.dataPag || '—'}</td>
+            <td>—</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      const btnAddObs = document.getElementById('btnAddObservacao');
+      if (btnAddObs){
+        btnAddObs.addEventListener('click', async ()=>{
+          const tbody = document.getElementById('tbodyObservacoesProjeto');
+          if (!tbody) return;
+          const { value: values } = await Swal.fire({
+            title: 'Nova observação',
+            html: `
+              <div class="text-left">
+                <div class="form-group mb-2">
+                  <label class="mb-0">Data</label>
+                  <input id="swDataObs" class="form-control form-control-sm" type="date" />
+                </div>
+                <div class="form-group mb-2">
+                  <label class="mb-0">Tipo/Origem</label>
+                  <input id="swTipoObs" class="form-control form-control-sm" type="text" placeholder="reunião, email, chamada..." />
+                </div>
+                <div class="form-group mb-2">
+                  <label class="mb-0">Descrição</label>
+                  <textarea id="swDescObs" class="form-control form-control-sm" rows="2"></textarea>
+                </div>
+                <div class="form-group mb-0">
+                  <label class="mb-0">Registado por</label>
+                  <input id="swUserObs" class="form-control form-control-sm" type="text" />
+                </div>
+              </div>`,
+            focusConfirm: false,
+            confirmButtonText: 'Adicionar',
+            showCancelButton: true,
+            cancelButtonText: 'Cancelar',
+            preConfirm: () => {
+              const data = (document.getElementById('swDataObs')||{}).value || '';
+              const tipo = (document.getElementById('swTipoObs')||{}).value || '';
+              const desc = (document.getElementById('swDescObs')||{}).value || '';
+              const user = (document.getElementById('swUserObs')||{}).value || '';
+              if (!data && !tipo && !desc && !user){
+                Swal.showValidationMessage('Preencha pelo menos um campo');
+                return false;
+              }
+              return { data, tipo, desc, user };
+            }
+          });
+          if (!values) return;
+          limparLinhaPlaceholder(tbody, 4);
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${values.data || '—'}</td>
+            <td>${values.tipo || '—'}</td>
+            <td>${values.desc || '—'}</td>
+            <td>${values.user || '—'}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+      const btnSeed = document.getElementById('btnSeedTickets');
+      if (btnSeed){
+        btnSeed.addEventListener('click', async ()=>{
+          if (!confirm('Criar alguns trabalhos/tarefas de teste para este projecto?')) return;
+          const token = localStorage.getItem('token')||'';
+          if (!token){
+            alert('Sessão expirada. Faça login novamente.');
+            window.location.href = '/';
+            return;
+          }
+          const exemplos = [
+            { notaServico: 9001, notaExecutado: 'Visita técnica e levantamento', notaEnviado: 'Enviado para cliente' },
+            { notaServico: 9002, notaExecutado: 'Execução dos trabalhos principais' },
+            { notaServico: 9003, notaExecutado: 'Relatório final e fecho', notaPago: 'Pago' }
+          ];
+          try{
+            for (const t of exemplos){
+              await fetch(`/api/projectos/${encodeURIComponent(currentProjectId)}/tickets`, {
+                method: 'POST',
+                headers: API.headers(),
+                body: JSON.stringify(t)
+              });
+            }
+            await carregarProjectoEPopulartabela();
+          }catch(e){
+            alert('Erro ao criar tarefas de teste.');
+          }
+        });
+      }
+
+      // Botão Editar Projecto
+      const btnEditProj = document.getElementById('btnEditProjeto');
+      if (btnEditProj){
+        btnEditProj.addEventListener('click', ()=>{
+          if (!currentProjectData){
+            alert('Projecto ainda não carregado.');
+            return;
+          }
+          const form = document.getElementById('formEditProjeto');
+          if (!form) return;
+          form.descricao.value = currentProjectData.descricao || currentProjectData.jobDescription || '';
+          form.cliente.value = currentProjectData.cliente || '';
+          form.valorCotacao.value = currentProjectData.valorCotacao != null ? Number(currentProjectData.valorCotacao) : '';
+
+          const toDateInput = (d)=>{
+            if (!d) return '';
+            const dt = new Date(d);
+            if (Number.isNaN(dt.getTime())) return '';
+            const m = String(dt.getMonth()+1).padStart(2,'0');
+            const day = String(dt.getDate()).padStart(2,'0');
+            return `${dt.getFullYear()}-${m}-${day}`;
+          };
+          form.dataInicio.value = toDateInput(currentProjectData.dataInicio || currentProjectData.dataInicioEstimada);
+          form.dataFim.value = toDateInput(currentProjectData.dataFim);
+
+          $('#modalEditProjeto').modal('show');
+        });
+      }
+
+      // Guardar alterações do projecto
+      const btnSalvarProj = document.getElementById('btnSalvarProjeto');
+      if (btnSalvarProj){
+        btnSalvarProj.addEventListener('click', async ()=>{
+          const form = document.getElementById('formEditProjeto');
+          if (!form || !currentProjectId) return;
+
+          const payload = {
+            descricao: form.descricao.value,
+            cliente: form.cliente.value,
+            valorCotacao: form.valorCotacao.value ? Number(form.valorCotacao.value) : null,
+            dataInicio: form.dataInicio.value || null,
+            dataFim: form.dataFim.value || null
+          };
+          try{
+            const res = await fetch(`/api/projectos/${encodeURIComponent(currentProjectId)}`,{
+              method:'PUT',
+              headers: API.headers(),
+              body: JSON.stringify(payload)
+            });
+            if (!res.ok){
+              const err = await res.json().catch(()=>({}));
+              alert(err.message || 'Erro ao guardar projecto');
+              return;
+            }
+            $('#modalEditProjeto').modal('hide');
+            await carregarProjectoEPopulartabela();
+          }catch(e){
+            console.error(e);
+            alert('Erro ao guardar projecto');
+          }
+        });
+      }
+
+      // Eliminar projecto
+      const btnDeleteProj = document.getElementById('btnDeleteProjeto');
+      if (btnDeleteProj){
+        btnDeleteProj.addEventListener('click', async ()=>{
+          if (!currentProjectId) return;
+          if (!confirm('Tem a certeza que deseja eliminar este projecto? Esta ação não pode ser desfeita.')) return;
+          try{
+            const res = await fetch(`/api/projectos/${encodeURIComponent(currentProjectId)}`,{
+              method:'DELETE',
+              headers: API.headers()
+            });
+            if (!res.ok && res.status !== 204){
+              const err = await res.json().catch(()=>({}));
+              alert(err.message || 'Erro ao eliminar projecto');
+              return;
+            }
+            window.location.href = 'projectos.html';
+          }catch(e){
+            console.error(e);
+            alert('Erro ao eliminar projecto');
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+  <title>Perfil do Usuário - Kwanzas Metal</title>
+  <link rel="shortcut icon" type="image/x-icon" href="assets/img/logo.png">
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
+  <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/feathericon.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    /* Header e Sidebar - Estilo Dashboard */
+    .header{ background-color: white; }
+    .header-left{ background-color: black !important; }
+    .sidebar{ color: white !important; }
+    .sidebar .sidebar-menu ul li a{ color: white !important; opacity: .85; }
+    .sidebar .sidebar-menu ul li a:hover{ color: #ffffff !important; opacity: 1; }
+    .sidebar .submenu_class li a{ color: #f2f9ff !important; opacity: .8; }
+    .sidebar .submenu_class li a:hover{ color: #0fd7d4 !important; opacity: 1; }
+    .sidebar .sidebar-menu ul li.active > a, .sidebar .submenu_class li.active > a{ color: #ffffff !important; font-weight: 600; }
+    
+    .sidebar .sidebar-menu > ul > li > a i {
+      color: #ffffff !important;
+      font-size: 15px;
+      margin-right: 6px;
+    }
+    
+    /* Page Header */
+    .page-header h1{ color: #066fe3; font-weight: 600; }
+    
+    /* Profile Avatar */
+    .profile-avatar{ 
+      width: 120px; 
+      height: 120px; 
+      object-fit: cover; 
+      border-radius: 50%; 
+      border: 4px solid #066fe3; 
+      box-shadow: 0 4px 15px rgba(6, 111, 227, 0.2);
+      transition: all 0.3s ease;
+    }
+    .profile-avatar:hover{
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(6, 111, 227, 0.3);
+    }
+    
+    /* Cards */
+    .card{ 
+      border-radius: 12px; 
+      border: 1px solid rgba(6, 111, 227, 0.1);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+    .card:hover{
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+    .card-title{ 
+      font-weight: 600; 
+      color: #066fe3;
+    }
+    .card-header{
+      background: linear-gradient(135deg, rgba(6, 111, 227, 0.05), rgba(10, 143, 239, 0.05));
+      border-bottom: 1px solid rgba(6, 111, 227, 0.1);
+    }
+    
+    /* Buttons */
+    .btn-primary{
+      background: linear-gradient(135deg, #066fe3, #0a8fef);
+      border: none;
+      border-radius: 8px;
+      padding: 10px 24px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover{
+      background: linear-gradient(135deg, #0558c7, #0876d1);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(6, 111, 227, 0.3);
+    }
+    .btn-outline-primary{
+      border: 2px solid #066fe3;
+      color: #066fe3;
+      border-radius: 8px;
+      padding: 10px 24px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    .btn-outline-primary:hover{
+      background: #066fe3;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(6, 111, 227, 0.3);
+    }
+    
+    /* Form Controls */
+    .form-control:focus{
+      border-color: #066fe3;
+      box-shadow: 0 0 0 0.2rem rgba(6, 111, 227, 0.25);
+    }
+  </style>
+</head>
+<body>
+<div class="main-wrapper">
+  <!-- Header -->
+ <div class="header">
+			<div class="header-left">
+				<a href="dashboard.html" class="logo"> <img src="assets/img/kwanzaWhite.svg" width="50" height="70" alt="logo"> <span class="logoclass"></span> </a>
+				<a href="dashboard.html" class="logo logo-small"> <img src="assets/img/kwanzaWhite.svg" alt="Logo" width="30" height="30"> </a>
+			</div>
+			<a href="javascript:void(0);" id="toggle_btn"> <i class="fe fe-text-align-left"></i> </a>
+			<a class="mobile_btn" id="mobile_btn"> <i class="fas fa-bars"></i> </a>
+			<ul class="nav user-menu">
+				<li class="nav-item dropdown has-arrow">
+					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown"> <span class="user-img"><img class="rounded-circle" src="assets/img/profiles/avatar-01.jpg" width="31" alt=""></span> </a>
+					<div class="dropdown-menu">
+						<div class="user-header">
+							<div class="avatar avatar-sm"> <img src="foto do perfil" alt="User Image" class="avatar-img rounded-circle"> </div>
+							<div class="user-text">
+								<div class="muted" style="font-size:11px">Bem-vindo(a), </div>
+								<h6><span id="userName">usuário</span></h6>
+							</div>
+						</div> <a class="dropdown-item" href="profile.html">Perfil</a> <a class="dropdown-item" href="settings.html">configurações da conta</a> <a class="dropdown-item" id="logoutBtn" href="#">Sair</a> </div>
+				</li>
+			</ul>
+			<div class="top-nav-search">
+				<form>
+					<input type="text" class="form-control" placeholder="procurar">
+					<button class="btn" type="submit"><i class="fas fa-search"></i></button>
+				</form>
+			</div>
+		</div>
+		<div class="sidebar" id="sidebar">
+			<div class="sidebar-inner slimscroll">
+				<div id="sidebar-menu" class="sidebar-menu">
+					<ul>
+						<li> <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a> </li>
+						<li> <a href="clientes_clientes.html"><i class="fas fa-user"></i> <span>Clientes</span></a></li>
+						<li class="submenu"> <a href="#" data-toggle="collapse"><i class="fas fa-user"></i> <span> Empresa </span> <span class="menu-arrow"></span></a>
+							<ul class="submenu_class" style="display: none;">
+								<li><a href="rh_funcionarios.html">Funcionários</a></li>
+								<li><a href="rh_departamentos.html">Departamentos & Cargos</a></li>
+								<li><a href="rh_ferias.html">Férias</a></li>
+								<li><a href="users.html">Utilizadores</a></li>
+							</ul>
+						</li>
+						
+						<li class="submenu"> <a href="#" data-toggle="collapse"><i class="fas fa-user"></i> <span> Fornecedores</span> <span class="menu-arrow"></span></a>
+							<ul class="submenu_class" style="display: none;">
+								<li><a href="fornecedor.html">Lista de Fornecedores </a></li>
+							</ul>
+						</li>
+						<li> <a href="financas.html#bancos"><i class="fas fa-university"></i> <span> Bancos</span></a> </li>
+						<li> <a href="financas.html#pagamentos"><i class="fas fa-money-bill-alt"></i> <span> Pagamentos</span></a> </li>
+            <li> <a href="faturas.html"><i class="fas fa-file-invoice"></i> <span>Faturas</span></a> </li>
+						<li> <a href="projectos.html"><i class="fas fa-cube"></i> <span>Projectos Kwanza </span></a> </li>
+						<li class="active"> <a href="profile.html"><i class="fas fa-user"></i> <span>Perfil</span></a> </li>
+					</ul>
+				</div>
+			</div>
+		</div>
+  <!-- Page -->
+  <div class="page-wrapper">
+    <div class="content container-fluid">
+      <div class="page-header">
+        <div class="row">
+          <div class="col-sm-12 mt-5">
+            <h1>Perfil do Usuário</h1>
+            <p class="text-muted mb-0">Atualize suas informações, senha e foto</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- Perfil e Avatar -->
+        <div class="col-lg-4">
+          <div class="card">
+            <div class="card-body text-center">
+              <img id="avatarImg" class="profile-avatar mb-3" src="assets/img/profiles/avatar-01.jpg" alt="avatar">
+              <h5 id="profileName">Usuário</h5>
+              <p class="text-muted" id="profileEmail">email@exemplo.com</p>
+              <hr>
+              <form id="formAvatar" enctype="multipart/form-data">
+                <div class="form-group text-left">
+                  <label>Alterar foto</label>
+                  <input type="file" name="avatar" id="avatarFile" accept="image/*" class="form-control-file">
+                </div>
+                <button type="button" id="btnSalvarAvatar" class="btn btn-primary btn-block">Salvar foto</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dados Básicos e Senha -->
+        <div class="col-lg-8">
+          <div class="card mb-4">
+            <div class="card-header"><h5 class="card-title mb-0">Dados Básicos</h5></div>
+            <div class="card-body">
+              <form id="formPerfil">
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>Nome</label>
+                    <input class="form-control" name="nome" id="inpNome" required>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Email</label>
+                    <input class="form-control" type="email" name="email" id="inpEmail" required>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>Telefone</label>
+                    <input class="form-control" name="telefone" id="inpTelefone">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>NIF</label>
+                    <input class="form-control" name="nif" id="inpNif">
+                  </div>
+                </div>
+                <div class="text-right">
+                  <button type="button" id="btnSalvarPerfil" class="btn btn-primary">Salvar alterações</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h5 class="card-title mb-0">Alterar Senha</h5></div>
+            <div class="card-body">
+              <form id="formSenha">
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label>Senha atual</label>
+                    <input class="form-control" type="password" name="senha_atual" required>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Nova senha</label>
+                    <input class="form-control" type="password" name="senha_nova" required>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Confirmar nova senha</label>
+                    <input class="form-control" type="password" name="senha_confirma" required>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <button type="button" id="btnSalvarSenha" class="btn btn-outline-primary">Atualizar senha</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/jquery-3.5.1.min.js"></script>
+<script src="assets/js/popper.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/script.js"></script>
+  <!-- Carrega o avatar do usuário -->
+  <script src="js/profile-avatar.js"></script>
+<script>
+  async function checkAuth(){
+    const token = localStorage.getItem('token');
+    if (!token) { 
+      window.location.href = '/'; 
+      return; 
+    }
+    
+    try {
+      console.log('Carregando dados do usuário...');
+      const me = await API.getJSON('/api/users/me');
+      console.log('Dados do usuário recebidos:', me);
+      
+      // Preenche header e cartões
+      const userName = me?.nome || me?.name || me?.username || 'Usuário';
+      const userEmail = me?.email || '';
+      const userTelefone = me?.telefone || me?.phone || me?.telefone || '';
+      const userNif = me?.nif || me?.nif_contribuinte || '';
+      
+      // Atualiza elementos do DOM
+      const userNameEl = document.getElementById('userName');
+      const profileNameEl = document.getElementById('profileName');
+      const profileEmailEl = document.getElementById('profileEmail');
+      
+      if (userNameEl) userNameEl.textContent = userName;
+      if (profileNameEl) profileNameEl.textContent = userName;
+      if (profileEmailEl) profileEmailEl.textContent = userEmail;
+      
+      // Preenche formulário
+      document.getElementById('inpNome').value = userName;
+      document.getElementById('inpEmail').value = userEmail;
+      document.getElementById('inpTelefone').value = userTelefone;
+      document.getElementById('inpNif').value = userNif;
+      
+      // Avatar (perfil + header)
+      const avatarUrl = me?.avatarUrl || me?.avatar || '';
+      if (avatarUrl) {
+        const avatarImgEl = document.getElementById('avatarImg');
+        if (avatarImgEl) avatarImgEl.src = avatarUrl;
+
+        // avatar no header (icone superior e dropdown)
+        const headerAvatar = document.querySelector('.user-img img');
+        if (headerAvatar) headerAvatar.src = avatarUrl;
+        const dropdownAvatar = document.querySelector('.avatar.avatar-sm img');
+        if (dropdownAvatar) dropdownAvatar.src = avatarUrl;
+      }
+      
+      // Salva no localStorage para uso futuro
+      localStorage.setItem('user', JSON.stringify(me));
+      
+    } catch (e) {
+      console.error('Erro ao carregar dados do usuário:', e);
+      
+      // Fallback: tenta usar dados do localStorage
+      const userStr = localStorage.getItem('user');
+      if (userStr) {
+        try {
+          const user = JSON.parse(userStr);
+          console.log('Usando dados do localStorage:', user);
+          
+          const userName = user?.nome || user?.name || user?.username || 'Usuário';
+          const userEmail = user?.email || '';
+          
+          const userNameEl = document.getElementById('userName');
+          const profileNameEl = document.getElementById('profileName');
+          const profileEmailEl = document.getElementById('profileEmail');
+          
+          if (userNameEl) userNameEl.textContent = userName;
+          if (profileNameEl) profileNameEl.textContent = userName;
+          if (profileEmailEl) profileEmailEl.textContent = userEmail;
+          
+          document.getElementById('inpNome').value = userName;
+          document.getElementById('inpEmail').value = userEmail;
+          document.getElementById('inpTelefone').value = user?.telefone || user?.phone || '';
+          document.getElementById('inpNif').value = user?.nif || user?.nif_contribuinte || '';
+
+          // Avatar vindo do localStorage
+          const avatarUrl = user?.avatarUrl || user?.avatar || '';
+          if (avatarUrl) {
+            const avatarImgEl = document.getElementById('avatarImg');
+            if (avatarImgEl) avatarImgEl.src = avatarUrl;
+            const headerAvatar = document.querySelector('.user-img img');
+            if (headerAvatar) headerAvatar.src = avatarUrl;
+            const dropdownAvatar = document.querySelector('.avatar.avatar-sm img');
+            if (dropdownAvatar) dropdownAvatar.src = avatarUrl;
+          }
+          
+        } catch (parseErr) {
+          console.error('Erro ao parsear dados do localStorage:', parseErr);
+        }
+      }
+      
+      // Se erro de autenticação, redireciona
+      if (e.status === 401 || e.status === 403) { 
+        localStorage.removeItem('token'); 
+        localStorage.removeItem('user'); 
+        window.location.href = '/'; 
+      }
+    }
+  }
+  checkAuth();
+
+  // Logout
+  document.addEventListener('click', (e) => {
+    if(e.target && e.target.id === 'logoutBtn'){
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = '/';
+    }
+  });
+
+  // Salvar perfil
+  document.getElementById('btnSalvarPerfil').addEventListener('click', async () => {
+    try {
+      const form = document.getElementById('formPerfil');
+      const formData = new FormData(form);
+      const payload = Object.fromEntries(formData.entries());
+      
+      console.log('Enviando dados do perfil:', payload);
+      
+      // Tenta atualizar o perfil
+      const response = await fetch('/api/users/me', {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+      
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({}));
+        throw new Error(error.message || 'Erro ao atualizar perfil');
+      }
+      
+      const data = await response.json();
+      console.log('Perfil atualizado com sucesso:', data);
+      
+      // Atualiza os dados na interface
+      if (data.nome) {
+        document.getElementById('userName').textContent = data.nome;
+        document.getElementById('profileName').textContent = data.nome;
+      }
+      
+      // Mostra mensagem de sucesso
+      showAlert('Perfil atualizado com sucesso!', 'success');
+      
+      // Recarrega os dados do usuário
+      checkAuth();
+      
+    } catch (error) {
+      console.error('Erro ao atualizar perfil:', error);
+      showAlert(`Erro ao atualizar perfil: ${error.message}`, 'danger');
+    }
+  });
+
+  // Salvar senha
+  document.getElementById('btnSalvarSenha').addEventListener('click', async () => {
+    try {
+      const form = document.getElementById('formSenha');
+      const formData = new FormData(form);
+      const payload = Object.fromEntries(formData.entries());
+      
+      // Validação
+      if (payload.senha_nova !== payload.senha_confirma) {
+        throw new Error('A nova senha e a confirmação não coincidem');
+      }
+      
+      console.log('Atualizando senha...');
+      
+      const response = await fetch('/api/users/me/password', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          senha_atual: payload.senha_atual,
+          senha_nova: payload.senha_nova
+        })
+      });
+      
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({}));
+        throw new Error(error.message || 'Erro ao atualizar senha');
+      }
+      
+      console.log('Senha atualizada com sucesso');
+      form.reset();
+      showAlert('Senha atualizada com sucesso!', 'success');
+      
+    } catch (error) {
+      console.error('Erro ao atualizar senha:', error);
+      showAlert(`Erro ao atualizar senha: ${error.message}`, 'danger');
+    }
+  });
+
+  // Salvar avatar
+  document.getElementById('btnSalvarAvatar').addEventListener('click', async () => {
+    try {
+      const form = document.getElementById('formAvatar');
+      const formData = new FormData(form);
+      const fileInput = document.getElementById('avatarFile');
+      
+      if (!fileInput.files || fileInput.files.length === 0) {
+        throw new Error('Selecione uma imagem para enviar');
+      }
+      
+      console.log('Enviando imagem...');
+      
+      const response = await fetch('/api/users/me/avatar', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: formData
+      });
+      
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({}));
+        throw new Error(error.message || 'Erro ao enviar imagem');
+      }
+      
+      const data = await response.json();
+      console.log('Avatar atualizado com sucesso:', data);
+      
+      // Atualiza a imagem do avatar
+      if (data.avatarUrl) {
+        document.getElementById('avatarImg').src = data.avatarUrl;
+      }
+      
+      // Atualiza o localStorage
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      user.avatarUrl = data.avatarUrl;
+      localStorage.setItem('user', JSON.stringify(user));
+      
+      showAlert('Foto de perfil atualizada com sucesso!', 'success');
+      
+    } catch (error) {
+      console.error('Erro ao atualizar avatar:', error);
+      showAlert(`Erro ao atualizar foto: ${error.message}`, 'danger');
+    }
+  });
+  
+  // Função auxiliar para mostrar alertas
+  function showAlert(message, type = 'info') {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show mt-3`;
+    alertDiv.role = 'alert';
+    alertDiv.innerHTML = `
+      ${message}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Fechar">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    `;
+    
+    // Insere o alerta antes do primeiro card
+    const firstCard = document.querySelector('.card');
+    if (firstCard) {
+      firstCard.parentNode.insertBefore(alertDiv, firstCard);
+      
+      // Remove o alerta após 5 segundos
+      setTimeout(() => {
+        alertDiv.remove();
+      }, 5000);
+    } else {
+      // Fallback: adiciona no topo do container
+      document.querySelector('.content.container-fluid').prepend(alertDiv);
+      
+      // Remove o alerta após 5 segundos
+      setTimeout(() => {
+        alertDiv.remove();
+      }, 5000);
+    }
+  }
+
+  // Preview do avatar ao selecionar
+  document.getElementById('avatarFile').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => { document.getElementById('avatarImg').src = reader.result; };
+    reader.readAsDataURL(file);
+  });
+</script>
+</body>
+</html>

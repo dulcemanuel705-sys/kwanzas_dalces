@@ -1,0 +1,65 @@
+$(document).ready(function(){
+  lineChart();
+  barChart();
+  $(window).resize(function(){
+    window.lineChart.redraw();
+    window.barChart.redraw();
+  });
+});
+
+function lineChart(){
+  window.lineChart=Morris.Line({
+    element:'line-chart',
+    data:[
+      {y:'2006',a:100,b:90},
+      {y:'2007',a:75,b:65},
+      {y:'2008',a:50,b:40},
+      {y:'2009',a:75,b:65},
+      {y:'2010',a:50,b:40},
+      {y:'2011',a:75,b:65},
+      {y:'2012',a:100,b:90}
+    ],
+    xkey:'y',
+    ykeys:['a','b'],
+    labels:['Receitas','Despesas'],
+    lineColors:['#0ab5b3','#08a09e'],
+    lineWidth:'3px',
+    pointSize:4,
+    pointFillColors:['#0ab5b3','#08a09e'],
+    pointStrokeColors:['#fff','#fff'],
+    gridLineColor:'#e0e0e0',
+    gridTextColor:'#666',
+    gridTextSize:12,
+    resize:true,
+    redraw:true
+  });
+}
+
+function barChart(){
+  window.barChart=Morris.Bar({
+    element:'bar-chart',
+    data:[
+      {y:'Jan',a:100,b:90},
+      {y:'Fev',a:75,b:65},
+      {y:'Mar',a:50,b:40},
+      {y:'Abr',a:75,b:65},
+      {y:'Mai',a:50,b:40},
+      {y:'Jun',a:75,b:65},
+      {y:'Jul',a:100,b:90},
+      {y:'Ago',a:85,b:75},
+      {y:'Set',a:60,b:50},
+      {y:'Out',a:90,b:80},
+      {y:'Nov',a:70,b:60},
+      {y:'Dez',a:95,b:85}
+    ],
+    xkey:'y',
+    ykeys:['a','b'],
+    labels:['Receitas','Despesas'],
+    barColors:['#0ab5b3','#08a09e'],
+    gridLineColor:'#e0e0e0',
+    gridTextColor:'#666',
+    gridTextSize:12,
+    resize:true,
+    redraw:true
+  });
+}

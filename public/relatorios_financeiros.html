@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+  <title>Relatórios Financeiros - Kwanzas Metal</title>
+  <link rel="shortcut icon" type="image/x-icon" href="assets/img/logo.png">
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
+  <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/feathericon.min.css">
+  <link rel="stylesheet" href="assets/plugins/morris/morris.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap4.min.css">
+  <style>
+    .page-header h1{ color:#066fe3; font-weight:600; }
+    .card-metric{ border-radius:14px; border:1px solid #e6eef6; box-shadow:0 6px 14px rgba(6,111,227,.08); }
+    .metric-number{ font-size:1.6rem; font-weight:700; }
+    .filters .form-control{ height: calc(1.5em + .5rem + 2px); padding:.25rem .5rem; }
+    .chart-card{ min-height: 360px; }
+    .table thead th{ white-space: nowrap; }
+    /* Header & Sidebar (igual ao dashboard) */
+    .header{ background-color: white; }
+    .header-left{ background-color: black !important; }
+    .sidebar .sidebar-menu ul li a{ color: white; opacity: .85; }
+    .sidebar .sidebar-menu ul li a:hover{ color:#ffffff; opacity: 1; }
+    .sidebar .submenu_class li a{ color:#f2f9ff; opacity:.8; }
+    .sidebar .submenu_class li a:hover{ color:#0fd7d4; opacity:1; }
+    .sidebar .sidebar-menu ul li.active > a, .sidebar .submenu_class li.active > a{ color:#ffffff; font-weight:600; }
+    
+    .sidebar .sidebar-menu > ul > li > a i {
+      color: #ffffff !important;
+      font-size: 15px;
+      margin-right: 6px;
+    }
+    .kpi-strip{ display:flex; flex-wrap:wrap; overflow:visible; gap:12px; padding-bottom:6px; }
+    .kpi-card{ flex:1 1 260px; min-width: 240px; background: linear-gradient(135deg,#042742,#08ecec); color:#fff; border:0; }
+    .kpi-card .text-muted{ color: rgba(255,255,255,.85)!important; }
+    .kpi-icon{ width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:10px; background:rgba(255,255,255,.15); margin-right:10px; }
+    .kpi-title{ font-size:.85rem; opacity:.95; margin:0; }
+    .kpi-number{ font-size:1.4rem; font-weight:700; margin:0; }
+    .kpi-card.alt-1{ background: linear-gradient(135deg,#0ea5e9,#22c55e); }
+    .kpi-card.alt-2{ background: linear-gradient(135deg,#f59e0b,#ef4444); }
+    .kpi-card.alt-3{ background: linear-gradient(135deg,#8b5cf6,#06b6d4); }
+    @media (max-width: 991.98px){
+      .kpi-card{ flex: 1 1 calc(50% - 12px); }
+    }
+    @media (max-width: 575.98px){
+      .kpi-card{ flex: 1 1 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-wrapper">
+   <div class="header">
+			<div class="header-left">
+				<a href="dashboard.html" class="logo"> <img src="assets/img/kwanzaWhite.svg" width="50" height="70" alt="logo"> <span class="logoclass"></span> </a>
+				<a href="dashboard.html" class="logo logo-small"> <img src="assets/img/kwanzaWhite.svg" alt="Logo" width="30" height="30"> </a>
+			</div>
+			<a href="javascript:void(0);" id="toggle_btn"> <i class="fe fe-text-align-left"></i> </a>
+			<a class="mobile_btn" id="mobile_btn"> <i class="fas fa-bars"></i> </a>
+			<ul class="nav user-menu">
+				<li class="nav-item dropdown has-arrow">
+					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown"> <span class="user-img"><img class="rounded-circle" src="assets/img/profiles/avatar-01.jpg" width="31" alt=""></span> </a>
+					<div class="dropdown-menu">
+						<div class="user-header">
+							<div class="avatar avatar-sm"> <img src="foto do perfil" alt="User Image" class="avatar-img rounded-circle"> </div>
+							<div class="user-text">
+								<div class="muted" style="font-size:11px">Bem-vindo(a), </div>
+								<h6><span id="userName">usuário</span></h6>
+							</div>
+						</div> <a class="dropdown-item" href="profile.html">Perfil</a> <a class="dropdown-item" href="settings.html">configurações da conta</a> <a class="dropdown-item" id="logoutBtn" href="#">Sair</a> </div>
+				</li>
+			</ul>
+			<div class="top-nav-search">
+				<form>
+					<input type="text" class="form-control" placeholder="procurar">
+					<button class="btn" type="submit"><i class="fas fa-search"></i></button>
+				</form>
+			</div>
+		</div>
+		<div class="sidebar" id="sidebar">
+			<div class="sidebar-inner slimscroll">
+				<div id="sidebar-menu" class="sidebar-menu">
+					<ul>
+						<li> <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a> </li>
+						<li> <a href="clientes_clientes.html"><i class="fas fa-user"></i> <span>Clientes</span></a></li>
+						<li class="submenu"> <a href="#" data-toggle="collapse"><i class="fas fa-user"></i> <span> Empresa </span> <span class="menu-arrow"></span></a>
+							<ul class="submenu_class" style="display: none;">
+								<li><a href="rh_funcionarios.html">Funcionários</a></li>
+								<li><a href="rh_departamentos.html">Departamentos & Cargos</a></li>
+								<li><a href="rh_ferias.html">Férias</a></li>
+								<li><a href="users.html">Utilizadores</a></li>
+							</ul>
+						</li>
+						
+						<li class="submenu"> <a href="#" data-toggle="collapse"><i class="fas fa-user"></i> <span> Fornecedores</span> <span class="menu-arrow"></span></a>
+							<ul class="submenu_class" style="display: none;">
+								<li><a href="fornecedor.html">Lista de Fornecedores </a></li>
+							</ul>
+						</li>
+						<li> <a href="financas.html#bancos"><i class="fas fa-university"></i> <span> Bancos</span></a> </li>
+						<li> <a href="financas.html#pagamentos"><i class="fas fa-money-bill-alt"></i> <span> Pagamentos</span></a> </li>
+            <li> <a href="faturas.html"><i class="fas fa-file-invoice"></i> <span>Faturas</span></a> </li>
+						<li> <a href="projectos.html"><i class="fas fa-cube"></i> <span>Projectos Kwanza </span></a> </li>
+					</ul>
+				</div>
+			</div>
+		</div>
+    <div class="page-wrapper">
+      <div class="content container-fluid">
+        <div class="page-header">
+          <div class="row">
+            <div class="col-sm-12 mt-5">
+              <h1>Relatório financeiro do cliente</h1>
+              <p class="text-muted mb-0" id="infoCliente"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header d-flex align-items-center justify-content-between">
+                <h4 class="card-title mb-0">Relatório financeiro do cliente</h4>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <span><strong>Total de faturas:</strong> <span id="resNumFaturas">0</span></span><br>
+                  <span><strong>Total recebido:</strong> <span id="resTotalRecebido">Kz 0,00</span></span><br>
+                  <span><strong>Total em dívida:</strong> <span id="resTotalDivida">Kz 0,00</span></span>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-hover table-center" id="tblPagamentosMes">
+                    <thead>
+                      <tr>
+                        <th>Mês</th>
+                        <th>Contribuinte (NIF)</th>
+                        <th>Nome / Firma</th>
+                        <th>Fatura</th>
+                        <th>Valor</th>
+                        <th>IVA</th>
+                        <th>Retenção</th>
+                        <th>Dívida</th>
+                        <th>Valor Pago</th>
+                        <th>Data Pagamento</th>
+                        <th style="width:130px">Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Projetos do Cliente/Fornecedor -->
+        <div class="row mt-4">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header d-flex align-items-center justify-content-between">
+                <h4 class="card-title mb-0">Projetos do Cliente/Fornecedor</h4>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover table-center" id="tblProjetos">
+                    <thead>
+                      <tr>
+                        <th>Nome do Projeto</th>
+                        <th>Descrição</th>
+                        <th>Data Início</th>
+                        <th>Data Fim</th>
+                        <th>Estado</th>
+                        <th>Valor Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td colspan="6" class="text-center">A carregar projetos...</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/jquery-3.5.1.min.js"></script>
+  <script src="assets/js/popper.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+  <script src="assets/plugins/raphael/raphael.min.js"></script>
+  <script src="assets/plugins/morris/morris.min.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/script.js"></script>
+  <!-- Carrega o avatar do usuário -->
+  <script src="js/profile-avatar.js"></script>
+  <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap4.min.js"></script>
+  <script>
+    // Utils
+    const fmtKZ = (v) => new Intl.NumberFormat('pt-PT', { style:'currency', currency:'AOA', minimumFractionDigits:2 }).format(Number(v||0));
+    const toNum = (v) => { const n = Number(String(v||0).replace(/[^0-9\-.,]/g,'').replace(',','.')); return isNaN(n)?0:n; };
+
+    async function tryGet(url){ try{ return await API.getJSON(url); } catch{ return null; } }
+
+    // Tabela
+    function renderTabela(rows){
+      const tb = document.querySelector('#tblPagamentosMes tbody');
+      if(!tb) return;
+      tb.innerHTML = rows.map(r => `
+        <tr>
+          <td>${r.mes||''}</td>
+          <td>${r.nif||''}</td>
+          <td>${r.nome||''}</td>
+          <td>${r.num_factura||r.fatura||''}</td>
+          <td>${fmtKZ(r.valor_documento||r.valor||r.saida||0)}</td>
+          <td>${fmtKZ(r.valor_iva||r.iva||0)}</td>
+          <td>${fmtKZ(r.valor_retencao||r.retencao||0)}</td>
+          <td>${fmtKZ(r.divida!=null? r.divida : (toNum(r.valor_documento||r.valor||0) - toNum(r.valor_pago||0)))}</td>
+          <td>${fmtKZ(r.valor_pago||0)}</td>
+          <td>${r.data_pagamento||''}</td>
+          <td>
+            <a class="btn btn-sm btn-outline-primary" href="relatorios_financeiros.html?nif=${encodeURIComponent(r.nif||'')}&nome=${encodeURIComponent(r.nome||'')}" target="_blank" rel="noopener noreferrer">
+              Ver mapa financeiro
+            </a>
+          </td>
+        </tr>
+      `).join('');
+      try{
+        if ($.fn.DataTable && $.fn.DataTable.isDataTable('#tblPagamentosMes')){
+          $('#tblPagamentosMes').DataTable().destroy();
+        }
+        $('#tblPagamentosMes').DataTable({ pageLength: 10, lengthChange:false, ordering:true, language:{ url:'https://cdn.datatables.net/plug-ins/1.13.8/i18n/pt-PT.json' } });
+      }catch(e){ console.warn('DataTable init falhou:', e); }
+    }
+
+    // Carrega dados apenas para o relatório do cliente (usando parâmetros da URL)
+    async function carregarDados(){
+      const params = new URLSearchParams(window.location.search || '');
+      const tipo = (params.get('tipo') || '').trim().toLowerCase();
+      const nifParamRaw = (params.get('nif') || '').trim();
+      const nomeParamRaw = (params.get('nome') || '').trim();
+      const nifParam = nifParamRaw;
+      const nomeParam = nomeParamRaw.toLowerCase();
+
+      let linhas;
+
+      if (tipo === 'fornecedor') {
+        // Para fornecedor, usar diretamente o mapa de fornecedores
+        const forn = await tryGet('/api/fornecedores');
+        const items = Array.isArray(forn) ? forn : (forn?.items || []);
+        linhas = items.map(it => ({
+          mes: it.mes || (it.data_documento||'').toString().slice(0,7) || '',
+          nif: it.nif || '',
+          nome: it.nome || '',
+          num_factura: it.num_factura || '',
+          valor_documento: toNum(it.valor_documento||0),
+          valor_iva: toNum(it.valor_iva||0),
+          valor_retencao: toNum(it.valor_retencao||0),
+          valor_pago: toNum(it.valor_pago||0),
+          divida: (it.divida!=null)? toNum(it.divida) : (toNum(it.valor_documento||0) - toNum(it.valor_pago||0)),
+          data_pagamento: it.data_pagamento || '',
+          data_documento: it.data_documento || ''
+        }));
+      } else {
+        // Cliente: tenta endpoint principal de pagamentos, com fallback
+        linhas = await tryGet('/api/relatorios/financeiro/pagamentos')
+               || await tryGet('/api/financas/pagamentos');
+
+        if(!Array.isArray(linhas) && !Array.isArray(linhas?.items)){
+          const forn = await tryGet('/api/fornecedores');
+          const items = Array.isArray(forn) ? forn : (forn?.items || []);
+          linhas = items.map(it => ({
+            mes: it.mes || (it.data_documento||'').toString().slice(0,7) || '',
+            nif: it.nif || '',
+            nome: it.nome || '',
+            num_factura: it.num_factura || '',
+            valor_documento: toNum(it.valor_documento||0),
+            valor_iva: toNum(it.valor_iva||0),
+            valor_retencao: toNum(it.valor_retencao||0),
+            valor_pago: toNum(it.valor_pago||0),
+            divida: (it.divida!=null)? toNum(it.divida) : (toNum(it.valor_documento||0) - toNum(it.valor_pago||0)),
+            data_pagamento: it.data_pagamento || '',
+            data_documento: it.data_documento || ''
+          }));
+        }else{
+          linhas = Array.isArray(linhas) ? linhas : (linhas.items||[]);
+        }
+      }
+
+      // Filtra pelo NIF e/ou nome vindos na URL
+      if(nifParam){
+        linhas = linhas.filter(r => String(r.nif||'').includes(nifParam));
+      }
+      if(nomeParam){
+        linhas = linhas.filter(r => String(r.nome||'').toLowerCase().includes(nomeParam));
+      }
+
+      // Resumo simples para o registo atual (cliente/fornecedor): total de faturas, recebido, dívida
+      try{
+        const numFaturas = linhas.length;
+        const totalRecebido = linhas.reduce((acc, r) => acc + toNum(r.valor_pago||0), 0);
+        const totalDivida = linhas.reduce((acc, r) => {
+          const div = (r.divida!=null)
+            ? toNum(r.divida)
+            : (toNum(r.valor_documento||r.valor||0) - toNum(r.valor_pago||0));
+          return acc + div;
+        }, 0);
+
+        const elNum = document.getElementById('resNumFaturas');
+        const elRec = document.getElementById('resTotalRecebido');
+        const elDiv = document.getElementById('resTotalDivida');
+
+        if (elNum) elNum.textContent = String(numFaturas);
+        if (elRec) elRec.textContent = fmtKZ(totalRecebido);
+        if (elDiv) elDiv.textContent = fmtKZ(totalDivida);
+      }catch(e){}
+
+      renderTabela(linhas);
+    }
+
+    // Carrega projetos do cliente/fornecedor
+    async function carregarProjetos(nif, nome) {
+      try {
+        const params = new URLSearchParams();
+        if (nif) params.append('nif', nif);
+        if (nome) params.append('nome', nome);
+        
+        // Tenta buscar projetos da API (rota backend: /api/projectos)
+        const projetos = await API.getJSON(`/api/projectos?${params.toString()}`) || [];
+        const projetosFiltrados = Array.isArray(projetos) ? projetos : (projetos.items || []);
+        
+        // Atualiza a tabela de projetos
+        const tbody = document.querySelector('#tblProjetos tbody');
+        if (!tbody) return;
+        
+        if (projetosFiltrados.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="6" class="text-center">Nenhum projeto encontrado para este cliente/fornecedor.</td>
+            </tr>
+          `;
+          return;
+        }
+        
+        // Formata os projetos para exibição
+        tbody.innerHTML = projetosFiltrados.map(proj => `
+          <tr>
+            <td>${proj.nome || 'N/A'}</td>
+            <td>${proj.descricao ? (proj.descricao.length > 50 ? proj.descricao.substring(0, 47) + '...' : proj.descricao) : 'N/A'}</td>
+            <td>${proj.data_inicio || 'N/A'}</td>
+            <td>${proj.data_fim || 'Em andamento'}</td>
+            <td>
+              <span class="badge ${proj.estado === 'Concluído' ? 'badge-success' : proj.estado === 'Em andamento' ? 'badge-warning' : 'badge-secondary'}">
+                ${proj.estado || 'N/A'}
+              </span>
+            </td>
+            <td>${fmtKZ(proj.valor_total || 0)}</td>
+          </tr>
+        `).join('');
+        
+        // Inicializa DataTable para a tabela de projetos
+        if ($.fn.DataTable && !$.fn.DataTable.isDataTable('#tblProjetos')) {
+          $('#tblProjetos').DataTable({
+            pageLength: 5,
+            lengthChange: true,
+            ordering: true,
+            language: { 
+              url: 'https://cdn.datatables.net/plug-ins/1.13.8/i18n/pt-PT.json',
+              search: 'Pesquisar:',
+              lengthMenu: 'Mostrar _MENU_ projetos por página',
+              info: 'A mostrar _START_ a _END_ de _TOTAL_ projetos',
+              infoEmpty: 'Nenhum projeto encontrado',
+              infoFiltered: '(filtrado de _MAX_ projetos no total)'
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Erro ao carregar projetos:', error);
+        const tbody = document.querySelector('#tblProjetos tbody');
+        if (tbody) {
+          let msg = 'Erro ao carregar projetos. Por favor, recarregue a página.';
+          if (error && error.status === 404) {
+            msg = 'Nenhum projeto encontrado para este cliente/fornecedor.';
+          } else if (error && error.status === 401) {
+            msg = 'Sessão expirada ou não autenticado. Faça login novamente para ver os projetos.';
+          }
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="6" class="text-center text-danger">
+                ${msg}
+              </td>
+            </tr>
+          `;
+        }
+      }
+    }
+
+    // Init
+    (async function init(){
+      try{
+        const me = await API.getJSON('/api/users/me');
+        const userName = document.getElementById('userName');
+        if (userName) userName.textContent = me?.nome || 'usuário';
+      }catch(e){}
+
+      // Lê parâmetros da URL (clienteId, nif, nome) e atualiza títulos/legendas
+      try{
+        const params = new URLSearchParams(window.location.search || '');
+        const nomeParam = params.get('nome') || '';
+        const nifParam = params.get('nif') || '';
+
+        if (nomeParam){
+          const h1 = document.querySelector('.page-header h1');
+          const cardTitle = document.querySelector('.card-title.mb-0');
+          const info = document.getElementById('infoCliente');
+          const suffix = ' - ' + nomeParam;
+          if (h1 && !h1.textContent.includes(nomeParam)){
+            h1.textContent = 'Relatório financeiro do cliente' + suffix;
+          }
+          if (cardTitle && !cardTitle.textContent.includes(nomeParam)){
+            cardTitle.textContent = 'Relatório financeiro do cliente' + suffix;
+          }
+          if (info){
+            const nifText = nifParam ? ` (NIF: ${nifParam})` : '';
+            info.textContent = `Cliente: ${nomeParam}${nifText}`;
+          }
+        } else if (nifParam){
+          const info = document.getElementById('infoCliente');
+          if (info){
+            info.textContent = `Cliente (NIF): ${nifParam}`;
+          }
+        }
+      }catch(e){}
+
+      const params = new URLSearchParams(window.location.search || '');
+      const nifParam = (params.get('nif') || '').trim();
+      const nomeParam = (params.get('nome') || '').trim();
+      
+      // Carrega dados financeiros e projetos em paralelo
+      await Promise.all([
+        carregarDados(),
+        carregarProjetos(nifParam, nomeParam)
+      ]);
+    })();
+
+    // Logout
+    document.addEventListener('click', (e) => {
+      if(e.target && e.target.id === 'logoutBtn'){
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/';
+      }
+    });
+  </script>
+</body>
+</html>

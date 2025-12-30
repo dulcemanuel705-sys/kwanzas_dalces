@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+	<title>Clientes - Vista Alternativa</title>
+	<link rel="shortcut icon" type="image/x-icon" href="assets/img/logo.png">
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
+	<link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
+	<link rel="stylesheet" href="assets/css/feathericon.min.css">
+	<link rel="stylesheet" href="https://cdn.oesmith.co.uk/morris-0.5.1.css">
+	<link rel="stylesheet" href="assets/plugins/morris/morris.css">
+	<link rel="stylesheet" href="assets/css/style.css">
+	<!-- SweetAlert2 CSS -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+	<!-- DataTables CSS -->
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap4.min.css">
+	<style>
+		/* ===== MODERN PROFESSIONAL DASHBOARD STYLES ===== */
+		
+		/* Root Variables for Consistent Theming */
+		:root {
+		  --primary-color: #2c3e50;
+		  --primary-dark: #1a252f;
+		  --primary-light: #34495e;
+		  --accent-color: #0fd7d4;
+		  --accent-dark: #0ab5b3;
+		  --secondary-color: #95a5a6;
+		  --dark-bg: #000000;
+		  --darker-bg: #000000;
+		  --light-bg: #f8f9fa;
+		  --card-bg: #ffffff;
+		  --text-primary: #2c3e50;
+		  --text-secondary: #7f8c8d;
+		  --border-color: #dee2e6;
+		  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+		  --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
+		  --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+		  --shadow-xl: 0 20px 40px rgba(0,0,0,0.15);
+		  --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+		  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		}
+
+		/* Global Styles */
+		body {
+		  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+		  color: var(--text-primary);
+		  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+		  font-size: 14px;
+		  line-height: 1.6;
+		  padding-top: -12px; /* Space for fixed header */
+		}
+
+		/* Header Enhancements */
+		.header {
+		  background: var(--card-bg);
+		  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+		  border-bottom: 1px solid var(--border-color);
+		  position: fixed;
+		  top: 0;
+		  left: 0;
+		  right: 0;
+		  z-index: 1000;
+		}
+
+		.header-left {
+		  background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%) !important;
+		}
+
+		/* Sidebar Professional Styling - Black with Cyan */
+		.sidebar {
+		  background: #000000 !important;
+		  box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+		}
+
+		.sidebar .sidebar-menu ul li a {
+		  color: #ffffff !important;
+		  opacity: 0.85;
+		  transition: var(--transition-fast);
+		  padding: 10px 16px;
+		  border-radius: 8px;
+		  margin: 2px 8px;
+		}
+
+		.sidebar .sidebar-menu ul li a:hover {
+		  color: #ffffff !important;
+		  opacity: 1;
+		  background: rgba(15, 215, 212, 0.1);
+		  transform: translateX(5px);
+		}
+
+		.sidebar .sidebar-menu ul li.active > a {
+		  color: #ffffff !important;
+		  font-weight: 600;
+		  background: rgba(15, 215, 212, 0.2);
+		  border-left: 3px solid #0fd7d4;
+		}
+
+		.sidebar .submenu_class li a {
+		  color: #f2f9ff !important;
+		  opacity: 0.8;
+		  font-size: 13px;
+		}
+
+		.sidebar .submenu_class li a:hover {
+		  color: #0fd7d4 !important;
+		  opacity: 1;
+		}
+
+		/* Sidebar submenu layout mais corporativo */
+		.sidebar .sidebar-menu > ul > li > a {
+		  display: flex;
+		  align-items: center;
+		  justify-content: flex-start;
+		  gap: 8px;
+		  font-size: 14px;
+		  font-weight: 500;
+		}
+
+		.sidebar .sidebar-menu > ul > li > a i {
+		  margin-right: 6px;
+		  font-size: 15px;
+		  color: #ffffff !important;
+		}
+
+		.sidebar .sidebar-menu .menu-arrow {
+		  margin-left: auto;
+		  transition: transform 0.2s ease;
+		}
+
+		.sidebar .submenu.active > a .menu-arrow {
+		  transform: rotate(90deg);
+		}
+
+		/* Page Header */
+		.page-header h1 {
+		  color: var(--text-primary);
+		  font-weight: 700;
+		  font-size: 28px;
+		  letter-spacing: -0.5px;
+		  margin-bottom: 0;
+		}
+
+		.page-header h1 span {
+		  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+		  -webkit-background-clip: text;
+		  -webkit-text-fill-color: transparent;
+		  background-clip: text;
+		}
+
+		/* Main Metrics Card */
+		.board1 {
+		  border-radius: 10px;
+		  border: none !important;
+		  background: #000000;
+		  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+		  overflow: hidden;
+		  transition: var(--transition-smooth);
+		  height: 150px;
+		  min-width: 194px;
+		  margin: 0 5px 15px;
+		  position: relative;
+		  flex: 0 0 auto;
+		}
+
+		.board1::before {
+		  content: '';
+		  position: absolute;
+		  top: 0;
+		  left: 0;
+		  right: 0;
+		  bottom: 0;
+		  background: linear-gradient(135deg, rgba(10, 181, 179, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
+		  opacity: 0;
+		  transition: var(--transition-smooth);
+		  z-index: 0;
+		}
+
+		.board1:hover {
+		  box-shadow: 0 8px 25px rgba(10, 181, 179, 0.4);
+		  transform: translateY(-5px);
+		}
+
+		.board1:hover::before {
+		  opacity: 1;
+		}
+
+		.board1 .card-body {
+		  padding: 12px 10px !important;
+		  position: relative;
+		  z-index: 1;
+		  height: 100%;
+		  display: flex;
+		  flex-direction: column;
+		  justify-content: center;
+		}
+
+		/* Metric Cards Inside Board */
+		.board1 .card-body {
+		  background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%) !important;
+		  border-radius: 12px;
+		  transition: var(--transition-smooth);
+		  position: relative;
+		  overflow: hidden;
+		  border: 1px solid rgba(10, 181, 179, 0.2);
+		}
+
+		.board1 .card-body::before {
+		  content: '';
+		  position: absolute;
+		  top: 0;
+		  left: -100%;
+		  width: 100%;
+		  height: 100%;
+		  background: linear-gradient(90deg, transparent, rgba(10, 181, 179, 0.3), transparent);
+		  transition: var(--transition-smooth);
+		}
+
+		.board1:hover .card-body::before {
+		  left: 100%;
+		  transition: left 0.6s ease;
+		}
+
+		.board1:hover .card-body {
+		  background: linear-gradient(135deg, #0ab5b3 0%, #08a09e 100%) !important;
+		  border-color: #0ab5b3;
+		  box-shadow: inset 0 0 20px rgba(10, 181, 179, 0.2);
+		}
+
+		@keyframes shimmer {
+		  0% { transform: translate(-50%, -50%) rotate(0deg); }
+		  100% { transform: translate(-50%, -50%) rotate(360deg); }}
+
+		.board1 h3 {
+		  color: #0ab5b3 !important;
+		  font-weight: 700;
+		  margin-bottom: 3px;
+		  font-size: 1.2rem;
+		  line-height: 1.2;
+		  white-space: nowrap;
+		  overflow: hidden;
+		  text-overflow: ellipsis;
+		  text-shadow: 0 0 20px rgba(10, 181, 179, 0.5);
+		  position: relative;
+		  z-index: 1;
+		  transition: var(--transition-smooth);
+		}
+
+		.board1:hover h3 {
+		  color: #fff !important;
+		  text-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
+		}
+
+		.board1 h6 {
+		  color: rgba(10, 181, 179, 0.9) !important;
+		  font-weight: 500;
+		  letter-spacing: 0.8px;
+		  text-transform: uppercase;
+		  white-space: nowrap;
+		  overflow: hidden;
+		  text-overflow: ellipsis;
+		  margin: 0;
+		  position: relative;
+		  z-index: 1;
+		  font-size: 0.7rem;
+		  transition: var(--transition-smooth);
+		}
+
+		.board1:hover h6 {
+		  color: rgba(255, 255, 255, 0.95) !important;
+		  letter-spacing: 1px;
+		}
+
+		.board1 i {
+		  position: relative;
+		  z-index: 1;
+		  color: #0ab5b3 !important;
+		  filter: drop-shadow(0 0 10px rgba(10, 181, 179, 0.5));
+		  transition: var(--transition-smooth);
+		}
+
+		.board1:hover i {
+		  color: #fff !important;
+		  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.7));
+		  transform: scale(1.1);
+		}
+
+		/* Quick Links Section */
+		.quick-link-card {
+		  text-decoration: none;
+		  display: block;
+		  transition: var(--transition-smooth);
+		}
+
+		.quick-link-card:hover {
+		  text-decoration: none;
+		}
+
+		.quick-link-card > div {
+		  background: #f8f9fa;
+		  border: 1px solid var(--border-color);
+		  border-radius: 8px;
+		  padding: 12px 10px !important;
+		  transition: var(--transition-smooth);
+		  position: relative;
+		  overflow: hidden;
+		}
+
+		.quick-link-card > div::after {
+		  content: '';
+		  position: absolute;
+		  bottom: 0;
+		  left: 0;
+		  width: 100%;
+		  height: 2px;
+		  background: #0fd7d4;
+		  transform: scaleX(0);
+		  transition: var(--transition-smooth);
+		}
+
+		.quick-link-card:hover > div {
+		  background: #0fd7d4;
+		  border-color: #0fd7d4;
+		  transform: translateY(-3px);
+		  box-shadow: 0 6px 15px rgba(15, 215, 212, 0.25);
+		}
+
+		.quick-link-card:hover > div::after {
+		  transform: scaleX(1);
+		}
+
+		.quick-link-card i {
+		  font-size: 1.5rem;
+		  color: #2c3e50;
+		  transition: var(--transition-smooth);
+		}
+
+		.quick-link-card:hover i {
+		  color: #fff !important;
+		  transform: scale(1.05);
+		}
+
+		.quick-link-card h6 {
+		  color: var(--text-primary);
+		  margin: 0;
+		  font-size: 0.9rem;
+		  font-weight: 600;
+		  transition: var(--transition-smooth);
+		}
+
+		.quick-link-card:hover h6 {
+		  color: #fff !important;
+		}
+
+		/* Card Enhancements */
+		.card {
+		  border: none;
+		  border-radius: 12px;
+		  box-shadow: var(--shadow-md);
+		  transition: var(--transition-smooth);
+		  background: var(--card-bg);
+		}
+
+		.card:hover {
+		  box-shadow: var(--shadow-lg);
+		}
+
+		.card-header {
+		  background: #2c3e50;
+		  border: none;
+		  border-radius: 10px 10px 0 0 !important;
+		  padding: 12px 20px;
+		}
+
+		.card-header h4 {
+		  color: #fff !important;
+		  margin: 0;
+		  font-weight: 600;
+		  font-size: 0.95rem;
+		  letter-spacing: 0.3px;
+		}
+
+		.card-body {
+		  padding: 24px;
+		}
+
+		/* Table Styling */
+		.card-table {
+		  background: #ffffff !important;
+		  border: 1px solid rgba(10, 181, 179, 0.3);
+		  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+		}
+
+		.card-table .card-header {
+		  background: linear-gradient(135deg, #0ab5b3 0%, #08a09e 100%) !important;
+		  border-bottom: 2px solid #0ab5b3;
+		}
+
+		.card-table .card-header h4 {
+		  color: #fff !important;
+		}
+
+		.card-table .card-body {
+		  background: #ffffff !important;
+		  padding: 20px;
+		}
+
+		.table {
+		  margin-bottom: 0;
+		  background: #ffffff !important;
+		}
+
+		.table thead th {
+		  background: #1a1a1a !important;
+		  color: #0ab5b3 !important;
+		  font-weight: 600;
+		  font-size: 0.85rem;
+		  text-transform: uppercase;
+		  letter-spacing: 0.5px;
+		  border: 1px solid rgba(10, 181, 179, 0.2) !important;
+		  padding: 14px 12px;
+		}
+
+		.table tbody tr {
+		  transition: var(--transition-fast);
+		  background: #ffffff !important;
+		  border-bottom: 1px solid rgba(10, 181, 179, 0.15);
+		}
+
+		.table tbody tr:hover {
+		  background: rgba(10, 181, 179, 0.05) !important;
+		  transform: scale(1.005);
+		  box-shadow: 0 2px 8px rgba(10, 181, 179, 0.15);
+		}
+
+		.table tbody td {
+		  padding: 12px;
+		  vertical-align: middle;
+		  border-color: rgba(10, 181, 179, 0.15) !important;
+		  color: #2c3e50 !important;
+		}
+
+		/* Button Enhancements */
+		.btn-primary {
+		  background: #0fd7d4;
+		  border: none;
+		  border-radius: 8px;
+		  padding: 10px 24px;
+		  font-weight: 600;
+		  letter-spacing: 0.3px;
+		  transition: var(--transition-smooth);
+		  box-shadow: 0 4px 12px rgba(15, 215, 212, 0.25);
+		  color: #000;
+		}
+
+		.btn-primary:hover {
+		  transform: translateY(-2px);
+		  box-shadow: 0 6px 16px rgba(15, 215, 212, 0.35);
+		  background: #0ab5b3;
+		  color: #fff;
+		}
+
+		/* Animations */
+		@keyframes fadeInUp {
+		  from {
+		    opacity: 0;
+		    transform: translateY(30px);
+		  }
+		  to {
+		    opacity: 1;
+		    transform: translateY(0);
+		  }
+		}
+
+		@keyframes fadeIn {
+		  from {
+		    opacity: 0;
+		  }
+		  to {
+		    opacity: 1;
+		  }
+		}
+
+		@keyframes slideInRight {
+		  from {
+		    opacity: 0;
+		    transform: translateX(30px);
+		  }
+		  to {
+		    opacity: 1;
+		    transform: translateX(0);
+		  }
+		}
+
+		.card.board1 {
+		  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+		}
+
+		/* Scrollbar Styling */
+		::-webkit-scrollbar {
+		  width: 8px;
+		  height: 8px;
+		}
+
+		::-webkit-scrollbar-track {
+		  background: var(--light-bg);
+		}
+
+		::-webkit-scrollbar-thumb {
+		  background: var(--text-secondary);
+		  border-radius: 4px;
+		}
+
+		::-webkit-scrollbar-thumb:hover {
+		  background: var(--primary-color);
+		}
+	</style>
+</head>
+<body>
+	<div class="main-wrapper">
+		<div class="header">
+			<div class="header-left">
+				<a href="dashboard.html" class="logo"> <img src="assets/img/kwanzaWhite.svg" width="50" height="70" alt="logo"> <span class="logoclass"></span> </a>
+				<a href="dashboard.html" class="logo logo-small"> <img src="assets/img/kwanzaWhite.svg" alt="Logo" width="30" height="30"> </a>
+			</div>
+			<a href="javascript:void(0);" id="toggle_btn"> <i class="fe fe-text-align-left"></i> </a>
+			<a class="mobile_btn" id="mobile_btn"> <i class="fas fa-bars"></i> </a>
+			<ul class="nav user-menu">
+				<li class="nav-item dropdown has-arrow">
+					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown"> <span class="user-img"><img class="rounded-circle" src="assets/img/profiles/avatar-01.jpg" width="31" alt=""></span> </a>
+					<div class="dropdown-menu">
+						<div class="user-header">
+							<div class="avatar avatar-sm"> <img src="foto do perfil" alt="User Image" class="avatar-img rounded-circle"> </div>
+							<div class="user-text">
+								<div class="muted" style="font-size:11px">Bem-vindo(a), </div>
+								<h6><span id="userName">usuário</span></h6>
+							</div>
+						</div> <a class="dropdown-item" href="profile.html">Perfil</a> <a class="dropdown-item" href="settings.html">configurações da conta</a> <a class="dropdown-item" id="logoutBtn" href="#">Sair</a> </div>
+				</li>
+			</ul>
+			<div class="top-nav-search">
+				<form>
+					<input type="text" class="form-control" placeholder="procurar">
+					<button class="btn" type="submit"><i class="fas fa-search"></i></button>
+				</form>
+			</div>
+		</div>
+		<div class="sidebar" id="sidebar">
+			<div class="sidebar-inner slimscroll">
+				<div id="sidebar-menu" class="sidebar-menu">
+					<ul>
+						<li> <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a> </li>
+						<li class="active"> <a href="clientes_clientes.html"><i class="fas fa-user"></i> <span>Clientes</span></a></li>
+						<li class="submenu"> <a href="#" data-toggle="collapse"><i class="fas fa-user"></i> <span> Empresa </span> <span class="menu-arrow"></span></a>
+							<ul class="submenu_class" style="display: none;">
+								<li><a href="rh_funcionarios.html">Funcionários</a></li>
+								<li><a href="rh_departamentos.html">Departamentos & Cargos</a></li>
+								<li><a href="rh_ferias.html">Férias</a></li>
+								<li><a href="users.html">Utilizadores</a></li>
+							</ul>
+						</li>
+						
+						<li class="submenu"> <a href="#" data-toggle="collapse"><i class="fas fa-user"></i> <span> Fornecedores</span> <span class="menu-arrow"></span></a>
+						<ul class="submenu_class" style="display: none;">
+							<li><a href="fornecedor.html">Lista de Fornecedores </a></li>
+						</ul>
+					</li>
+						<li> <a href="financas.html#bancos"><i class="fas fa-university"></i> <span> Bancos</span></a> </li>
+						<li> <a href="financas.html#pagamentos"><i class="fas fa-money-bill-alt"></i> <span> Pagamentos</span></a> </li>
+						<li> <a href="faturas.html"><i class="fas fa-file-invoice"></i> <span>Faturas</span></a> </li>
+						<li> <a href="projectos.html"><i class="fas fa-cube"></i> <span>Projectos Kwanza </span></a> </li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		    <div class="page-wrapper">
+      <div class="content container-fluid">
+        <div class="page-header">
+          <div class="row">
+            <div class="col-sm-12 mt-5">
+              <h1>Clientes</h1>
+              <p class="text-muted mb-0">Vista alternativa com botão para adicionar clientes</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col">
+            <button id="btnAbrirAdicionarCliente" class="btn btn-primary mr-2" type="button">Adicionar Cliente</button>
+            <button id="btnEliminarTudo" class="btn btn-danger" type="button">
+              <i class="fa fa-trash"></i> Eliminar Tudo
+            </button>
+          </div>
+          <div class="col-auto">
+            <input id="searchInput" class="form-control form-control-sm" placeholder="Pesquisar..." />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 d-flex">
+            <div class="card card-table flex-fill">
+              <div class="card-header d-flex align-items-center justify-content-between">
+                <h4 class="card-title mb-0">Todos os clientes <span id="totalClientes" class="badge badge-info ml-2">0</span></h4>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive sticky-th">
+                  <table id="tblClientesAlt" class="table table-striped table-hover table-bordered table-center table-sm" style="width:100%">
+                    <thead>
+                      <tr>
+                        <th style="width:100px">#</th>
+                        <th>Nome</th>
+                        <th>NIF</th>
+                        <th>Email</th>
+                        <th>Telefone</th>
+                        <th style="width:160px">Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Adicionar Cliente -->
+  <div class="modal fade" id="modalAdicionarCliente" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Adicionar Cliente</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form id="formAdicionarCliente">
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="addNome">Nome / Firma</label>
+                <input type="text" class="form-control" id="addNome" required>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="addNif">NIF</label>
+                <input type="text" class="form-control" id="addNif" readonly placeholder="Será gerado automaticamente">
+                <small class="form-text text-muted">O NIF será gerado automaticamente como KZcliente_numero</small>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="addEmail">Email</label>
+                <input type="email" class="form-control" id="addEmail">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="addTelefone">Telefone</label>
+                <input type="text" class="form-control" id="addTelefone">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Editar Cliente -->
+  <div class="modal fade" id="modalEditarCliente" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Editar Cliente</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form id="formEditarCliente">
+          <div class="modal-body">
+            <input type="hidden" id="editClienteId">
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="editNome">Nome / Firma</label>
+                <input type="text" class="form-control" id="editNome" required>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="editNif">NIF</label>
+                <input type="text" class="form-control" id="editNif" readonly>
+                <small class="form-text text-muted">NIF não pode ser alterado (KZcliente_numero)</small>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="editEmail">Email</label>
+                <input type="email" class="form-control" id="editEmail">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="editTelefone">Telefone</label>
+                <input type="text" class="form-control" id="editTelefone">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Ver Cliente -->
+  <div class="modal fade" id="modalVerCliente" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Detalhes do Cliente</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label><strong>Nome / Firma:</strong></label>
+                <p id="viewNome"></p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label><strong>NIF:</strong></label>
+                <p id="viewNif"></p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label><strong>Email:</strong></label>
+                <p id="viewEmail"></p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label><strong>Telefone:</strong></label>
+                <p id="viewTelefone"></p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label><strong>ID Cliente:</strong></label>
+                <p id="viewId"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+          <button type="button" class="btn btn-info" id="btnEditarDesdeVer">Editar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Ver Projectos do Cliente -->
+  <div class="modal fade" id="modalProjectosCliente" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Projectos do Cliente: <span id="nomeClienteModal"></span></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table class="table table-hover table-center" id="tblProjectosCliente">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Descrição</th>
+                  <th>Valor Total</th>
+                  <th>Valor Pago</th>
+                  <th>Saldo</th>
+                  <th>Data Início</th>
+                  <th>Data Fim</th>
+                  <th>Status</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyProjectosCliente">
+                <tr>
+                  <td colspan="9" class="text-center">A carregar projectos...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+          <button type="button" class="btn btn-primary" id="btnVerTodosProjectos">Ver Todos os Projectos</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/jquery-3.5.1.min.js"></script>
+  <script src="assets/js/popper.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script>
+    // shim para evitar erro de plugin slimScroll ausente
+    (function(){
+      if (window.jQuery && !jQuery.fn.slimScroll){ jQuery.fn.slimScroll = function(){ return this; }; }
+    })();
+  </script>
+  <script src="assets/js/script.js"></script>
+  <!-- Carrega o avatar do usuário -->
+  <script src="js/profile-avatar.js"></script>
+  <!-- SweetAlert2 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- DataTables JS -->
+  <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap4.min.js"></script>
+  <script>
+    async function checkAuth() {
+      const token = localStorage.getItem('token');
+      if (!token) { /* não redirecionar agressivamente */ return; }
+      async function tryMe(url){
+        try{
+          const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+          if (res.status === 401 || res.status === 403) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/';
+            return null;
+          }
+          if (res.status === 404) return { nome: localStorage.getItem('userName') || 'usuário' };
+          if (!res.ok) return null;
+          return await res.json();
+        }catch{return null}
+      }
+      let me = await tryMe('/api/users/me');
+      if (!me) me = await tryMe('/api/auth/me');
+      const userName = document.getElementById('userName');
+      if (userName && me && me.nome) userName.textContent = me.nome;
+    }
+    checkAuth();
+
+    async function loadClientes(){
+      const tbody = document.querySelector('#tblClientesAlt tbody');
+      const token = localStorage.getItem('token')||'';
+      try{
+        const res = await fetch(`/api/clientes?_=${Date.now()}`, { cache: 'no-store', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }});
+        if (!res.ok) throw new Error('Erro ao carregar');
+        let data = await res.json();
+        if (!Array.isArray(data)) data = data?.items || [];
+        document.getElementById('totalClientes').textContent = data.length;
+        const rows = data.map((c, i)=> `
+          <tr data-id="${c.id||''}">
+            <td>${i+1}</td>
+            <td class="editable-field" data-field="nome">
+              <span class="view-mode" style="cursor: pointer; color: #007bff; text-decoration: underline;" onclick="verProjectosCliente('${c.id||''}', '${(c.nome || c.nome_firma || '').replace(/'/g, "\\'")}')">${c.nome || c.nome_firma || ''}</span>
+              <input type="text" class="form-control form-control-sm edit-mode" value="${c.nome || c.nome_firma || ''}" style="display:none;">
+            </td>
+            <td class="editable-field" data-field="nif">
+              <span class="view-mode">KZcliente${c.id || ''}</span>
+              <input type="text" class="form-control form-control-sm edit-mode" value="KZcliente${c.id || ''}" readonly style="display:none; background-color: #f8f9fa;">
+            </td>
+            <td class="editable-field" data-field="email">
+              <span class="view-mode">${c.email || ''}</span>
+              <input type="email" class="form-control form-control-sm edit-mode" value="${c.email || ''}" style="display:none;">
+            </td>
+            <td class="editable-field" data-field="telefone">
+              <span class="view-mode">${c.telefone || c.telemovel || ''}</span>
+              <input type="text" class="form-control form-control-sm edit-mode" value="${c.telefone || c.telemovel || ''}" style="display:none;">
+            </td>
+            <td>
+              <button class="btn btn-sm btn-light view-mode" title="Ver" onclick="verCliente('${c.id||''}')"><i class="fa fa-eye"></i></button>
+              <button class="btn btn-sm btn-warning view-mode ml-1" title="Editar em linha" onclick="enableInlineEdit('${c.id||''}')"><i class="fa fa-edit"></i></button>
+              <button class="btn btn-sm btn-success edit-mode ml-1" title="Guardar" onclick="saveInlineEdit('${c.id||''}')" style="display:none;"><i class="fa fa-save"></i></button>
+              <button class="btn btn-sm btn-secondary edit-mode ml-1" title="Cancelar" onclick="cancelInlineEdit('${c.id||''}')" style="display:none;"><i class="fa fa-times"></i></button>
+              <button class="btn btn-sm btn-info view-mode ml-1" title="Editar no modal" onclick="editarCliente('${c.id||''}')"><i class="fa fa-external-link-alt"></i></button>
+              <button class="btn btn-sm btn-danger view-mode ml-1" title="Eliminar" onclick="eliminarCliente('${c.id||''}', '${(c.nome||c.nome_firma||'').replace(/'/g, "\\'")}')"><i class="fa fa-trash"></i></button>
+            </td>
+          </tr>`).join('');
+        tbody.innerHTML = rows || '';
+        // (Re)Inicializa DataTable
+        if ($.fn.DataTable.isDataTable('#tblClientesAlt')){
+          $('#tblClientesAlt').DataTable().destroy();
+        }
+        $('#tblClientesAlt').DataTable({
+          pageLength: 4,
+          lengthChange: true,
+          ordering: true,
+          autoWidth: false,
+          language: {
+            url: 'https://cdn.datatables.net/plug-ins/1.13.8/i18n/pt-PT.json',
+            emptyTable: 'Sem clientes.'
+          }
+        });
+      }catch(e){
+        // Não inserir linhas com colspan para evitar erros no DataTables
+        tbody.innerHTML = '';
+        if ($.fn.DataTable.isDataTable('#tblClientesAlt')){
+          $('#tblClientesAlt').DataTable().destroy();
+        }
+        $('#tblClientesAlt').DataTable({
+          pageLength: 4,
+          lengthChange: true,
+          ordering: true,
+          autoWidth: false,
+          language: {
+            url: 'https://cdn.datatables.net/plug-ins/1.13.8/i18n/pt-PT.json',
+            emptyTable: 'Erro ao carregar clientes.'
+          }
+        });
+      }
+    }
+
+    // Filtro simples
+    document.addEventListener('input', (e)=>{
+      if (e.target && e.target.id === 'searchInput'){
+        const q = e.target.value.toLowerCase();
+        document.querySelectorAll('#tblClientesAlt tbody tr').forEach(tr=>{
+          tr.style.display = tr.textContent.toLowerCase().includes(q) ? '' : 'none';
+        });
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadClientes();
+      
+      // Adiciona evento ao botão Eliminar Tudo
+      document.getElementById('btnEliminarTudo')?.addEventListener('click', eliminarTodosClientes);
+
+      // Abre modal de adicionar cliente
+      document.getElementById('btnAbrirAdicionarCliente')?.addEventListener('click', () => {
+        // limpa campos antes de abrir
+        document.getElementById('formAdicionarCliente')?.reset();
+        $('#modalAdicionarCliente').modal('show');
+      });
+    });
+
+    // Função para eliminar todos os clientes
+    async function eliminarTodosClientes() {
+      const token = localStorage.getItem('token') || '';
+      
+      // Primeiro, busca a lista de clientes para mostrar quantos serão excluídos
+      let clientes = [];
+      try {
+        const res = await fetch(`/api/clientes?_=${Date.now()}`, { 
+          cache: 'no-store',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          clientes = Array.isArray(data) ? data : (data?.items || []);
+        }
+      } catch (e) {
+        console.error('Erro ao carregar clientes:', e);
+      }
+      
+      if (clientes.length === 0) {
+        Swal.fire({
+          title: 'Nenhum cliente para eliminar',
+          text: 'Não existem clientes cadastrados no sistema.',
+          icon: 'info'
+        });
+        return;
+      }
+      
+      const result = await Swal.fire({
+        title: 'Eliminar todos os clientes?',
+        html: `Tem certeza que deseja eliminar <strong>${clientes.length} cliente(s)</strong>?<br><br>Esta ação não pode ser desfeita!`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sim, eliminar tudo!',
+        cancelButtonText: 'Cancelar',
+        showLoaderOnConfirm: true,
+        preConfirm: async () => {
+          try {
+            // Primeiro tenta usar um endpoint de delete all se existir
+            let res = await fetch('/api/clientes/all', {
+              method: 'DELETE',
+              headers: { Authorization: `Bearer ${token}` }
+            });
+            
+            // Se o endpoint não existir, faz delete um por um
+            if (res.status === 404) {
+              for (const cliente of clientes) {
+                if (cliente.id) {
+                  await fetch(`/api/clientes/${cliente.id}`, {
+                    method: 'DELETE',
+                    headers: { Authorization: `Bearer ${token}` }
+                  });
+                  // Pequeno delay para não sobrecarregar o servidor
+                  await new Promise(resolve => setTimeout(resolve, 100));
+                }
+              }
+              return { success: true };
+            }
+            
+            if (!res.ok) {
+              const error = await res.json().catch(() => ({}));
+              throw new Error(error.message || 'Falha ao eliminar clientes');
+            }
+            
+            return await res.json();
+          } catch (error) {
+            Swal.showValidationMessage(`Erro: ${error.message}`);
+            return null;
+          }
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+      });
+      
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Eliminados!',
+          text: `Todos os ${clientes.length} cliente(s) foram eliminados com sucesso.`,
+          icon: 'success'
+        }).then(() => {
+          // Recarrega a página inteira para garantir atualização total
+          window.location.reload();
+        });
+      }
+    }
+
+    // Submissão do formulário de adicionar
+    document.addEventListener('DOMContentLoaded', () => {
+      const formAdd = document.getElementById('formAdicionarCliente');
+      if (formAdd){
+        formAdd.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const payload = {
+            nome: document.getElementById('addNome').value,
+            email: document.getElementById('addEmail').value,
+            telefone: document.getElementById('addTelefone').value
+          };
+          try{
+            const token = localStorage.getItem('token')||'';
+            const res = await fetch('/api/clientes', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+              },
+              body: JSON.stringify(payload)
+            });
+            if (!res.ok){
+              const msg = await res.text().catch(()=> 'Erro ao guardar cliente.');
+              Swal.fire('Erro', msg, 'error');
+              return;
+            }
+            $('#modalAdicionarCliente').modal('hide');
+            // Recarrega a página inteira para garantir atualização total
+            window.location.reload();
+          }catch(err){
+            Swal.fire('Erro', 'Erro de rede ao guardar cliente.', 'error');
+          }
+        });
+      }
+    });
+
+    // Ações: Ver / Editar / Eliminar
+    async function verCliente(id){
+      if (!id) {
+        Swal.fire('Erro', 'ID inválido', 'error');
+        return;
+      }
+      try{
+        const token = localStorage.getItem('token')||'';
+        const res = await fetch(`/api/clientes/${id}`, { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }});
+        if (!res.ok){
+          Swal.fire('Erro', 'Erro ao carregar dados do cliente.', 'error');
+          return;
+        }
+        const c = await res.json();
+        // Preencher o modal de visualização
+        document.getElementById('viewId').textContent = c.id || id;
+        document.getElementById('viewNome').textContent = c.nome || c.nome_firma || '';
+        document.getElementById('viewNif').textContent = c.nif || c.nif_contribuinte || c.nifCliente || c.nif_cliente || '';
+        document.getElementById('viewEmail').textContent = c.email || '';
+        document.getElementById('viewTelefone').textContent = c.telefone || c.telemovel || '';
+        
+        // Configurar o botão de editar dentro do modal de visualização
+        const btnEditarDesdeVer = document.getElementById('btnEditarDesdeVer');
+        btnEditarDesdeVer.onclick = function(){
+          $('#modalVerCliente').modal('hide');
+          setTimeout(() => editarCliente(id), 300);
+        };
+        
+        $('#modalVerCliente').modal('show');
+      }catch(e){
+        Swal.fire('Erro', 'Erro de rede ao carregar cliente.', 'error');
+      }
+    }
+
+    async function editarCliente(id){
+      if (!id) {
+        Swal.fire('Erro', 'ID inválido', 'error');
+        return;
+      }
+      try{
+        const token = localStorage.getItem('token')||'';
+        const res = await fetch(`/api/clientes/${id}`, { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }});
+        if (!res.ok){
+          Swal.fire('Erro', 'Erro ao carregar dados do cliente para edição.', 'error');
+          return;
+        }
+        const c = await res.json();
+        document.getElementById('editClienteId').value = c.id || id;
+        document.getElementById('editNome').value = c.nome || c.nome_firma || '';
+        document.getElementById('editNif').value = c.nif || c.nif_contribuinte || c.nifCliente || c.nif_cliente || '';
+        document.getElementById('editEmail').value = c.email || '';
+        document.getElementById('editTelefone').value = c.telefone || c.telemovel || '';
+        $('#modalEditarCliente').modal('show');
+      }catch(e){
+        Swal.fire('Erro', 'Erro de rede ao carregar cliente.', 'error');
+      }
+    }
+
+    // Submissão do formulário de edição
+    document.addEventListener('DOMContentLoaded', () => {
+      const formEditar = document.getElementById('formEditarCliente');
+      if (formEditar){
+        formEditar.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const id = document.getElementById('editClienteId').value;
+          if (!id){
+            Swal.fire('Erro', 'ID do cliente não encontrado.', 'error');
+            return;
+          }
+          const payload = {
+            nome: document.getElementById('editNome').value,
+            email: document.getElementById('editEmail').value,
+            telefone: document.getElementById('editTelefone').value
+          };
+          try{
+            const token = localStorage.getItem('token')||'';
+            const res = await fetch(`/api/clientes/${id}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+              },
+              body: JSON.stringify(payload)
+            });
+            if (!res.ok){
+              const msg = await res.text().catch(()=> 'Erro ao guardar alterações.');
+              Swal.fire('Erro', msg, 'error');
+              return;
+            }
+            $('#modalEditarCliente').modal('hide');
+            // Recarrega a página inteira para garantir atualização total
+            window.location.reload();
+          }catch(err){
+            Swal.fire('Erro', 'Erro de rede ao guardar alterações.', 'error');
+          }
+        });
+      }
+    });
+
+    // Inline editing functions
+    function enableInlineEdit(id) {
+      const row = document.querySelector(`tr[data-id="${id}"]`);
+      if (!row) return;
+      
+      // Hide view mode elements and show edit mode
+      row.querySelectorAll('.view-mode').forEach(el => el.style.display = 'none');
+      row.querySelectorAll('.edit-mode').forEach(el => el.style.display = 'inline-block');
+      
+      // Focus on the first input field
+      const firstInput = row.querySelector('input');
+      if (firstInput) {
+        firstInput.focus();
+        firstInput.select();
+      }
+    }
+
+    function cancelInlineEdit(id) {
+      const row = document.querySelector(`tr[data-id="${id}"]`);
+      if (!row) return;
+      
+      // Reset values to original
+      row.querySelectorAll('.editable-field').forEach(field => {
+        const span = field.querySelector('.view-mode');
+        const input = field.querySelector('.edit-mode');
+        if (span && input) {
+          input.value = span.textContent;
+        }
+      });
+      
+      // Show view mode and hide edit mode
+      row.querySelectorAll('.view-mode').forEach(el => el.style.display = 'inline-block');
+      row.querySelectorAll('.edit-mode').forEach(el => el.style.display = 'none');
+    }
+
+    async function saveInlineEdit(id) {
+      const row = document.querySelector(`tr[data-id="${id}"]`);
+      if (!row) return;
+      
+      // Collect data from inputs (excluding NIF since it's read-only)
+      const data = {};
+      row.querySelectorAll('.editable-field').forEach(field => {
+        const fieldName = field.dataset.field;
+        if (fieldName === 'nif') return; // Skip NIF field
+        const input = field.querySelector('.edit-mode');
+        if (input) {
+          data[fieldName] = input.value.trim();
+        }
+      });
+      
+      try {
+        const token = localStorage.getItem('token') || '';
+        const res = await fetch(`/api/clientes/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify(data)
+        });
+        
+        if (!res.ok) {
+          const msg = await res.text().catch(() => 'Erro ao guardar alterações.');
+          Swal.fire('Erro', msg, 'error');
+          return;
+        }
+        
+        // Update the view spans with new values (except NIF)
+        row.querySelectorAll('.editable-field').forEach(field => {
+          const fieldName = field.dataset.field;
+          const span = field.querySelector('.view-mode');
+          const input = field.querySelector('.edit-mode');
+          if (span && input && fieldName !== 'nif') {
+            span.textContent = input.value.trim();
+          }
+        });
+        
+        // Switch back to view mode
+        row.querySelectorAll('.view-mode').forEach(el => el.style.display = 'inline-block');
+        row.querySelectorAll('.edit-mode').forEach(el => el.style.display = 'none');
+        
+        Swal.fire('Sucesso', 'Cliente atualizado com sucesso!', 'success');
+        
+      } catch (err) {
+        Swal.fire('Erro', 'Erro de rede ao guardar alterações.', 'error');
+      }
+    }
+
+    // Function to view client projects
+    async function verProjectosCliente(clienteId, clienteNome) {
+      if (!clienteId) {
+        Swal.fire('Erro', 'ID do cliente inválido', 'error');
+        return;
+      }
+
+      // Set client name in modal
+      document.getElementById('nomeClienteModal').textContent = clienteNome;
+      
+      // Show loading state
+      const tbody = document.getElementById('tbodyProjectosCliente');
+      tbody.innerHTML = '<tr><td colspan="9" class="text-center">A carregar projectos...</td></tr>';
+      
+      // Show modal
+      $('#modalProjectosCliente').modal('show');
+      
+      try {
+        const token = localStorage.getItem('token') || '';
+        const res = await fetch(`/api/projectos?clienteId=${clienteId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          }
+        });
+        
+        if (!res.ok) {
+          throw new Error('Erro ao carregar projectos');
+        }
+        
+        let data = await res.json();
+        if (!Array.isArray(data)) data = data?.items || [];
+        
+        if (data.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted">Este cliente não tem projectos registados</td></tr>';
+          return;
+        }
+        
+        // Render projects
+        const rows = data.map(proj => {
+          const valorTotal = proj.valor_total || proj.valorTotal || 0;
+          const valorPago = proj.valor_pago || proj.valorPago || 0;
+          const saldo = valorTotal - valorPago;
+          const status = proj.status || 'Pendente';
+          
+          // Format currency
+          const formatCurrency = (value) => {
+            return new Intl.NumberFormat('pt-AO', {
+              style: 'currency',
+              currency: 'AOA'
+            }).format(value || 0);
+          };
+          
+          // Format dates
+          const formatDate = (dateStr) => {
+            if (!dateStr) return '-';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('pt-AO');
+          };
+          
+          // Status badge colors
+          const statusClass = status.toLowerCase() === 'concluído' ? 'badge-success' :
+                            status.toLowerCase() === 'em andamento' ? 'badge-warning' :
+                            status.toLowerCase() === 'pendente' ? 'badge-info' : 'badge-secondary';
+          
+          return `
+            <tr>
+              <td>${proj.id || ''}</td>
+              <td>${proj.descricao || proj.descricao || ''}</td>
+              <td class="text-right">${formatCurrency(valorTotal)}</td>
+              <td class="text-right">${formatCurrency(valorPago)}</td>
+              <td class="text-right">${formatCurrency(saldo)}</td>
+              <td class="text-center">${formatDate(proj.data_inicio || proj.dataInicio)}</td>
+              <td class="text-center">${formatDate(proj.data_fim || proj.dataFim)}</td>
+              <td class="text-center"><span class="badge ${statusClass}">${status}</span></td>
+              <td class="text-center">
+                <button class="btn btn-sm btn-info" title="Ver Detalhes" onclick="window.open('projectos.html#projeto-${proj.id}', '_blank')">
+                  <i class="fa fa-eye"></i>
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+        
+        tbody.innerHTML = rows;
+        
+        // Configure "Ver Todos os Projectos" button
+        document.getElementById('btnVerTodosProjectos').onclick = function() {
+          window.open('projectos.html', '_blank');
+        };
+        
+      } catch (error) {
+        console.error('Error loading client projects:', error);
+        tbody.innerHTML = '<tr><td colspan="9" class="text-center text-danger">Erro ao carregar projectos. Tente novamente.</td></tr>';
+      }
+    }
+
+    async function eliminarCliente(id, nome){
+      if (!id) {
+        Swal.fire('Erro', 'ID inválido', 'error');
+        return;
+      }
+      const result = await Swal.fire({
+        title: 'Eliminar cliente?',
+        html: `Tem certeza que deseja eliminar <strong>${nome || ''}</strong>?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sim, eliminar',
+        cancelButtonText: 'Cancelar'
+      });
+      if (!result.isConfirmed) return;
+      try{
+        const token = localStorage.getItem('token')||'';
+        const res = await fetch(`/api/clientes/${id}`, { method:'DELETE', headers: { Authorization: `Bearer ${token}` } });
+        if (!res.ok){
+          const msg = await res.text().catch(()=> 'Erro ao eliminar.');
+          Swal.fire('Erro', msg, 'error');
+          return;
+        }
+        // Recarrega a página inteira para garantir atualização total
+        window.location.reload();
+      }catch(e){
+        Swal.fire('Erro', 'Erro de rede ao eliminar cliente.', 'error');
+      }
+    }
+  </script>
+  
+</body>
+</html>

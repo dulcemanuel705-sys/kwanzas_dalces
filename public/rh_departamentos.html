@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+  <title>RH - Departamentos e Cargos - Kwanza Manipulus</title>
+  <link rel="shortcut icon" type="image/x-icon" href="assets/img/logo.png">
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
+  <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/feathericon.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <!-- Reaproveita o mesmo estilo visual do dashboard/RH -->
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --primary-dark: #1a252f;
+      --primary-light: #34495e;
+      --accent-color: #0fd7d4;
+      --accent-dark: #0ab5b3;
+      --secondary-color: #95a5a6;
+      --dark-bg: #000000;
+      --darker-bg: #000000;
+      --light-bg: #f8f9fa;
+      --card-bg: #ffffff;
+      --text-primary: #2c3e50;
+      --text-secondary: #7f8c8d;
+      --border-color: #dee2e6;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+      --shadow-xl: 0 20px 40px rgba(0,0,0,0.15);
+      --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    body { background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%); color: var(--text-primary); font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; line-height: 1.6; }
+    .header { background: var(--card-bg); box-shadow: 0 2px 8px rgba(0,0,0,0.04); border-bottom: 1px solid var(--border-color); }
+    .header-left { background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%) !important; }
+    .sidebar { background: #000000 !important; box-shadow: 2px 0 10px rgba(0,0,0,0.3); }
+    .sidebar .sidebar-menu ul li a { color: #ffffff !important; opacity: 0.85; transition: var(--transition-fast); padding: 12px 20px; border-radius: 8px; margin: 4px 10px; }
+    .sidebar .sidebar-menu ul li a:hover { color: #ffffff !important; opacity: 1; background: rgba(15, 215, 212, 0.1); transform: translateX(5px); }
+    .sidebar .sidebar-menu ul li.active > a { color: #ffffff !important; font-weight: 600; background: rgba(15, 215, 212, 0.2); border-left: 3px solid #0fd7d4; }
+    .sidebar .submenu_class li a { color: #f2f9ff !important; opacity: 0.8; font-size: 13px; }
+    .sidebar .submenu_class li a:hover { color: #0fd7d4 !important; opacity: 1; }
+    
+    .sidebar .sidebar-menu > ul > li > a i {
+      color: #ffffff !important;
+      font-size: 15px;
+      margin-right: 6px;
+    }
+    .card { border: none; border-radius: 12px; box-shadow: var(--shadow-md); transition: var(--transition-smooth); background: var(--card-bg); }
+    .card:hover { box-shadow: var(--shadow-lg); }
+    .card-header { background: #2c3e50; border: none; border-radius: 10px 10px 0 0 !important; padding: 12px 20px; }
+    .card-header h4 { color: #fff !important; margin: 0; font-weight: 600; font-size: 0.95rem; letter-spacing: 0.3px; }
+    .card-body { padding: 24px; }
+    .card-table { background: #000000 !important; border: 1px solid rgba(10, 181, 179, 0.3); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+    .card-table .card-header { background: linear-gradient(135deg, #0ab5b3 0%, #08a09e 100%) !important; border-bottom: 2px solid #0ab5b3; }
+    .card-table .card-body { background: #000000 !important; padding: 20px; }
+    .table { margin-bottom: 0; background: #000000 !important; }
+    .table thead th { background: #1a1a1a !important; color: #0ab5b3 !important; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; border: 1px solid rgba(10, 181, 179, 0.2) !important; padding: 14px 12px; }
+    .table tbody tr { transition: var(--transition-fast); background: #000000 !important; border-bottom: 1px solid rgba(10, 181, 179, 0.1); }
+    .table tbody tr:hover { background: rgba(10, 181, 179, 0.1) !important; transform: scale(1.005); box-shadow: 0 2px 8px rgba(10, 181, 179, 0.2); }
+    .table tbody td { padding: 12px; vertical-align: middle; border-color: rgba(10, 181, 179, 0.1) !important; color: #e0e0e0 !important; }
+    .btn-primary { background: #0fd7d4; border: none; border-radius: 8px; padding: 10px 24px; font-weight: 600; letter-spacing: 0.3px; transition: var(--transition-smooth); box-shadow: 0 4px 12px rgba(15, 215, 212, 0.25); color: #000; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(15, 215, 212, 0.35); background: #0ab5b3; color: #fff; }
+    .page-wrapper .content.container-fluid { margin-top: 30px; }
+  </style>
+</head>
+<body>
+  <div class="main-wrapper">
+    <div class="header">
+			<div class="header-left">
+				<a href="dashboard.html" class="logo"> <img src="assets/img/kwanzaWhite.svg" width="50" height="70" alt="logo"> <span class="logoclass"></span> </a>
+				<a href="dashboard.html" class="logo logo-small"> <img src="assets/img/kwanzaWhite.svg" alt="Logo" width="30" height="30"> </a>
+			</div>
+			<a href="javascript:void(0);" id="toggle_btn"> <i class="fe fe-text-align-left"></i> </a>
+			<a class="mobile_btn" id="mobile_btn"> <i class="fas fa-bars"></i> </a>
+			<ul class="nav user-menu">
+				<li class="nav-item dropdown has-arrow">
+					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown"> <span class="user-img"><img class="rounded-circle" src="assets/img/profiles/avatar-01.jpg" width="31" alt=""></span> </a>
+					<div class="dropdown-menu">
+						<div class="user-header">
+							<div class="avatar avatar-sm"> <img src="foto do perfil" alt="User Image" class="avatar-img rounded-circle"> </div>
+							<div class="user-text">
+								<div class="muted" style="font-size:11px">Bem-vindo(a), </div>
+								<h6><span id="userName">usuário</span></h6>
+							</div>
+						</div> <a class="dropdown-item" href="profile.html">Perfil</a> <a class="dropdown-item" href="settings.html">configurações da conta</a> <a class="dropdown-item" id="logoutBtn" href="#">Sair</a> </div>
+				</li>
+			</ul>
+			<div class="top-nav-search">
+				<form>
+					<input type="text" class="form-control" placeholder="procurar">
+					<button class="btn" type="submit"><i class="fas fa-search"></i></button>
+				</form>
+			</div>
+		</div>
+		<div class="sidebar" id="sidebar">
+			<div class="sidebar-inner slimscroll">
+				<div id="sidebar-menu" class="sidebar-menu">
+					<ul>
+						<li> <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a> </li>
+						<li> <a href="clientes_clientes.html"><i class="fas fa-user"></i> <span>Clientes</span></a></li>
+						<li class="submenu"> <a href="#" data-toggle="collapse"><i class="fas fa-user"></i> <span> Empresa </span> <span class="menu-arrow"></span></a>
+							<ul class="submenu_class" style="display: none;">
+								<li><a href="rh_funcionarios.html">Funcionários</a></li>
+								<li class="active"><a href="rh_departamentos.html">Departamentos & Cargos</a></li>
+								<li><a href="rh_ferias.html">Férias</a></li>
+								<li><a href="users.html">Utilizadores</a></li>
+							</ul>
+						</li>
+						
+						<li class="submenu"> <a href="#" data-toggle="collapse"><i class="fas fa-user"></i> <span> Fornecedores</span> <span class="menu-arrow"></span></a>
+							<ul class="submenu_class" style="display: none;">
+								<li><a href="fornecedor.html">Lista de Fornecedores </a></li>
+							</ul>
+						</li>
+						<li> <a href="financas.html#bancos"><i class="fas fa-university"></i> <span> Bancos</span></a> </li>
+						<li> <a href="financas.html#pagamentos"><i class="fas fa-money-bill-alt"></i> <span> Pagamentos</span></a> </li>
+            <li> <a href="faturas.html"><i class="fas fa-file-invoice"></i> <span>Faturas</span></a> </li>
+						<li> <a href="projectos.html"><i class="fas fa-cube"></i> <span>Projectos Kwanza </span></a> </li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+    <div class="page-wrapper">
+      <div class="content container-fluid">
+        <div class="page-header">
+          <div class="row align-items-center">
+            <div class="col">
+              <h3 class="page-title">Departamentos & Cargos</h3>
+              <p class="text-muted mb-0">Estrutura organizacional da empresa</p>
+            </div>
+            <div class="col-auto float-right ml-auto">
+              <button class="btn btn-primary" id="btnNovoDepartamento"><i class="fa fa-plus"></i> Novo Departamento</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <div class="card card-table">
+              <div class="card-header">
+                <h4 class="card-title">Departamentos</h4>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover" id="tblDepartamentos">
+                    <thead>
+                      <tr>
+                        <th>Nome</th>
+                        <th>Código</th>
+                        <th>Ativo</th>
+                        <th>Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="card card-table">
+              <div class="card-header">
+                <h4 class="card-title">Cargos</h4>
+              </div>
+              <div class="card-body">
+                <div class="form-row mb-2">
+                  <div class="col">
+                    <select id="filtroDepCargo" class="form-control form-control-sm">
+                      <option value="">(Todos os departamentos)</option>
+                    </select>
+                  </div>
+                  <div class="col-auto">
+                    <button class="btn btn-primary btn-sm" id="btnNovoCargo"><i class="fa fa-plus"></i> Novo Cargo</button>
+                  </div>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-hover" id="tblCargos">
+                    <thead>
+                      <tr>
+                        <th>Nome</th>
+                        <th>Departamento</th>
+                        <th>Ativo</th>
+                        <th>Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Departamento -->
+  <div class="modal fade" id="modalDepartamento" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Departamento</h5>
+          <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <form id="formDepartamento">
+            <input type="hidden" id="dep_id">
+            <div class="form-group">
+              <label>Nome *</label>
+              <input id="dep_nome" class="form-control form-control-sm" required>
+            </div>
+            <div class="form-group">
+              <label>Código</label>
+              <input id="dep_codigo" class="form-control form-control-sm">
+            </div>
+            <div class="form-group">
+              <label>Ativo</label>
+              <select id="dep_ativo" class="form-control form-control-sm">
+                <option value="true">Ativo</option>
+                <option value="false">Inativo</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="btnSalvarDepartamento">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Cargo -->
+  <div class="modal fade" id="modalCargo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Cargo</h5>
+          <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <form id="formCargo">
+            <input type="hidden" id="cargo_id">
+            <div class="form-group">
+              <label>Nome *</label>
+              <input id="cargo_nome" class="form-control form-control-sm" required>
+            </div>
+            <div class="form-group">
+              <label>Departamento</label>
+              <select id="cargo_id_departamento" class="form-control form-control-sm">
+                <option value="">(Nenhum)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Ativo</label>
+              <select id="cargo_ativo" class="form-control form-control-sm">
+                <option value="true">Ativo</option>
+                <option value="false">Inativo</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="btnSalvarCargo">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/jquery-3.5.1.min.js"></script>
+  <script src="assets/js/popper.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/script.js"></script>
+  <!-- Carrega o avatar do usuário -->
+  <script src="js/profile-avatar.js"></script>
+  <script>
+    const token = localStorage.getItem('token');
+    if (!token) { window.location.href = '/'; }
+
+    let departamentos = [];
+    let cargos = [];
+
+    async function fetchDepartamentos(){
+      try{
+        const res = await fetch('/api/rh/departamentos', { headers: { Authorization: `Bearer ${token}` } });
+        if(!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        departamentos = Array.isArray(data) ? data : (data.items || []);
+        renderDepartamentos();
+        preencherSelectsDepartamentos();
+      }catch(e){ console.error('Erro ao carregar departamentos', e); }
+    }
+
+    function renderDepartamentos(){
+      const tbody = document.querySelector('#tblDepartamentos tbody');
+      tbody.innerHTML = departamentos.map(d => `
+        <tr>
+          <td>${d.nome || ''}</td>
+          <td>${d.codigo || ''}</td>
+          <td>${d.ativo === false ? 'Não' : 'Sim'}</td>
+          <td>
+            <button class="btn btn-sm btn-info btn-edit-dep" data-id="${d.id}"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-sm btn-danger btn-del-dep" data-id="${d.id}"><i class="fas fa-trash"></i></button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function preencherSelectsDepartamentos(){
+      const selFiltro = document.getElementById('filtroDepCargo');
+      const selCargoDep = document.getElementById('cargo_id_departamento');
+      const baseFiltro = '<option value="">(Todos os departamentos)</option>';
+      const baseCargo = '<option value="">(Nenhum)</option>';
+      selFiltro.innerHTML = baseFiltro + departamentos.map(d => `<option value="${d.id}">${d.nome}</option>`).join('');
+      selCargoDep.innerHTML = baseCargo + departamentos.map(d => `<option value="${d.id}">${d.nome}</option>`).join('');
+    }
+
+    async function fetchCargos(){
+      try{
+        const params = new URLSearchParams();
+        const depId = document.getElementById('filtroDepCargo').value;
+        if(depId) params.append('id_departamento', depId);
+        const url = '/api/rh/cargos' + (params.toString() ? ('?' + params.toString()) : '');
+        const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+        if(!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        cargos = Array.isArray(data) ? data : (data.items || []);
+        renderCargos();
+      }catch(e){ console.error('Erro ao carregar cargos', e); }
+    }
+
+    function getNomeDepartamento(id){
+      if(!id) return '';
+      const d = departamentos.find(x => String(x.id) === String(id));
+      return d ? d.nome : '';
+    }
+
+    function renderCargos(){
+      const tbody = document.querySelector('#tblCargos tbody');
+      tbody.innerHTML = cargos.map(c => `
+        <tr>
+          <td>${c.nome || ''}</td>
+          <td>${getNomeDepartamento(c.id_departamento)}</td>
+          <td>${c.ativo === false ? 'Não' : 'Sim'}</td>
+          <td>
+            <button class="btn btn-sm btn-info btn-edit-cargo" data-id="${c.id}"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-sm btn-danger btn-del-cargo" data-id="${c.id}"><i class="fas fa-trash"></i></button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    document.getElementById('btnNovoDepartamento').addEventListener('click', () => {
+      document.getElementById('formDepartamento').reset();
+      document.getElementById('dep_id').value = '';
+      document.getElementById('dep_ativo').value = 'true';
+      $('#modalDepartamento').modal('show');
+    });
+
+    document.getElementById('btnSalvarDepartamento').addEventListener('click', async () => {
+      const id = document.getElementById('dep_id').value;
+      const payload = {
+        nome: document.getElementById('dep_nome').value,
+        codigo: document.getElementById('dep_codigo').value,
+        ativo: document.getElementById('dep_ativo').value === 'true',
+      };
+      if(!payload.nome){ alert('Nome é obrigatório'); return; }
+      try{
+        let res;
+        if(!id){
+          res = await fetch('/api/rh/departamentos', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+            body: JSON.stringify(payload),
+          });
+        }else{
+          res = await fetch(`/api/rh/departamentos/${encodeURIComponent(id)}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+            body: JSON.stringify(payload),
+          });
+        }
+        if(!res.ok){ throw new Error(await res.text() || ('HTTP ' + res.status)); }
+        $('#modalDepartamento').modal('hide');
+        await fetchDepartamentos();
+        await fetchCargos();
+      }catch(e){ alert('Erro ao salvar departamento: ' + e.message); }
+    });
+
+    document.getElementById('btnNovoCargo').addEventListener('click', () => {
+      document.getElementById('formCargo').reset();
+      document.getElementById('cargo_id').value = '';
+      document.getElementById('cargo_ativo').value = 'true';
+      $('#modalCargo').modal('show');
+    });
+
+    document.getElementById('btnSalvarCargo').addEventListener('click', async () => {
+      const id = document.getElementById('cargo_id').value;
+      const payload = {
+        nome: document.getElementById('cargo_nome').value,
+        id_departamento: document.getElementById('cargo_id_departamento').value || null,
+        ativo: document.getElementById('cargo_ativo').value === 'true',
+      };
+      if(!payload.nome){ alert('Nome é obrigatório'); return; }
+      try{
+        let res;
+        if(!id){
+          res = await fetch('/api/rh/cargos', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+            body: JSON.stringify(payload),
+          });
+        }else{
+          res = await fetch(`/api/rh/cargos/${encodeURIComponent(id)}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+            body: JSON.stringify(payload),
+          });
+        }
+        if(!res.ok){ throw new Error(await res.text() || ('HTTP ' + res.status)); }
+        $('#modalCargo').modal('hide');
+        await fetchCargos();
+      }catch(e){ alert('Erro ao salvar cargo: ' + e.message); }
+    });
+
+    document.getElementById('filtroDepCargo').addEventListener('change', fetchCargos);
+
+    document.addEventListener('click', async (e) => {
+      if(e.target.closest && e.target.closest('.btn-edit-dep')){
+        const id = e.target.closest('.btn-edit-dep').getAttribute('data-id');
+        const d = departamentos.find(x => String(x.id) === String(id));
+        if(!d) return;
+        document.getElementById('dep_id').value = d.id;
+        document.getElementById('dep_nome').value = d.nome || '';
+        document.getElementById('dep_codigo').value = d.codigo || '';
+        document.getElementById('dep_ativo').value = d.ativo === false ? 'false' : 'true';
+        $('#modalDepartamento').modal('show');
+      }
+      if(e.target.closest && e.target.closest('.btn-del-dep')){
+        const id = e.target.closest('.btn-del-dep').getAttribute('data-id');
+        if(!confirm('Tem certeza que deseja desativar este departamento?')) return;
+        try{
+          const res = await fetch(`/api/rh/departamentos/${encodeURIComponent(id)}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if(!res.ok && res.status !== 204){ throw new Error(await res.text() || ('HTTP ' + res.status)); }
+          await fetchDepartamentos();
+          await fetchCargos();
+        }catch(e){ alert('Erro ao desativar departamento: ' + e.message); }
+      }
+      if(e.target.closest && e.target.closest('.btn-edit-cargo')){
+        const id = e.target.closest('.btn-edit-cargo').getAttribute('data-id');
+        const c = cargos.find(x => String(x.id) === String(id));
+        if(!c) return;
+        document.getElementById('cargo_id').value = c.id;
+        document.getElementById('cargo_nome').value = c.nome || '';
+        document.getElementById('cargo_id_departamento').value = c.id_departamento || '';
+        document.getElementById('cargo_ativo').value = c.ativo === false ? 'false' : 'true';
+        $('#modalCargo').modal('show');
+      }
+      if(e.target.closest && e.target.closest('.btn-del-cargo')){
+        const id = e.target.closest('.btn-del-cargo').getAttribute('data-id');
+        if(!confirm('Tem certeza que deseja desativar este cargo?')) return;
+        try{
+          const res = await fetch(`/api/rh/cargos/${encodeURIComponent(id)}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if(!res.ok && res.status !== 204){ throw new Error(await res.text() || ('HTTP ' + res.status)); }
+          await fetchCargos();
+        }catch(e){ alert('Erro ao desativar cargo: ' + e.message); }
+      }
+    });
+
+    // Inicializar carregando departamentos e cargos
+    (async function init(){
+      try{
+        const resMe = await fetch('/api/users/me', { headers: { Authorization: `Bearer ${token}` } });
+        if(!resMe.ok){
+          if(resMe.status === 401) window.location.href = '/';
+          return;
+        }
+        const me = await resMe.json();
+        const el = document.getElementById('userName');
+        if(el) el.textContent = me?.nome || 'usuário';
+        // apenas admin pode gerir estrutura RH
+        if(me?.tipo !== 'admin'){
+          alert('Acesso permitido apenas para administradores.');
+          window.location.href = 'dashboard.html';
+          return;
+        }
+        await fetchDepartamentos();
+        await fetchCargos();
+      }catch(e){ console.error('Erro ao iniciar página de departamentos', e); }
+    })();
+  </script>
+</body>
+</html>

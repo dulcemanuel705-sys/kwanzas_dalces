@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+  <title>Fornecedores - Kwanzas Metal</title>
+  <link rel="shortcut icon" type="image/x-icon" href="assets/img/logo.png">
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
+  <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/feathericon.min.css">
+  <link rel="stylehseet" href="https://cdn.oesmith.co.uk/morris-0.5.1.css">
+  <link rel="stylesheet" href="assets/plugins/morris/morris.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <!-- DataTables Bootstrap 4 CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap4.min.css">
+  <!-- SweetAlert2 CSS (optional, built-in styles) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <style>
+    :root {
+      --primary-color: #066fe3;
+      --secondary-color: #0fd7d4;
+      --accent-color: #08ecec;
+      --dark-bg: #042742;
+      --light-bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text-primary: #2c3e50;
+      --text-secondary: #64748b;
+      --border-color: #e2e8f0;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+      --transition-fast: all 0.2s ease;
+      --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Sidebar Professional Styling - Black with Cyan */
+    .sidebar {
+      background: #000000 !important;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+    }
+
+    .sidebar .sidebar-menu ul li a {
+      color: #ffffff !important;
+      opacity: 0.85;
+      transition: var(--transition-fast);
+      padding: 10px 16px;
+      border-radius: 8px;
+      margin: 2px 8px;
+    }
+
+    .sidebar .sidebar-menu ul li a:hover {
+      color: #ffffff !important;
+      opacity: 1;
+      background: rgba(15, 215, 212, 0.1);
+      transform: translateX(5px);
+    }
+
+    .sidebar .sidebar-menu ul li.active > a {
+      color: #ffffff !important;
+      font-weight: 600;
+      background: rgba(15, 215, 212, 0.2);
+      border-left: 3px solid #0fd7d4;
+    }
+
+    .sidebar .submenu_class li a {
+      color: #f2f9ff !important;
+      opacity: 0.8;
+      font-size: 13px;
+    }
+
+    .sidebar .submenu_class li a:hover {
+      color: #0fd7d4 !important;
+      opacity: 1;
+    }
+
+    /* Sidebar submenu layout mais corporativo */
+    .sidebar .sidebar-menu > ul > li > a {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .sidebar .sidebar-menu > ul > li > a i {
+      margin-right: 6px;
+      font-size: 15px;
+      color: #ffffff !important;
+    }
+
+    .sidebar .sidebar-menu .menu-arrow {
+      margin-left: auto;
+      transition: transform 0.2s ease;
+    }
+
+    .sidebar .submenu.active > a .menu-arrow {
+      transform: rotate(90deg);
+    }
+
+    .header{ background-color: rgb(104, 171, 187); }
+    body{ color: rgb(6, 131, 227); }
+    .board1{ border-radius: 12px; border: solid 1px  rgb(6, 131, 227); cursor: pointer; }
+    .table-responsive{
+      overflow-x: auto;
+      overflow-y: auto;
+      max-height: 78vh; /* altura máxima visível da tabela (tabela mais comprida) */
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+      border: 1px solid #dde5f2;
+    }
+    .sticky-th thead th{ position: sticky; top: 0; background: #fff; z-index: 1; }
+    /* colunas principais deixam de ser fixas: remover comportamento sticky das sticky-col-*/
+    #tblFornecedores th[class^="sticky-col-"],
+    #tblFornecedores td[class^="sticky-col-"]{
+      position: static;
+      z-index: auto;
+      background: inherit;
+    }
+    .header{
+    background-color: white;
+  }
+  .header-left{
+	background-color: black !important;
+  }
+  
+    body{
+      color: rgb(6, 131, 227);
+    }
+    .board1{
+      border-radius: 12px;
+      border: solid 1px  rgb(6, 131, 227);
+      cursor: pointer;
+    }
+    /* ===== Tabela de Fornecedores - visual elegante e profissional ===== */
+    #tblFornecedores{
+      font-size: 11px;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: #ffffff;
+    }
+    #tblFornecedores thead th{
+      background: linear-gradient(135deg,#f9fafb,#e5f3ff);
+      color:#0b1f33;
+      vertical-align: middle;
+      border-bottom:2px solid #0ab5b3;
+      border-top:1px solid #e5e7eb;
+      border-left:1px solid #e5e7eb;
+      border-right:1px solid #e5e7eb;
+      white-space: nowrap;
+      font-weight:600;
+      letter-spacing: .01em;
+      position: sticky;
+      top: 0;
+      z-index: 3;
+    }
+    #tblFornecedores tbody td{
+      border-top:1px solid #edf1f7;
+      border-bottom:1px solid #edf1f7;
+      padding: 5px 8px;
+      white-space: nowrap;
+      color:#111827;
+      background:#ffffff;
+      vertical-align: middle;
+    }
+    #tblFornecedores tbody tr:nth-child(even) td{
+      background:#f9fafb;
+    }
+    #tblFornecedores tbody tr:hover td{
+      background:#e9f4ff !important;
+      color:#111827;
+    }
+    .badge-conciliado{
+      display:inline-block;
+      padding:2px 8px;
+      border-radius:999px;
+      font-size:10px;
+      font-weight:600;
+      background:#dcfce7;
+      color:#166534;
+      border:1px solid #22c55e;
+      text-transform:uppercase;
+      letter-spacing:.03em;
+    }
+    /* ícone de ações mais visível */
+    #tblFornecedores td .btn.btn-sm{
+      padding: .15rem .35rem;
+    }
+    /* melhorar scroll horizontal da tabela grande */
+    .card-table .dataTables_wrapper .dataTables_paginate .paginate_button{
+      padding: 0.15rem 0.55rem;
+      font-size: 0.78rem;
+    }
+    .dataTables_wrapper .dataTables_filter input{
+      padding: .15rem .35rem;
+      height: 28px;
+      font-size: 0.78rem;
+    }
+    /* UI refinements */
+    .card.board1:hover{ box-shadow: 0 8px 20px rgba(0,0,0,0.08); transform: translateY(-2px); transition: all .2s ease; }
+        .page-header h1{ color:#066fe3; font-weight:600; }
+    .card-metric{ color:#fff; border:0; }
+    .metric-1{ background: linear-gradient(135deg,#042742,#08ecec); }
+    .metric-2{ background: linear-gradient(135deg,#042742,#08ecec); }
+    .metric-3{ background: linear-gradient(135deg,#042742,#08ecec); }
+    .metric-4{ background: linear-gradient(135deg,#042742,#08ecec); }
+    .card-metric .text-muted{ color: rgba(255,255,255,.85)!important; }
+    .card-metric svg{ stroke:#fff!important; }
+    .card-metric .card_widget_header{ color:#fff; }
+    /* Cores de linha por estado da fatura do fornecedor */
+    #tblFornecedores tbody tr.row-fatura-paga{
+      background-color: #e8f9ef !important;
+    }
+    #tblFornecedores tbody tr.row-fatura-parcial{
+      background-color: #fff7e0 !important;
+    }
+    #tblFornecedores tbody tr.row-fatura-aberto{
+      background-color: #e0f0ff !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="main-wrapper">
+    <!-- Header -->
+    <div class="header">
+			<div class="header-left">
+				<a href="dashboard.html" class="logo"> <img src="assets/img/kwanzaWhite.svg" width="50" height="70" alt="logo"> <span class="logoclass"></span> </a>
+				<a href="dashboard.html" class="logo logo-small"> <img src="assets/img/kwanzaWhite.svg" alt="Logo" width="30" height="30"> </a>
+			</div>
+			<a href="javascript:void(0);" id="toggle_btn"> <i class="fe fe-text-align-left"></i> </a>
+			<a class="mobile_btn" id="mobile_btn"> <i class="fas fa-bars"></i> </a>
+			<ul class="nav user-menu">
+				<li class="nav-item dropdown has-arrow">
+					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown"> <span class="user-img"><img class="rounded-circle" src="assets/img/profiles/avatar-01.jpg" width="31" alt=""></span> </a>
+					<div class="dropdown-menu">
+						<div class="user-header">
+							<div class="avatar avatar-sm"> <img src="foto do perfil" alt="User Image" class="avatar-img rounded-circle"> </div>
+							<div class="user-text">
+								<div class="muted" style="font-size:11px">Bem-vindo(a), </div>
+								<h6><span id="userName">usuário</span></h6>
+							</div>
+						</div> <a class="dropdown-item" href="profile.html">Perfil</a> <a class="dropdown-item" href="settings.html">configurações da conta</a> <a class="dropdown-item" id="logoutBtn" href="#">Sair</a> </div>
+				</li>
+			</ul>
+			<div class="top-nav-search">
+				<form>
+					<input type="text" class="form-control" placeholder="procurar">
+					<button class="btn" type="submit"><i class="fas fa-search"></i></button>
+				</form>
+			</div>
+		</div>
+		<div class="sidebar" id="sidebar">
+			<div class="sidebar-inner slimscroll">
+				<div id="sidebar-menu" class="sidebar-menu">
+					<ul>
+						<li class="active"> <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a> </li>
+						<li> <a href="clientes_clientes.html"><i class="fas fa-user"></i> <span>Clientes</span></a></li>
+						<li class="submenu"> <a href="#" data-toggle="collapse"><i class="fas fa-user"></i> <span> Empresa </span> <span class="menu-arrow"></span></a>
+							<ul class="submenu_class" style="display: none;">
+								<li><a href="rh_funcionarios.html">Funcionários</a></li>
+								<li><a href="rh_departamentos.html">Departamentos & Cargos</a></li>
+								<li><a href="rh_ferias.html">Férias</a></li>
+								<li><a href="users.html">Utilizadores</a></li>
+							</ul>
+						</li>
+						
+						<li class="submenu active"> <a href="#" data-toggle="collapse"><i class="fas fa-user"></i> <span> Fornecedores</span> <span class="menu-arrow"></span></a>
+							<ul class="submenu_class" style="display: block;">
+								<li class="active"><a href="fornecedores.html">Todos os Fornecedores</a></li>
+								<li><a href="fornecedor.html">Lista de Fornecedores </a></li>
+							</ul>
+						</li>
+						<li> <a href="financas.html#bancos"><i class="fas fa-university"></i> <span> Bancos</span></a> </li>
+						<li> <a href="financas.html#pagamentos"><i class="fas fa-money-bill-alt"></i> <span> Pagamentos</span></a> </li>
+            <li> <a href="faturas.html"><i class="fas fa-file-invoice"></i> <span>Faturas</span></a> </li>
+						<li> <a href="projectos.html"><i class="fas fa-cube"></i> <span>Projectos Kwanza </span></a> </li>
+					</ul>
+				</div>
+			</div>
+		</div>
+    <!-- Page content -->
+    <div class="page-wrapper">
+      <div class="content container-fluid">
+        <div class="page-header">
+          <div class="row">
+            <div class="col-sm-12 mt-5">
+              <h1>Fornecedores</h1>
+              <p class="text-muted mb-0">Lista de Fornecedores</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col">
+            <button class="btn btn-primary" data-toggle="modal" data-target="#modalAdd">Adicionar Fornecedor</button>
+            <button id="btnDeleteAllFornecedores" class="btn btn-outline-danger ml-2">Eliminar Todos</button>
+            <button class="btn btn-outline-secondary" data-toggle="modal" data-target="#modalUpload"><i class="fas fa-upload mr-1"></i>Upload CSV</button>
+            <button id="btnOpenUploadExcel" type="button" class="btn btn-outline-success" onclick="return openExcelModal();"><i class="fas fa-file-excel mr-1"></i>Upload Excel</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 d-flex">
+            <div class="card card-table flex-fill">
+              <div class="card-header d-flex align-items-center justify-content-between">
+                <h4 class="card-title mb-0">Lista de Fornecedores</h4>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive sticky-th">
+                  <table id="tblFornecedores" class="table table-striped table-hover table-center table-sm">
+                    <thead>
+                      <tr>
+                        <th class="sticky-col-1">Nº Ordem</th>
+                        <th class="sticky-col-2">NIF do Contribuinte</th>
+                        <th class="sticky-col-3">Nome / Firma</th>
+                        <th class="sticky-col-4">PAGO VIA</th>
+                        <th class="sticky-col-5">Nº FACTURA</th>
+                        <th class="sticky-col-6">CUSTO ACEITE OU NÃO</th>
+                        <th class="sticky-col-7">Data do Documento</th>
+                        <th class="sticky-col-8">MÊS</th>
+                        <th class="sticky-col-9">Valor do Documento</th>
+                        <th class="sticky-col-10">Valor Tributável p/ IVA</th>
+                        <th class="sticky-col-11">Valor Tributável p/ Retenção</th>
+                        <th class="sticky-col-12">IVA Dedutível</th>
+                        <th class="sticky-col-13">IVA SUPORTADO</th>
+                        <th class="sticky-col-14">IVA DEDUTIVEL</th>
+                        <th class="sticky-col-15">VALOR PAGO</th>
+                        <th class="sticky-col-16">DÍVIDA</th>
+                        <th class="sticky-col-17">SITUAÇÃO</th>
+                        <th class="sticky-col-18">RFONT</th>
+                        <th class="sticky-col-19">TIPOLOGIA</th>
+                        <th class="sticky-col-20">ID PROJECTO</th>
+                        <th class="sticky-col-21">OBS</th>
+                        <th class="sticky-col-22">DATA PAGAMENTO</th>
+                        <th>Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- Dados serão inseridos aqui via JS -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Adicionar Fornecedor -->
+  <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="modalAddLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalAddLabel">Adicionar Fornecedor</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="formAddFornecedor">
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <label>Nº Ordem</label>
+                <input id="numOrdem" name="num_ordem" class="form-control form-control-sm" required readonly placeholder="será gerado automaticamente">
+              </div>
+              <div class="form-group col-md-3">
+                <label>NIF do Contribuinte</label>
+                <input name="nif" id="fornNif" class="form-control form-control-sm" list="listaNifsFornecedores" placeholder="Escolha ou digite o NIF" required>
+                <datalist id="listaNifsFornecedores"></datalist>
+              </div>
+              <div class="form-group col-md-6">
+                <label>Nome / Firma</label>
+                <input name="nome" id="fornNome" class="form-control form-control-sm" list="listaFornecedores" placeholder="Escolha ou digite o nome" required>
+                <datalist id="listaFornecedores"></datalist>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <label>PAGO VIA</label>
+                <select name="pago_via" class="form-control form-control-sm">
+                  <option value="">-- selecione --</option>
+                  <option value="INV">Fatura</option>
+                  <option value="OBC">Ordem Bancária</option>
+                  <option value="MFI">Instituição de Microfinanças</option>
+                </select>
+              </div>
+              <div class="form-group col-md-3">
+                <label>Nº FACTURA</label>
+                <input name="num_factura" class="form-control form-control-sm">
+              </div>
+              <div class="form-group col-md-3">
+                <label>Data do Documento</label>
+                <input name="data_documento" type="date" class="form-control form-control-sm">
+              </div>
+              <div class="form-group col-md-3">
+                <label>MÊS</label>
+                <input name="mes" class="form-control form-control-sm">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <label>Valor do Documento</label>
+                <input name="valor_documento" type="number" step="0.01" class="form-control form-control-sm">
+              </div>
+              <div class="form-group col-md-3">
+                <label>Valor Trib. p/ IVA</label>
+                <input name="valor_iva" type="number" step="0.01" class="form-control form-control-sm">
+              </div>
+              <div class="form-group col-md-3">
+                <label>Valor Trib. p/ Retenção</label>
+                <input name="valor_retencao" type="number" step="0.01" class="form-control form-control-sm">
+              </div>
+              <div class="form-group col-md-3">
+                <label>IVA Dedutível</label>
+                <input name="iva_dedutivel" type="number" step="0.01" class="form-control form-control-sm">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <label>IVA SUPORTADO</label>
+                <input name="iva_suportado" type="number" step="0.01" class="form-control form-control-sm">
+              </div>
+              <div class="form-group col-md-3">
+                <label>IVA DEDUTIVEL</label>
+                <input name="iva_dedutivel2" type="number" step="0.01" class="form-control form-control-sm">
+              </div>
+              <div class="form-group col-md-3">
+                <label>VALOR PAGO</label>
+                <input name="valor_pago" type="number" step="0.01" class="form-control form-control-sm">
+              </div>
+              <div class="form-group col-md-3">
+                <label>DÍVIDA</label>
+                <input name="divida" type="number" step="0.01" class="form-control form-control-sm">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <label>SITUAÇÃO</label>
+                <input name="situacao" class="form-control form-control-sm">
+              </div>
+              <div class="form-group col-md-3">
+                <label>RFONT</label>
+                <input name="rfont" class="form-control form-control-sm">
+              </div>
+              <div class="form-group col-md-3">
+                <label>TIPOLOGIA</label>
+                <input name="tipologia" class="form-control form-control-sm">
+              </div>
+              <div class="form-group col-md-3">
+                <label>ID PROJECTO</label>
+                <input name="id_projecto" class="form-control form-control-sm">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-9">
+                <label>OBS</label>
+                <input name="obs" class="form-control form-control-sm">
+              </div>
+              <div class="form-group col-md-3">
+                <label>DATA PAGAMENTO</label>
+                <input name="data_pagamento" type="date" class="form-control form-control-sm">
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" id="btnSalvarFornecedor" class="btn btn-primary">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Upload -->
+  <div class="modal fade" id="modalUpload" tabindex="-1" role="dialog" aria-labelledby="modalUploadLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalUploadLabel">Upload de Fornecedores (CSV)</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="formUpload" enctype="multipart/form-data">
+            <div class="form-group">
+              <input type="file" name="file" accept=".csv" class="form-control-file" required>
+              <small class="form-text text-muted">Formato suportado: CSV.</small>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" id="btnUpload" class="btn btn-primary">Enviar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Upload Excel -->
+  <div class="modal fade" id="modalUploadExcel" tabindex="-1" role="dialog" aria-labelledby="modalUploadExcelLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalUploadExcelLabel">Upload de Fornecedores (Excel)</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="formUploadExcel" enctype="multipart/form-data">
+            <div class="form-group">
+              <input type="file" name="file" accept=".xlsx,.xls,.xlsm" class="form-control-file" required>
+              <small class="form-text text-muted">Formatos suportados: .xlsx, .xls.<br> <br><br>A primeira folha deve ter as colunas na mesma ordem do CSV.</small>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" id="btnUploadExcel" class="btn btn-success">Enviar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/jquery-3.5.1.min.js"></script>
+  <script src="assets/js/popper.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/script.js"></script>
+  <!-- Carrega o avatar do usuário -->
+  <script src="js/profile-avatar.js"></script>
+  <!-- DataTables and SweetAlert2 -->
+  <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+  <script>
+    // Verificação de autenticação via JWT (mesmo do dashboard)
+    async function checkAuth() {
+      const token = localStorage.getItem('token');
+      if (!token) { window.location.href = '/'; return; }
+      try {
+        const res = await fetch('/api/users/me', { headers: { Authorization: `Bearer ${token}` } });
+        if (res.status === 401 || res.status === 403) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          window.location.href = '/';
+          return;
+        }
+        if (!res.ok) throw new Error('server_error');
+        const me = await res.json();
+        const userName = document.getElementById('userName');
+        if (userName) userName.textContent = me?.nome || 'usuário';
+      } catch {
+        // Mantém usuário na página, poderia exibir um banner de indisponibilidade
+      }
+    }
+    checkAuth();
+
+    // Estado e integração com API backend
+    let dados = [];
+    let editingFornecedorId = null;
+    const fornecedoresIndex = new Map(); // nome -> nif (inclui fornecedores e clientes)
+
+    async function carregarListaFornecedoresNomeNif(){
+      try{
+        fornecedoresIndex.clear();
+        const nifsIndex = new Map();
+        // Carregar apenas fornecedores (mesma fonte do clientes.html atual)
+        const dataFor = await API.getJSON('/api/fornecedores');
+        const itemsFor = Array.isArray(dataFor) ? dataFor : (dataFor.items || []);
+        for(const it of itemsFor){
+          const nome = (it.nome || '').trim();
+          const nif = (it.nif || '').trim();
+          if(nome){ fornecedoresIndex.set(nome, nif); }
+          if(nif){ nifsIndex.set(nif, nome); }
+        }
+
+        // Popular datalist de nomes (ordenado alfabeticamente)
+        const dlNome = document.getElementById('listaFornecedores');
+        if(dlNome){
+          const opts = Array.from(fornecedoresIndex.entries())
+            .sort((a,b) => a[0].localeCompare(b[0]))
+            .map(([nome, nif]) => (`<option value="${nome}" ${nif ? `data-nif="${nif}"` : ''}></option>`))
+            .join('');
+          dlNome.innerHTML = opts;
+        }
+
+        // Popular datalist de NIFs
+        const dlNif = document.getElementById('listaNifsFornecedores');
+        if(dlNif){
+          const optsNif = Array.from(nifsIndex.entries())
+            .sort((a,b) => a[0].localeCompare(b[0]))
+            .map(([nif, nome]) => (`<option value="${nif}" ${nome ? `data-nome="${nome}"` : ''}></option>`))
+            .join('');
+          dlNif.innerHTML = optsNif;
+        }
+
+        // Guardar reverse index para auto-preenchimento por NIF
+        window.__fornecedoresNifsIndex = nifsIndex;
+      }catch(err){ console.error('Erro a carregar lista de fornecedores', err); }
+    }
+
+    // Auto-preenchimento do NIF quando escolher o Nome/Firma
+    (function bindAutoFill(){
+      const nomeInput = document.getElementById('fornNome');
+      const nifInput = document.getElementById('fornNif');
+      if(!nomeInput || !nifInput) return;
+      const handler = () => {
+        const nome = nomeInput.value.trim();
+        if (fornecedoresIndex.has(nome)){
+          nifInput.value = fornecedoresIndex.get(nome) || '';
+        }
+      };
+      nomeInput.addEventListener('change', handler);
+      nomeInput.addEventListener('input', handler);
+      // Seleção por NIF deve preencher o Nome
+      const handlerNif = () => {
+        const nif = nifInput.value.trim();
+        const idx = window.__fornecedoresNifsIndex || new Map();
+        if(idx.has(nif)){
+          nomeInput.value = idx.get(nif) || '';
+        }
+      };
+      nifInput.addEventListener('change', handlerNif);
+      nifInput.addEventListener('input', handlerNif);
+    })();
+
+    // Carregar lista ao abrir a página (e assim que o modal for usado já terá opções)
+    carregarListaFornecedoresNomeNif();
+
+    // Helpers para gerar Nº Ordem automático no formato "kwanza-0001"
+    function parseNumero(str){
+      const m = /^kwanza-(\d+)$/i.exec((str||'').trim());
+      return m ? parseInt(m[1], 10) : null;
+    }
+    function getMaxNumero(){
+      let max = 0;
+      for(const it of dados){
+        const n = parseNumero(it.num_ordem);
+        if(n && n > max) max = n;
+      }
+      return max;
+    }
+    function nextNumero(){
+      const next = getMaxNumero() + 1;
+      return `kwanza-${String(next).padStart(4,'0')}`;
+    }
+
+    function renderTabela(items) {
+      const tbody = document.querySelector('#tblFornecedores tbody');
+      const mapPagoVia = (v) => {
+        const s = String(v||'').toUpperCase().trim();
+        if(s === 'INV') return 'Fatura';
+        if(s === 'OBC') return 'Ordem Bancária';
+        if(s === 'MFI') return 'Instituição de Microfinanças';
+        return v||'';
+      };
+      const toNum = (v) => {
+        if (v === null || v === undefined) return null;
+        const str = String(v).trim();
+        if (!str) return null;
+        // remove símbolo de moeda e espaços; troca vírgula por ponto
+        const cleaned = str
+          .replace(/AOA|KZ|\s/gi, '')
+          .replace(/\./g, '')
+          .replace(/,/g, '.');
+        const n = Number(cleaned);
+        return Number.isFinite(n) ? n : null;
+      };
+      const formatValor = (v) => {
+        const n = toNum(v);
+        if (n === null) return v || '';
+        return n.toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      };
+      tbody.innerHTML = items.map(it => {
+        const sit = (it.situacao || '').toString().trim().toUpperCase();
+        const total = toNum(it.valor_documento);
+        const pago = toNum(it.valor_pago);
+        const dividaNum = (it.divida != null ? toNum(it.divida) : (total != null && pago != null ? total - pago : null));
+        let rowClass = '';
+        const temDataPagamento = !!(it.data_pagamento && String(it.data_pagamento).trim());
+        const sitIndicaPago = sit.includes('PAGO');
+        // Regra prioritária: se situação ou data indicam pago, força verde
+        if (sitIndicaPago || temDataPagamento){
+          rowClass = 'row-fatura-paga';
+        } else if (dividaNum !== null && Number.isFinite(dividaNum)){
+          if (dividaNum === 0){
+            rowClass = 'row-fatura-paga';
+          } else if (dividaNum > 0 && pago && pago > 0){
+            rowClass = 'row-fatura-parcial';
+          } else if (dividaNum > 0 && (!pago || pago === 0)){
+            rowClass = 'row-fatura-aberto';
+          }
+        }
+        const isConciliado = (dividaNum !== null && Number.isFinite(dividaNum) && dividaNum === 0);
+        const situacaoDisplay = isConciliado ? 'Conciliado' : (it.situacao || '');
+        const acoesHtml = `
+          <button class="btn btn-sm btn-outline-primary btn-edit-forn" data-id="${it.id}"><i class="fas fa-edit"></i></button>
+          <button class="btn btn-sm btn-outline-danger btn-del-forn" data-id="${it.id}"><i class="fas fa-trash"></i></button>
+        `;
+        const linkRelatorio = `relatorios_financeiros.html?tipo=fornecedor&nif=${encodeURIComponent(it.nif || '')}&nome=${encodeURIComponent(it.nome || '')}`;
+        return `
+        <tr class="${rowClass}">
+          <td class="sticky-col-1">${it.num_ordem || ''}</td>
+          <td class="sticky-col-2">${it.nif || ''}</td>
+          <td class="sticky-col-3"><a href="${linkRelatorio}" class="text-primary font-weight-bold">${it.nome || ''}</a></td>
+          <td class="sticky-col-4" title="${it.pago_via || ''}">${mapPagoVia(it.pago_via)}</td>
+          <td class="sticky-col-5">${it.num_factura || ''}</td>
+          <td class="sticky-col-6">${it.custo_aceite || ''}</td>
+          <td class="sticky-col-7">${it.data_documento || ''}</td>
+          <td class="sticky-col-8">${it.mes || ''}</td>
+          <td class="sticky-col-9">${formatValor(it.valor_documento)}</td>
+          <td class="sticky-col-10">${formatValor(it.valor_iva)}</td>
+          <td class="sticky-col-11">${formatValor(it.valor_retencao)}</td>
+          <td class="sticky-col-12">${formatValor(it.iva_dedutivel)}</td>
+          <td class="sticky-col-13">${formatValor(it.iva_suportado)}</td>
+          <td class="sticky-col-14">${formatValor(it.iva_dedutivel2)}</td>
+          <td class="sticky-col-15">${formatValor(it.valor_pago)}</td>
+          <td class="sticky-col-16">${formatValor(it.divida)}</td>
+          <td class="sticky-col-17">${situacaoDisplay}</td>
+          <td class="sticky-col-18">${it.rfont || ''}</td>
+          <td class="sticky-col-19">${it.tipologia || ''}</td>
+          <td class="sticky-col-20">${it.id_projecto || ''}</td>
+          <td class="sticky-col-21">${it.obs || ''}</td>
+          <td class="sticky-col-22">${it.data_pagamento || ''}</td>
+          <td>${acoesHtml}</td>
+        </tr>`;
+      }).join('');
+      try{
+        if ($.fn.DataTable.isDataTable('#tblFornecedores')) {
+          $('#tblFornecedores').DataTable().destroy();
+        }
+        $('#tblFornecedores').DataTable({
+          pageLength: 10,
+          lengthChange: false,
+          ordering: true,
+          searching: true,
+          responsive: false, // mostra sempre todas as colunas, com scroll horizontal
+          autoWidth: false,
+          language: { url: 'https://cdn.datatables.net/plug-ins/1.13.8/i18n/pt-PT.json' },
+          columnDefs: [
+            // coluna de ações
+            { targets: -1, orderable: false, searchable: false, className: 'text-center align-middle' },
+            // colunas mais numéricas alinhadas à direita
+            { targets: [0,4,8,9,10,11,12,13,14,15], className: 'text-right align-middle' },
+            // colunas de datas e situação centralizadas
+            { targets: [6,7,21], className: 'text-center align-middle' }
+          ]
+        });
+      }catch(e){ console.warn('DataTable init falhou:', e); }
+    }
+
+    async function fetchFornecedores(){
+      try{
+        const res = await API.getJSON('/api/fornecedores');
+        dados = Array.isArray(res) ? res : (res?.items || []);
+        renderTabela(dados);
+      }catch(e){ console.error('Erro ao carregar fornecedores', e); }
+    }
+
+    // Preenche Nº Ordem ao abrir o modal de adicionar
+    $('#modalAdd').on('show.bs.modal', async () => {
+      const input = document.getElementById('numOrdem');
+      try{
+        const nxt = await API.getJSON('/api/fornecedores/next-id');
+        if (input) input.value = nxt?.id || nextNumero();
+      }catch{ if (input) input.value = nextNumero(); }
+    });
+
+    // Salvar fornecedor (criar ou atualizar)
+    document.getElementById('btnSalvarFornecedor').addEventListener('click', () => {
+      const form = document.getElementById('formAddFornecedor');
+      const fd = new FormData(form);
+      const dadosForm = Object.fromEntries(fd.entries());
+      const isEdit = editingFornecedorId != null;
+
+      if(!dadosForm.num_ordem || !dadosForm.num_ordem.trim()) dadosForm.num_ordem = nextNumero();
+
+      if (!isEdit) {
+        // Criar novo fornecedor
+        API.postJSON('/api/fornecedores', dadosForm)
+          .then(() => fetchFornecedores())
+          .then(() => { $('#modalAdd').modal('hide'); form.reset(); editingFornecedorId = null; })
+          .catch(err => { Swal.fire('Erro', 'Erro ao salvar fornecedor: ' + (err?.message||'desconhecido'), 'error'); });
+      } else {
+        // Atualizar fornecedor existente (campos permitidos pelo backend)
+        const payload = {
+          valor_pago: dadosForm.valor_pago,
+          divida: dadosForm.divida,
+          situacao: dadosForm.situacao,
+          data_pagamento: dadosForm.data_pagamento,
+          pago_via: dadosForm.pago_via
+        };
+        API.putJSON(`/api/fornecedores/${encodeURIComponent(editingFornecedorId)}`, payload)
+          .then(() => fetchFornecedores())
+          .then(() => { $('#modalAdd').modal('hide'); form.reset(); editingFornecedorId = null; })
+          .catch(err => { Swal.fire('Erro', 'Erro ao atualizar fornecedor: ' + (err?.message||'desconhecido'), 'error'); });
+      }
+    });
+
+    // Upload CSV (API)
+    document.getElementById('btnUpload').addEventListener('click', () => {
+      const input = document.querySelector('#formUpload input[type=file]');
+      const file = input.files[0];
+      if (!file) return;
+      const formData = new FormData();
+      formData.append('file', file);
+      API.postForm('/api/fornecedores/upload', formData)
+        .then(() => fetchFornecedores())
+        .then(() => { $('#modalUpload').modal('hide'); document.getElementById('formUpload').reset(); })
+        .catch(err => Swal.fire('Erro', 'Erro no upload CSV: ' + (err?.message||'desconhecido'), 'error'));
+    });
+
+    // Upload Excel (API)
+    const excelInput = document.querySelector('#formUploadExcel input[type=file]');
+    const excelBtn = document.getElementById('btnUploadExcel');
+    if (excelInput && excelBtn){
+      // Desabilita botão até selecionar ficheiro
+      excelBtn.disabled = true;
+      excelInput.addEventListener('change', () => {
+        excelBtn.disabled = !excelInput.files || excelInput.files.length === 0;
+      });
+      excelBtn.addEventListener('click', () => {
+        const file = excelInput.files && excelInput.files[0];
+        if (!file){
+          // Abre o seletor de ficheiro automaticamente
+          excelInput.click();
+          return; // aguarda o utilizador escolher o ficheiro
+        }
+        const formData = new FormData();
+        formData.append('file', file);
+        API.postForm('/api/fornecedores/upload-excel', formData)
+          .then(() => fetchFornecedores())
+          .then(() => {
+            $('#modalUploadExcel').modal('hide');
+            document.getElementById('formUploadExcel').reset();
+            excelBtn.disabled = true;
+          })
+          .catch(err => {
+            console.error('Upload Excel falhou:', err);
+            Swal.fire('Erro', 'Erro no upload Excel: ' + (err?.message || 'desconhecido'), 'error');
+          });
+      });
+    }
+
+    // Função global para abrir o modal de Excel (invocada pelo botão)
+    window.openExcelModal = function(){
+      try{ console.log('Abrindo modal Excel'); }catch{}
+      // Remove possíveis backdrops anteriores presos
+      try{ $('.modal-backdrop').remove(); $('body').removeClass('modal-open'); }catch{}
+      try{ $('#modalUploadExcel').modal({ show: true, backdrop: true, keyboard: true }); }catch(e){
+        alert('Não foi possível abrir o modal Excel. Verifique se o Bootstrap JS carregou.');
+      }
+      return false;
+    };
+
+    // Eliminar Todos os Fornecedores
+    (function bindDeleteAll(){
+      const btn = document.getElementById('btnDeleteAllFornecedores');
+      if(!btn) return;
+      btn.addEventListener('click', async () => {
+        try{
+          // Confirmação (usa SweetAlert se disponível)
+          let confirmed = false;
+          if (window.Swal){
+            const res = await Swal.fire({
+              title: 'Eliminar todos os fornecedores?',
+              text: 'Esta ação não pode ser desfeita.',
+              icon: 'warning', showCancelButton: true,
+              confirmButtonText: 'Sim, eliminar todos',
+              cancelButtonText: 'Cancelar'
+            });
+            confirmed = !!res.isConfirmed;
+          } else {
+            confirmed = window.confirm('Tem certeza que deseja eliminar TODOS os fornecedores?');
+          }
+          if(!confirmed) return;
+
+          btn.disabled = true; btn.textContent = 'A eliminar...';
+          // Obtém IDs atuais
+          const ids = (Array.isArray(dados) ? dados : []).map(it => it.id).filter(Boolean);
+          if(ids.length === 0){
+            if(window.Swal) Swal.fire('Nada para eliminar', 'Não há fornecedores na lista.', 'info');
+            else alert('Não há fornecedores na lista.');
+            btn.disabled = false; btn.textContent = 'Eliminar Todos';
+            return;
+          }
+          const token = localStorage.getItem('token');
+          const delOne = (id) => fetch(`/api/fornecedores/${encodeURIComponent(id)}`, {
+            method: 'DELETE', headers: token ? { Authorization: `Bearer ${token}` } : {}
+          });
+          const results = await Promise.allSettled(ids.map(delOne));
+          const ok = results.filter(r => r.status === 'fulfilled' && r.value && (r.value.ok || r.value.status === 204)).length;
+          const fail = ids.length - ok;
+          if(window.Swal){
+            Swal.fire('Concluído', `Eliminados: ${ok}\nFalharam: ${fail}`, fail ? 'warning' : 'success');
+          }else{
+            alert(`Concluído. Eliminados: ${ok} | Falharam: ${fail}`);
+          }
+          await fetchFornecedores();
+        }catch(err){
+          console.error('Eliminar todos falhou:', err);
+          if(window.Swal) Swal.fire('Erro', 'Falha ao eliminar todos.', 'error'); else alert('Falha ao eliminar.');
+        }finally{
+          btn.disabled = false; btn.textContent = 'Eliminar Todos';
+        }
+      });
+    })();
+
+    // Handlers de ações na tabela (Editar / Eliminar)
+    $(document).on('click', '.btn-del-forn', async function(){
+      const id = this.getAttribute('data-id');
+      if(!id) return;
+      try{
+        const res = await Swal.fire({
+          title: 'Eliminar fornecedor?',
+          text: 'Esta ação não pode ser desfeita.',
+          icon: 'warning', showCancelButton: true,
+          confirmButtonText: 'Sim, eliminar',
+          cancelButtonText: 'Cancelar'
+        });
+        if(!res.isConfirmed) return;
+        await API.del(`/api/fornecedores/${encodeURIComponent(id)}`);
+        dados = dados.filter(it => String(it.id ?? '') !== String(id ?? ''));
+        renderTabela(dados);
+        // Recarrega a página para garantir que toda a tabela/estado ficam sincronizados
+        window.location.reload();
+      }catch(err){
+        console.error('Erro ao eliminar fornecedor', err);
+        Swal.fire('Erro', 'Falha ao eliminar fornecedor: ' + (err?.message||'desconhecido'), 'error');
+      }
+    });
+
+    $(document).on('click', '.btn-edit-forn', function(){
+      const id = this.getAttribute('data-id');
+      if(!id) return;
+      const item = dados.find(it => String(it.id ?? '') === String(id ?? ''));
+      if(!item) return;
+      editingFornecedorId = id;
+
+      const form = document.getElementById('formAddFornecedor');
+      if(!form) return;
+
+      form.num_ordem.value = item.num_ordem || '';
+      form.nif.value = item.nif || '';
+      form.nome.value = item.nome || '';
+      form.pago_via.value = item.pago_via || '';
+      form.num_factura.value = item.num_factura || '';
+      form.data_documento.value = item.data_documento || '';
+      form.mes.value = item.mes || '';
+      form.valor_documento.value = item.valor_documento || '';
+      form.valor_iva.value = item.valor_iva || '';
+      form.valor_retencao.value = item.valor_retencao || '';
+      form.iva_dedutivel.value = item.iva_dedutivel || '';
+      form.iva_suportado.value = item.iva_suportado || '';
+      form.iva_dedutivel2.value = item.iva_dedutivel2 || '';
+      form.valor_pago.value = item.valor_pago || '';
+      form.divida.value = item.divida || '';
+      form.situacao.value = item.situacao || '';
+      form.rfont.value = item.rfont || '';
+      form.tipologia.value = item.tipologia || '';
+      form.id_projecto.value = item.id_projecto || '';
+      form.obs.value = item.obs || '';
+      form.data_pagamento.value = item.data_pagamento || '';
+
+      $('#modalAddLabel').text('Editar Fornecedor');
+      $('#modalAdd').modal('show');
+    });
+
+    // Inicializa carregando da API
+    fetchFornecedores();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,3394 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
+  <title>Projectos | Kwanza Manipulus</title>
+  <link rel="shortcut icon" type="image/x-icon" href="assets/img/logo.png" />
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css" />
+  <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/feathericon.min.css" />
+  <link rel="stylesheet" href="assets/plugins/morris/morris.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="css/projectos.css" />
+  <!-- SweetAlert2 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <!-- DataTables Buttons CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap4.min.css" />
+</head>
+<body>
+  <div class="main-wrapper">
+    <!-- Header -->
+   <div class="header">
+			<div class="header-left">
+				<a href="dashboard.html" class="logo"> <img src="assets/img/kwanzaWhite.svg" width="50" height="70" alt="logo"> <span class="logoclass"></span> </a>
+				<a href="dashboard.html" class="logo logo-small"> <img src="assets/img/kwanzaWhite.svg" alt="Logo" width="30" height="30"> </a>
+			</div>
+			<a href="javascript:void(0);" id="toggle_btn"> <i class="fe fe-text-align-left"></i> </a>
+			<a class="mobile_btn" id="mobile_btn"> <i class="fas fa-bars"></i> </a>
+			<ul class="nav user-menu">
+				<li class="nav-item dropdown has-arrow">
+					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown"> <span class="user-img"><img class="rounded-circle" src="assets/img/profiles/avatar-01.jpg" width="31" alt=""></span> </a>
+					<div class="dropdown-menu">
+						<div class="user-header">
+							<div class="avatar avatar-sm"> <img src="foto do perfil" alt="User Image" class="avatar-img rounded-circle"> </div>
+							<div class="user-text">
+								<div class="muted" style="font-size:11px">Bem-vindo(a), </div>
+								<h6><span id="userName">usuário</span></h6>
+							</div>
+						</div> <a class="dropdown-item" href="profile.html">Perfil</a> <a class="dropdown-item" href="settings.html">configurações da conta</a> <a class="dropdown-item" id="logoutBtn" href="#">Sair</a> </div>
+				</li>
+			</ul>
+			<div class="top-nav-search">
+				<form>
+					<input type="text" class="form-control" placeholder="procurar">
+					<button class="btn" type="submit"><i class="fas fa-search"></i></button>
+				</form>
+			</div>
+		</div>
+		<div class="sidebar" id="sidebar">
+			<div class="sidebar-inner slimscroll">
+				<div id="sidebar-menu" class="sidebar-menu">
+					<ul>
+					<li class="active"> <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a> </li>
+					<li> <a href="clientes_clientes.html"><i class="fas fa-user"></i> <span>Clientes</span></a> </li>
+					<li class="submenu"> <a href="#" data-toggle="collapse"><i class="fas fa-user"></i> <span> Empresa </span> <span class="menu-arrow"></span></a>
+						<ul class="submenu_class" style="display: none;">
+							<li><a href="rh_funcionarios.html">Funcionários</a></li>
+							<li><a href="rh_departamentos.html">Departamentos & Cargos</a></li>
+							<li><a href="rh_ferias.html">Férias</a></li>
+							<li><a href="users.html">Utilizadores</a></li>
+						</ul>
+					</li>
+					
+					<li class="submenu"> <a href="#" data-toggle="collapse"><i class="fas fa-user"></i> <span> Fornecedores</span> <span class="menu-arrow"></span></a>
+						<ul class="submenu_class" style="display: none;">
+							<li><a href="fornecedor.html">Lista de Fornecedores </a></li>
+						</ul>
+					</li>
+					<li> <a href="financas.html#bancos"><i class="fas fa-university"></i> <span> Bancos</span></a> </li>
+					<li> <a href="financas.html#pagamentos"><i class="fas fa-money-bill-alt"></i> <span> Pagamentos</span></a> </li>
+            <li> <a href="faturas.html"><i class="fas fa-file-invoice"></i> <span>Faturas</span></a> </li>
+					<li> <a href="projectos.html"><i class="fas fa-cube"></i> <span>Projectos Kwanza </span></a> </li>
+				</ul>
+				</div>
+			</div>
+		</div>
+    <!-- /Sidebar -->
+
+    <!-- Page Content -->
+    <div class="page-wrapper">
+      <div class="content container-fluid">
+        <div class="page-header">
+          <div class="row align-items-center">
+            <div class="col">
+              <h3 class="page-title">Projectos</h3>
+              <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+                <li class="breadcrumb-item active">Projectos</li>
+              </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+              <a id="btnAdd" href="#" class="btn btn-primary"><i class="fa fa-plus"></i> Novo Projecto</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header"><h5 class="card-title mb-0">Lista de Projectos</h5></div>
+              <div class="card-body">
+                <!-- Toolbar: Upload & Modelo -->
+                <div class="d-flex flex-wrap align-items-center mb-2" style="gap:10px;">
+                  <label class="btn btn-sm btn-outline-primary mb-0">
+                    <i class="fa fa-upload"></i> Upload CSV/Excel
+                    <input id="fileUploadProj" type="file" accept=".csv,.xlsx,.xls" hidden />
+                  </label>
+                  <button id="btnModeloProj" type="button" class="btn btn-sm btn-outline-secondary">
+                    <i class="fa fa-download"></i> Baixar Modelo
+                  </button>
+                  <button id="btnSalvarBackend" type="button" class="btn btn-sm btn-success" style="display: inline-flex; align-items: center;">
+                    <i class="fa fa-save mr-1"></i> Salvar Tabela no Backend
+                  </button>
+                  <button id="btnEliminarTudo" type="button" class="btn btn-sm btn-danger">
+                    <i class="fa fa-trash"></i> Limpar Tabela
+                  </button>
+                  <button id="btnSeedDemo" type="button" class="btn btn-sm btn-outline-info">
+                    <i class="fa fa-magic"></i> Criar dados de teste
+                  </button>
+                </div>
+                
+                <div class="table-summary">
+                  <span class="badge">Visão</span>
+                  <span>Total: <strong id="projCountView">0</strong> registos</span>
+                  <span>• Atualizado: <span id="projUpdated">—</span></span>
+                </div>
+                <p class="text-muted mb-2" style="font-size: 11px;">
+                  Preencha os campos obrigatórios para criar um novo projeto.
+                </p>
+                <div class="table-responsive mb-3 table-scroll-y">
+                  <table id="tblProjectos" class="table table-striped table-hover table-bordered table-sm" style="width: 100%;">
+                    <colgroup>
+                      <col style="width: 10%;">
+                      <col style="width: 20%;">
+                      <col style="width: 20%;">
+                      <col style="width: 10%;">
+                      <col style="width: 10%;">
+                      <col style="width: 10%;">
+                      <col style="width: 10%;">
+                      <col style="width: 10%;">
+                      <col style="width: 10%;">
+                    </colgroup>
+                    <thead>
+                      <tr>
+                        <th>Project_ID</th>
+                        <th>Cliente</th>
+                        <th>Descrição_Projeto</th>
+                        <th>Data_Inicio_Estimada</th>
+                        <th>Data_Fim_Estimada</th>
+                        <th>Estado_Projeto</th>
+                        <th>Valor_Total_Orçamento</th>
+                        <th>Valor_Total_Contrato</th>
+                        <th>Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- Data will be loaded here -->
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Nova tabela detalhada para dados de upload/importação -->
+                <div class="mt-3">
+                  <h6 class="mb-2" style="font-size: 12px; font-weight:600;">Tabela detalhada de importação (upload)</h6>
+                  <div class="d-flex justify-content-between mb-2" style="gap:8px;">
+                    <button type="button" id="btnEliminarMarcadosUpload" class="btn btn-sm btn-danger">
+                      <i class="fa fa-trash mr-1"></i> Eliminar marcados
+                    </button>
+                    <input type="text" id="searchUploadTable" class="form-control form-control-sm" style="max-width:260px;" placeholder="Procurar na tabela de upload...">
+                  </div>
+                  <div class="table-container" style="width: 100%; max-width: 100%; overflow-x: auto;">
+                    <table id="tblProjectosUpload" class="table table-striped table-hover table-bordered table-sm" style="width: 100%;">
+                      <colgroup>
+                        <!-- NÚMERO DA LINHA (1 coluna) -->
+                        <col style="width: 40px;">
+                        <!-- TRABALHO (3 colunas) -->
+                        <col class="sec-1"><col class="sec-1"><col class="sec-1">
+                        <!-- PEDIDO DE COTAÇÃO (3 colunas) -->
+                        <col class="sec-2"><col class="sec-2"><col class="sec-2">
+                        <!-- COTAÇÃO (5 colunas) -->
+                        <col class="sec-3"><col class="sec-3"><col class="sec-3"><col class="sec-3"><col class="sec-3">
+                        <!-- NOTA ENCOM. / CONTRATO (6 colunas) -->
+                        <col class="sec-4"><col class="sec-4"><col class="sec-4"><col class="sec-4"><col class="sec-4"><col class="sec-4">
+                        <!-- PROJECT | PROJECTO (5 colunas) -->
+                        <col class="sec-5"><col class="sec-5"><col class="sec-5"><col class="sec-5"><col class="sec-5">
+                        <!-- SERVICE/DELIVERY (4 colunas) -->
+                        <col class="sec-6"><col class="sec-6"><col class="sec-6"><col class="sec-6">
+                        <!-- PROFORMA (4 colunas) -->
+                        <col class="sec-7"><col class="sec-7"><col class="sec-7"><col class="sec-7">
+                        <!-- INVOICE (4 colunas) -->
+                        <col class="sec-8"><col class="sec-8"><col class="sec-8"><col class="sec-8">
+                        <!-- PAYMENT (4 colunas) -->
+                        <col class="sec-9"><col class="sec-9"><col class="sec-9"><col class="sec-9">
+                        <!-- STATUS & REMARKS (2 colunas) -->
+                        <col class="sec-10"><col class="sec-10">
+                        <!-- AÇÕES (1 coluna) -->
+                        <col>
+                      </colgroup>
+                      <thead>
+                        <tr>
+                          <th class="main-header" colspan="41">ESTRUTURA COMPLETA DA TABELA</th>
+                        </tr>
+                        <tr>
+                          
+                          <th class="group-header" colspan="3">TRABALHO</th>
+                          <th class="group-header" colspan="3">PEDIDO DE COTAÇÃO</th>
+                          <th class="group-header" colspan="5">COTAÇÃO</th>
+                          <th class="group-header" colspan="5">NOTA ENCOM. / CONTRATO</th>
+                          <th class="group-header" colspan="5">PROJECT | PROJECTO</th>
+                          <th class="group-header" colspan="4">SERVICE/DELIVERY TICKET</th>
+                          <th class="group-header" colspan="4">PROFORMA INVOICE</th>
+                          <th class="group-header" colspan="4">INVOICE | FACTURA</th>
+                          <th class="group-header" colspan="4">PAYMENT | PAGAMENTO</th>
+                          <th class="group-header" colspan="3">STATUS & REMARKS / AÇÕES</th>
+                        </tr>
+                        <tr>
+                          <!-- NÚMERO DA LINHA / SELECIONAR TODOS -->
+                          <th class="subgroup-header">
+                            <input type="checkbox" id="chkUploadSelectAll" class="mr-1">#
+                          </th>
+                          <!-- TRABALHO (3 colunas) -->
+                          <th class="subgroup-header">
+                            <div class="portuguese">Cliente</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="portuguese">Descrição Trabalho</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="portuguese">Id. Trabalho MS</div>
+                          </th>
+
+                          <!-- PEDIDO DE COTAÇÃO (3 colunas) -->
+                          <th class="subgroup-header">
+                            <div class="portuguese">Id. Pedido</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="portuguese">Link Pedido</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="portuguese">Data &amp; Hr Pedido</div>
+                          </th>
+
+                          <!-- COTAÇÃO (5 colunas) -->
+                          <th class="subgroup-header">
+                            <div class="portuguese">Nº Cotação</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="portuguese">Data Cotação</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="portuguese">Valor Cotação (AOA)</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="portuguese">Termos de Pagto</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="portuguese">Incoterms</div>
+                          </th>
+
+                          <!-- NOTA ENCOM. / CONTRATO (5 colunas) -->
+                          <th class="subgroup-header">
+                            <div class="portuguese">P.O/S.O/Contract No.</div>
+                            <div class="english">Nº Nota Encomenda / Contrato</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="portuguese">Conteúdo da Nota Encomenda / Contrato</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="portuguese">Data Nota Encomenda / Contrato</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="portuguese">Valor Nota Encomenda</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="portuguese">Termos de Pagto</div>
+                          </th>
+
+                          <!-- PROJECT | PROJECTO (5 colunas) -->
+                          <th class="subgroup-header">
+                            <div class="english">Project ID</div>
+                            <div class="portuguese">ID Projecto</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="english">Job Description</div>
+                            <div class="portuguese">Descrição do Trabalho</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="english">Est. Job Start Date</div>
+                            <div class="portuguese">Data Est. Início</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="english">Job End Date</div>
+                            <div class="portuguese">Data Fim Trabalho</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="english">Job Status</div>
+                            <div class="portuguese">Estado Trabalho</div>
+                          </th>
+
+                          <!-- SERVICE/DELIVERY TICKET (4 colunas) -->
+                          <th class="subgroup-header">
+                            <div class="english"># Nota Serv./Entrega</div>
+                            <div class="portuguese">Service/Delivery Ticket</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="portuguese">Conteúdo da Nota</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="portuguese">Dt Emissão NS/NE</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="portuguese">Data Aprov NS/NE</div>
+                          </th>
+
+                          <!-- PROFORMA INVOICE (4 colunas) -->
+                          <th class="subgroup-header">
+                            <div class="english">Proforma No.</div>
+                            <div class="portuguese">Nº Orç./Proforma</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="english">Proforma Date</div>
+                            <div class="portuguese">Data Orç./Prof.</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="english">Proforma Value (Net)</div>
+                            <div class="portuguese">Valor Orç./Prof. (Líq)</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="english">Exchange</div>
+                            <div class="portuguese">Câmbio</div>
+                          </th>
+
+                          <!-- INVOICE | FACTURA (4 colunas) -->
+                          <th class="subgroup-header">
+                            <div class="english">Invoice No.</div>
+                            <div class="portuguese">Nº Factura</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="english">Invoice Date</div>
+                            <div class="portuguese">Data Factura</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="english">Invoice Value (AOA)</div>
+                            <div class="portuguese">Valor Factura (Líq)</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="english">Exchange</div>
+                            <div class="portuguese">Câmbio</div>
+                          </th>
+
+                          <!-- PAYMENT | PAGAMENTO (4 colunas) -->
+                          <th class="subgroup-header">
+                            <div class="english">Date Paid</div>
+                            <div class="portuguese">Data Pago</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="english">Value Paid</div>
+                            <div class="portuguese">Valor Pago</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="english">Receipt No.</div>
+                            <div class="portuguese">Nº Recibo</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="english">Receipt Date</div>
+                            <div class="portuguese">Data Recibo</div>
+                          </th>
+
+                          <!-- STATUS & REMARKS (2 colunas) -->
+                          <th class="subgroup-header">
+                            <div class="english">Date</div>
+                            <div class="portuguese">Data</div>
+                          </th>
+                          <th class="subgroup-header">
+                            <div class="english">Remarks</div>
+                            <div class="portuguese">Observações</div>
+                          </th>
+                          <!-- AÇÕES (1 coluna) -->
+                          <th class="subgroup-header">
+                            <div class="english">Actions</div>
+                            <div class="portuguese">Ações</div>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                      <tfoot>
+                        <tr>
+                          <td colspan="41" class="text-left p-2">
+                            <div class="d-flex justify-content-start align-items-center gap-2">
+                              <button type="button" id="btnAddNewRowUpload" class="btn btn-primary btn-sm" title="Adicionar nova linha">
+                                <i class="fa fa-plus"></i>
+                              </button>
+                              <button type="button" id="btnSaveNewRow" class="btn btn-primary btn-sm" title="Guardar dados preenchidos" style="display: none; margin-left: 15px;">
+                                <i class="fa fa-save"></i> Guardar
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- /Page Content -->
+  </div>
+
+  <!-- Scripts -->
+  <script src="assets/js/jquery-3.5.1.min.js"></script>
+  <script src="assets/js/popper.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+  <script src="assets/plugins/raphael/raphael.min.js"></script>
+  <script src="assets/plugins/morris/morris.min.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/script.js"></script>
+  <!-- Carrega o avatar do usuário -->
+  <script src="js/profile-avatar.js"></script>
+  <!-- SweetAlert2 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- DataTables JS -->
+  <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap4.min.js"></script>
+  <!-- DataTables Buttons -->
+  <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap4.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+  <!-- Export deps -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+  <!-- FixedColumns -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/4.3.0/css/fixedColumns.bootstrap4.min.css" />
+  <script src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script>
+  <!-- SheetJS (XLSX) for CSV/XLSX parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script>
+    // Verifica sessão antes de operar na página
+    async function checkAuthProj(){
+      const token = localStorage.getItem('token');
+      if (!token){ window.location.href = '/'; return; }
+      try{
+        const res = await fetch('/api/users/me', { headers: { Authorization: `Bearer ${token}` }});
+        if (res.status === 401 || res.status === 403){
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          window.location.href = '/';
+        }
+      }catch(e){ /* silencioso */ }
+    }
+    // Cache simples dos clientes
+    window.CLIENTES_CACHE = window.CLIENTES_CACHE || [];
+    async function carregarClientesLista(){
+      try{
+        const token = localStorage.getItem('token')||'';
+        const res = await fetch('/api/clientes', { headers: { 'Content-Type':'application/json', Authorization: `Bearer ${token}` }});
+        if (!res.ok) throw new Error('HTTP '+res.status);
+        let data = await res.json();
+        if (!Array.isArray(data)) data = data?.items || [];
+        window.CLIENTES_CACHE = data;
+        const sel = document.getElementById('selCliente');
+        if (!sel) return;
+        const current = sel.value;
+        sel.innerHTML = '<option value="">-- selecione o cliente --</option>' +
+          data.map(c=>`<option value="${c.id||c.id_cliente||c._id||''}">${(c.nome||c.nome_firma||c.razao_social||'').replace(/</g,'&lt;')}</option>`).join('');
+        if (current) sel.value = current;
+      }catch(e){
+        console.warn('Falha a carregar clientes', e);
+      }
+    }
+    // Atualizar lista ao abrir o modal e no botão refrescar
+    document.addEventListener('DOMContentLoaded', ()=>{
+      $('#modalAddProjeto').on('shown.bs.modal', ()=>{
+        carregarClientesLista();
+      });
+      const btnR = document.getElementById('btnReloadClientes');
+      if (btnR && !btnR._bound){ btnR.addEventListener('click', carregarClientesLista); btnR._bound = true; }
+    });
+    // Inject DataTables CSS dynamically (for consistency with dashboard)
+    (function(){
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap4.min.css';
+      document.head && document.head.appendChild(link);
+    })();
+  </script>
+
+  <script>
+    // Autenticação básica (igual ao dashboard)
+    (async function checkAuth(){
+      const token = localStorage.getItem('token');
+      if (!token) { window.location.href = '/'; return; }
+      try {
+        const me = await fetch('/api/users/me', { headers: { Authorization: `Bearer ${token}` } });
+        if (me.status === 401 || me.status === 403) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          window.location.href = '/';
+          return;
+        }
+        const meJson = await me.json().catch(()=>({}));
+        const userNameEl = document.getElementById('userName');
+        if (userNameEl) userNameEl.textContent = meJson?.nome || 'usuário';
+      } catch(e) { /* silencioso */ }
+    })();
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = '/';
+    });
+
+    // Helpers
+    function fmtMoney(v){
+      try { return (v||0).toLocaleString('pt-PT', { style:'currency', currency:'AOA' }); } catch(e){ return v; }
+    }
+    function fmtDate(d){
+      if(!d) return '';
+      try{ return new Date(d).toLocaleDateString('pt-PT'); }catch(e){ return d; }
+    }
+
+    // Agrupa linhas da tabela de upload (#tblProjectosUpload) por Cliente (coluna 2)
+    function groupUploadRows(){
+      const tbodyUpload = document.querySelector('#tblProjectosUpload tbody');
+      if (!tbodyUpload) return;
+
+      const rows = tbodyUpload.rows;
+      const rowCount = rows.length;
+      if (!rowCount) return;
+
+      const firstForKey = {};
+      const fragment = document.createDocumentFragment();
+
+      // Construir chave por linha (apenas Cliente) - otimizado com for loop
+      for (let i = 0; i < rowCount; i++) {
+        const tr = rows[i];
+        const cliente = (tr.cells[1] && tr.cells[1].textContent || '').trim().toLowerCase();
+        const key = cliente || '';
+        tr.dataset.groupKey = key;
+      }
+
+      // Limpar estados anteriores - otimizado
+      for (let i = 0; i < rowCount; i++) {
+        const tr = rows[i];
+        tr.classList.remove('upload-row-parent','upload-row-child');
+        if (!tr.dataset.groupKey) continue;
+        tr.style.display = '';
+      }
+
+      // Marcar primeira linha de cada grupo como parent, restantes como child
+      for (let i = 0; i < rowCount; i++) {
+        const tr = rows[i];
+        const key = tr.dataset.groupKey;
+        if (!key) continue;
+        if (!firstForKey[key]){
+          firstForKey[key] = tr;
+          tr.classList.add('upload-row-parent');
+        } else {
+          tr.classList.add('upload-row-child');
+          tr.style.display = 'none';
+        }
+      }
+
+      // Adicionar botões de expandir - otimizado para evitar reflows
+      requestAnimationFrame(() => {
+        Object.keys(firstForKey).forEach(key => {
+          const parent = firstForKey[key];
+          let hasChild = false;
+          
+          // Verificar se tem filhos de forma otimizada
+          for (let i = 0; i < rowCount; i++) {
+            const r = rows[i];
+            if (r !== parent && r.dataset.groupKey === key) {
+              hasChild = true;
+              break;
+            }
+          }
+          
+          if (!hasChild) return;
+
+          const firstCell = parent.cells[0];
+          if (!firstCell) return;
+          
+          if (!firstCell.querySelector('.chk-upload-select')){
+            const chk = document.createElement('input');
+            chk.type = 'checkbox';
+            chk.className = 'mr-1 chk-upload-select';
+            firstCell.insertBefore(chk, firstCell.firstChild);
+          }
+          
+          if (!firstCell.querySelector('.btn-toggle-group')){
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'btn btn-sm btn-link p-0 btn-toggle-group';
+            btn.title = 'Mostrar / ocultar outros trabalhos deste projecto';
+            btn.innerHTML = '<i class="fa fa-folder-open"></i>';
+            firstCell.insertBefore(btn, firstCell.firstChild);
+          }
+        });
+      });
+    }
+
+    async function deleteUploadGroup(tbodyUpload, key){
+      if (!tbodyUpload) return;
+      const allRows = Array.from(tbodyUpload.rows);
+      try {
+        const token = localStorage.getItem('token') || '';
+        if (token) {
+          const ids = [];
+          allRows.forEach(r => {
+            if (!key || r.dataset.groupKey === key) {
+              const cell = r.cells[17];
+              const input = cell ? cell.querySelector('input') : null;
+              const projectId = input ? input.value.trim() : (cell ? cell.textContent.trim() : '');
+              if (projectId) ids.push(projectId);
+            }
+          });
+          await Promise.all(ids.map(async (pid) => {
+            try {
+              const res = await fetch(`/api/projectos/${encodeURIComponent(pid)}`, {
+                method: 'DELETE',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${token}`
+                }
+              });
+              if (!res.ok && res.status !== 404) {
+                console.warn('Falha ao eliminar projecto no backend', pid, res.status);
+              }
+            } catch(e) {
+              console.warn('Erro ao chamar DELETE para projecto', pid, e);
+            }
+          }));
+        }
+      } catch(e) {
+        console.warn('Falha geral ao eliminar projectos no backend a partir da tabela de upload', e);
+      }
+
+      const allRowsAfter = Array.from(tbodyUpload.rows);
+      allRowsAfter.forEach(r => {
+        if (!key || r.dataset.groupKey === key) {
+          r.parentNode && r.parentNode.removeChild(r);
+        }
+      });
+
+      try {
+        const restantes = [];
+        const linhasAtuais = Array.from(tbodyUpload.rows);
+        linhasAtuais.forEach(r => {
+          const rowData = [];
+          for (let i = 0; i < 40; i++) {
+            const cell = r.cells[i];
+            const input = cell ? cell.querySelector('input') : null;
+            rowData.push(input ? input.value.trim() : (cell ? cell.textContent.trim() : ''));
+          }
+          restantes.push(rowData);
+        });
+        // Não usa mais localStorage - dados são gerenciados pelo backend
+      } catch(e) {
+        console.warn('Falha ao atualizar localStorage após eliminar linha da tabela de upload', e);
+      }
+
+      try {
+        groupUploadRows();
+      } catch(e) {
+        console.warn('Falha ao reagrupar tabela de upload após eliminar', e);
+      }
+    }
+
+    // Cria uma linha com células vazias para evitar erro do DataTables
+    function messageRow(msg){
+      var colCount = 9; // número de colunas visíveis na tabela
+      var cells = '<td>'+msg+'</td>';
+      for (var i=1;i<colCount;i++){ cells += '<td></td>'; }
+      return '<tr>'+cells+'</tr>';
+    }
+
+    // Carregar lista de projectos (otimizado para performance) - agora delega para loadBackendDataToUploadTable
+    async function loadProjectos(){
+      // Esta função agora delega o carregamento para loadBackendDataToUploadTable
+      // que sincronizará ambas as tabelas
+      try {
+        await loadBackendDataToUploadTable();
+      } catch(e) {
+        console.warn('Erro ao carregar projetos via loadBackendDataToUploadTable:', e);
+        
+        // Fallback: mostrar mensagem de erro
+        const tbody = document.querySelector('#tblProjectos tbody');
+        if (tbody) {
+          tbody.innerHTML = messageRow('Erro ao carregar projetos.');
+        }
+      }
+    }
+
+    // Upload handler (CSV/XLSX)
+    // - Continua a alimentar a tabela simplificada (#tblProjectos)
+    // - Passa também a preencher a tabela detalhada de upload (#tblProjectosUpload)
+    const upload = document.getElementById('fileUploadProj');
+    if (upload && !upload._bound){
+      upload.addEventListener('change', async (e)=>{
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        try{
+          const buf = await file.arrayBuffer();
+          const wb = XLSX.read(buf, { type: 'array' });
+          const ws = wb.Sheets[wb.SheetNames[0]];
+          const rows = XLSX.utils.sheet_to_json(ws, { header: 1, blankrows: false });
+          if (!rows || rows.length === 0){ alert('Arquivo vazio.'); return; }
+
+              // Assume primeira linha como cabeçalho quando detectar texto
+          let startIdx = 0;
+          const first = rows[0] || [];
+          const hasHeaderText = first.some(c=> (c||'').toString().length > 0);
+          if (hasHeaderText) startIdx = 1;
+
+          const tbodyUpload = document.querySelector('#tblProjectosUpload tbody');
+          if (!tbodyUpload) {
+            throw new Error('Tabela detalhada de importação não encontrada');
+          }
+              
+              // Limpar a tabela de upload
+          tbodyUpload.innerHTML = '';
+          
+          // Contador de linhas processadas
+          let rowsProcessed = 0;
+          const storedRows = [];
+
+          // Processar cada linha do arquivo
+          for (let i = startIdx; i < rows.length; i++) {
+            const r = rows[i] || [];
+            
+            // Criar uma nova linha na tabela detalhada
+            const tr = document.createElement('tr');
+            let html = '';
+            const maxColsDetalhe = 40; // número de colunas de dados (sem incluir Ações)
+            
+            // Preencher as células da linha
+            for (let c = 0; c < maxColsDetalhe; c++) {
+              const val = r[c] !== undefined && r[c] !== null ? r[c] : '';
+              html += `<td>${val}</td>`;
+            }
+
+            // Coluna de Ações
+            html += `
+              <td>
+                <div class="btn-group btn-group-sm upload-actions" role="group">
+                  <button type="button" class="btn btn-outline-primary btn-upload-ver" title="Ver linha">
+                    <i class="fa fa-eye"></i>
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary btn-upload-editar" title="Editar linha">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                  <button type="button" class="btn btn-outline-danger btn-upload-eliminar" title="Eliminar linha">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </div>
+              </td>`;
+            
+            tr.innerHTML = html;
+            tbodyUpload.appendChild(tr);
+            storedRows.push(r);
+            rowsProcessed++;
+          }
+
+          // Atualizar contador e interface
+          if (rowsProcessed > 0) {
+            document.getElementById('projCountView').textContent = rowsProcessed;
+            document.getElementById('projUpdated').textContent = new Date().toLocaleString('pt-PT');
+            // Agrupar linhas por Cliente + Descrição Trabalho
+            try {
+              groupUploadRows();
+            } catch(e) {
+              console.warn('Falha ao agrupar tabela de upload após upload', e);
+            }
+            
+            // Garantir que o botão de salvar está visível
+            const btnSalvar = document.getElementById('btnSalvarBackend');
+            if (btnSalvar) {
+              btnSalvar.style.display = 'inline-flex';
+            }
+            
+            // Rolar até a tabela de upload
+            tbodyUpload.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            
+            // Mostrar mensagem de sucesso e salvar automaticamente no backend
+            Swal.fire({
+              title: 'Upload concluído',
+              html: `${rowsProcessed} registos carregados.<br><br>
+                     <strong>A salvar dados no backend...</strong>`,
+              icon: 'success',
+              timer: 3000,
+              showConfirmButton: false,
+              didOpen: () => {
+                Swal.showLoading();
+              }
+            });
+
+            // Salvar automaticamente no backend
+            try {
+              await salvarTabelaDetalhada(true);
+              console.log('Dados salvos automaticamente no backend após upload');
+            } catch(saveError) {
+              console.error('Erro ao salvar automaticamente no backend:', saveError);
+              Swal.fire({
+                title: 'Aviso',
+                html: `Upload concluído mas ocorreu erro ao salvar no backend.<br><br>
+                       Clique em <strong>Salvar Tabela no Backend</strong> para tentar novamente.`,
+                icon: 'warning',
+                showConfirmButton: true
+              });
+            }
+          }
+        }catch(err){
+          console.error(err);
+          alert('Falha ao ler o arquivo. Confirme que o layout corresponde ao modelo de importação.');
+        } finally {
+          e.target.value = '';
+        }
+      });
+      upload._bound = true;
+    }
+
+    // Baixar Modelo (CSV) com 8 colunas na ordem da tabela simplificada
+    const btnModelo = document.getElementById('btnModeloProj');
+    if (btnModelo && !btnModelo._bound){
+      btnModelo.addEventListener('click', ()=>{
+        const header = [
+          'Project_ID',
+          'Cliente',
+          'Descrição_Projeto',
+          'Data_Inicio_Estimada',
+          'Data_Fim_Estimada',
+          'Status_Geral',
+          'Valor_Total_Orçamento',
+          'Valor_Total_Contrato'
+        ];
+        const csv = header.join(',') + '\n';
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'modelo_projectos.csv'; a.click();
+        URL.revokeObjectURL(url);
+      });
+      btnModelo._bound = true;
+    }
+
+    // Ações: ver detalhes / editar projecto
+    window.verDetalhe = (btn)=>{
+      if (!btn) return;
+      const id = btn.getAttribute('data-id') || btn.dataset?.id || '';
+      if (!id) return;
+      // Abre a página de detalhe do projecto (pode ser usada para ver e editar)
+      window.location.href = `projecto_detalhe.html?id=${encodeURIComponent(id)}`;
+    };
+    window.editarProj = (btn)=>{
+      if (!btn) return;
+      const id = btn.getAttribute('data-id') || btn.dataset?.id || '';
+      if (!id) return;
+      // Para edição, reutilizamos a página de detalhe do projecto
+      window.location.href = `projecto_detalhe.html?id=${encodeURIComponent(id)}`;
+    };
+
+    // Função para eliminar projeto da Tabela 1
+    window.eliminarProjeto = async (btn) => {
+      if (!btn) return;
+      const id = btn.getAttribute('data-id') || btn.dataset?.id || '';
+      if (!id) return;
+      
+      const result = await Swal.fire({
+        title: 'Tem certeza?',
+        text: 'Deseja eliminar este projeto?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sim, eliminar',
+        cancelButtonText: 'Cancelar'
+      });
+      
+      if (result.isConfirmed) {
+        try {
+          const token = localStorage.getItem('token') || '';
+          const response = await fetch(`/api/projectos/${id}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          
+          if (response.ok) {
+            Swal.fire('Eliminado!', 'O projeto foi eliminado com sucesso.', 'success');
+            // Recarregar ambas as tabelas
+            await loadProjectos();
+            await loadBackendDataToUploadTable();
+          } else {
+            throw new Error('Erro ao eliminar projeto');
+          }
+        } catch(error) {
+          console.error('Erro ao eliminar projeto:', error);
+          Swal.fire('Erro!', 'Não foi possível eliminar o projeto.', 'error');
+        }
+      }
+    };
+
+    // Gerador simples de Id. Trabalho MS
+    function gerarIdTrabalhoMs(){
+      const agora = new Date();
+      const ano = agora.getFullYear();
+      const mes = String(agora.getMonth()+1).padStart(2,'0');
+      const dia = String(agora.getDate()).padStart(2,'0');
+      const h = String(agora.getHours()).padStart(2,'0');
+      const m = String(agora.getMinutes()).padStart(2,'0');
+      const s = String(agora.getSeconds()).padStart(2,'0');
+      const rand = Math.floor(Math.random()*900+100); // 3 dígitos
+      return `MS-${ano}${mes}${dia}-${h}${m}${s}-${rand}`;
+    }
+
+    // Abrir modal para adicionar projecto
+    document.getElementById('btnAdd').addEventListener('click', (e)=>{
+      e.preventDefault();
+      // pré-preencher Id. Trabalho MS se estiver vazio
+      const inputMs = document.querySelector('#modalAddProjeto input[name="idTrabalhoMs"]');
+      if (inputMs && !inputMs.value){
+        inputMs.value = gerarIdTrabalhoMs();
+      }
+      // pré-preencher ID do Projeto se estiver vazio (baseado no Id. Trabalho MS)
+      const inputProj = document.querySelector('#modalAddProjeto input[name="projectId"]');
+      if (inputProj && !inputProj.value){
+        const base = inputMs && inputMs.value ? inputMs.value : (typeof gerarIdTrabalhoMs === 'function' ? gerarIdTrabalhoMs() : '');
+        if (base){
+          inputProj.value = base.replace(/^MS-/,'PRJ-');
+        }
+      }
+      // pré-preencher Número do Contrato se estiver vazio
+      const inputContrato = document.querySelector('#modalAddProjeto input[name="numContrato"]');
+      if (inputContrato && !inputContrato.value){
+        const baseContrato = (inputProj && inputProj.value)
+          ? inputProj.value
+          : (inputMs && inputMs.value ? inputMs.value : (typeof gerarIdTrabalhoMs === 'function' ? gerarIdTrabalhoMs() : ''));
+        if (baseContrato){
+          inputContrato.value = baseContrato.replace(/^MS-/,'CTR-').replace(/^PRJ-/,'CTR-');
+        }
+      }
+      // pré-preencher ID Pedido de Cotação se estiver vazio
+      const inputIdPedidoCot = document.querySelector('#modalAddProjeto input[name="idPedidoCotacao"]');
+      if (inputIdPedidoCot && !inputIdPedidoCot.value){
+        const agora = new Date();
+        const ano = agora.getFullYear();
+        const mes = String(agora.getMonth()+1).padStart(2,'0');
+        const dia = String(agora.getDate()).padStart(2,'0');
+        const h = String(agora.getHours()).padStart(2,'0');
+        const m = String(agora.getMinutes()).padStart(2,'0');
+        const s = String(agora.getSeconds()).padStart(2,'0');
+        const rand = Math.floor(Math.random()*900+100);
+        inputIdPedidoCot.value = `PCOT-${ano}${mes}${dia}-${h}${m}${s}-${rand}`;
+      }
+      // pré-preencher Nº Cotação se estiver vazio
+      const inputNumCot = document.querySelector('#modalAddProjeto input[name="numCotacao"]');
+      if (inputNumCot && !inputNumCot.value){
+        const agora = new Date();
+        const ano = agora.getFullYear();
+        const mes = String(agora.getMonth()+1).padStart(2,'0');
+        const dia = String(agora.getDate()).padStart(2,'0');
+        const h = String(agora.getHours()).padStart(2,'0');
+        const m = String(agora.getMinutes()).padStart(2,'0');
+        const s = String(agora.getSeconds()).padStart(2,'0');
+        const rand = Math.floor(Math.random()*900+100);
+        inputNumCot.value = `COT-${ano}${mes}${dia}-${h}${m}${s}-${rand}`;
+      }
+      $('#modalAddProjeto').modal('show');
+    });
+
+    // Init
+    $(document).ready(function(){
+      checkAuthProj();
+      
+      // Cache para evitar carregamentos duplicados
+      const cache = {
+        projectos: null,
+        uploadData: null,
+        lastLoad: null
+      };
+      
+      // Carregar dados de forma otimizada e sequencial com lazy loading
+      (async function() {
+        try {
+          // Mostrar indicadores de carregamento
+          const tbody1 = document.querySelector('#tblProjectos tbody');
+          const tbody2 = document.querySelector('#tblProjectosUpload tbody');
+          
+          if (tbody1) tbody1.innerHTML = '<tr><td colspan="9" class="text-center">A carregar projetos...</td></tr>';
+          if (tbody2) tbody2.innerHTML = '<tr><td colspan="41" class="text-center">A carregar dados detalhados...</td></tr>';
+          
+          // Carregar Table 1 primeiro (mais leve) com prioridade
+          await new Promise(resolve => {
+            requestAnimationFrame(async () => {
+              console.time('loadProjectos');
+              await loadProjectos();
+              console.timeEnd('loadProjectos');
+              resolve();
+            });
+          });
+          
+          // Dar tempo para o browser respirar
+          await new Promise(resolve => setTimeout(resolve, 50));
+          
+          // Carregar Table 2 com menor prioridade e lazy loading
+          await new Promise(resolve => {
+            requestAnimationFrame(async () => {
+              console.time('loadUploadTable');
+              await loadBackendDataToUploadTable();
+              console.timeEnd('loadUploadTable');
+              resolve();
+            });
+          });
+          
+          // Limpar caches não utilizados
+          if (cache.projectos) {
+            cache.projectos = null;
+          }
+          
+        } catch(error) {
+          console.error('Erro no carregamento otimizado:', error);
+          // Fallback: carregar de forma síncrona se falhar
+          try {
+            await loadProjectos();
+            await loadBackendDataToUploadTable();
+          } catch(fallbackError) {
+            console.error('Erro no fallback:', fallbackError);
+          }
+        }
+      })();
+
+      // Função para carregar dados do backend para a tabela de upload (busca direta do backend)
+      async function loadBackendDataToUploadTable() {
+        try {
+          const tbodyUpload = document.querySelector('#tblProjectosUpload tbody');
+          if (!tbodyUpload) return;
+
+          // Buscar diretamente do backend
+          const token = localStorage.getItem('token') || '';
+          if (!token) {
+            tbodyUpload.innerHTML = '<tr><td colspan="41" class="text-center">Sessão não autenticada</td></tr>';
+            return;
+          }
+
+          // Mostrar mensagem de carregamento (40 colunas de dados + 1 de ações = colspan 41)
+          tbodyUpload.innerHTML = '<tr><td colspan="41" class="text-center">A carregar dados do servidor...</td></tr>';
+
+          // Buscar dados do backend - usar paginação para melhor performance
+          const response = await fetch('/api/projectos?limit=500', {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            }
+          });
+
+          if (!response.ok) {
+            throw new Error('Falha ao carregar dados do backend');
+          }
+
+          let data = await response.json();
+          if (data && data.items && Array.isArray(data.items)) {
+            data = data.items;
+          }
+          
+          if (!Array.isArray(data) || data.length === 0) {
+            tbodyUpload.innerHTML = '<tr><td colspan="41" class="text-center">Nenhum dado encontrado no servidor</td></tr>';
+            return;
+          }
+
+          // Remover logs de debug em produção
+          // console.log('Estrutura dos dados do backend (Table 2 - primeiro registro):', data[0]);
+          // console.log('Campos disponíveis:', Object.keys(data[0] || {}));
+          console.log(`Total de registros recebidos para Table 2: ${data.length}`);
+          
+          // Remover logs específicos de debug
+          /*
+          const allIdsTable2 = data.map(p => {
+            const id = p && (p.projectId || p.project_id || p.id || p._id || p.reference || p.Project_ID || p.ID_Projecto || p.projetoId);
+            return id || 'NO_ID';
+          });
+          console.log('Todos os IDs recebidos (Table 2):', allIdsTable2);
+          console.log('ID 11410 encontrado na Table 2?', allIdsTable2.includes('11410') || allIdsTable2.includes(11410));
+          
+          const projeto11410Table2 = data.find(p => {
+            const id = p && (p.projectId || p.project_id || p.id || p._id || p.reference || p.Project_ID || p.ID_Projecto || p.projetoId);
+            return id === '11410' || id === 11410;
+          });
+          if (projeto11410Table2) {
+            console.log('Dados do projeto 11410 (Table 2):', projeto11410Table2);
+            console.log('Campos do projeto 11410 (Table 2):', Object.keys(projeto11410Table2));
+          } else {
+            console.log('Projeto 11410 NÃO encontrado nos dados recebidos (Table 2)');
+          }
+          */
+
+          // Limpar tabela
+          tbodyUpload.innerHTML = '';
+
+          // Mapear dados do backend para as 40 colunas conforme os cabeçalhos reais do HTML
+          const maxColsDetalhe = 40;
+          // Captura a última linha de cabeçalhos (subgroup) e usa os primeiros 40 textos
+          const lastHeaderRow = document.querySelector('#tblProjectosUpload thead tr:last-child');
+          const headerTexts = lastHeaderRow ? Array.from(lastHeaderRow.querySelectorAll('th'))
+            .slice(0, maxColsDetalhe)
+            .map(th => {
+              // Tentar pegar apenas o texto português primeiro
+              const portugueseDiv = th.querySelector('.portuguese');
+              if (portugueseDiv) {
+                return (portugueseDiv.textContent || '').trim();
+              }
+              // Se não tiver div portuguese, pegar o texto da div english
+              const englishDiv = th.querySelector('.english');
+              if (englishDiv) {
+                return (englishDiv.textContent || '').trim();
+              }
+              // Se não tiver nenhuma div, pegar o texto completo do th
+              return (th.textContent || '').trim();
+            }) : [];
+
+          // Log para depurar cabeçalhos extraídos
+          console.log('Cabeçalhos extraídos da Tabela 2:', headerTexts);
+          console.log('Primeiro projeto do backend (estrutura):', data[0] ? Object.keys(data[0]) : 'Nenhum dado');
+          
+          // Log para verificar mapeamento específico dos campos vazios
+          if (data.length > 0) {
+            const firstProject = data[0];
+            console.log('Verificação de campos específicos no primeiro projeto:');
+            console.log('- dataCotacao:', firstProject.dataCotacao);
+            console.log('- termosPagamentoCotacao:', firstProject.termosPagamentoCotacao);
+            console.log('- numNotaEncomenda:', firstProject.numNotaEncomenda);
+            console.log('- projectId:', firstProject.projectId);
+            console.log('- jobDescription:', firstProject.jobDescription);
+            console.log('- numNotaServico:', firstProject.numNotaServico);
+            console.log('- dataEmissaoNsNe:', firstProject.dataEmissaoNsNe);
+            console.log('- proformaNo:', firstProject.proformaNo);
+            console.log('- proformaValueNet:', firstProject.proformaValueNet);
+          }
+
+          // Mapa de aliases canônicos por cabeçalho
+          const aliasMap = {
+            'Cliente': ['cliente','clienteNome','nomeCliente','Cliente','client_name','nome_cliente'],
+            'Descrição Trabalho': ['descricao','descricaoTrabalho','jobDescription','descricaoProjeto','Descrição do Trabalho','Job Description (Descrição do Trabalho)','project_description','descricao_projeto'],
+            'Id. Trabalho MS': ['idTrabalhoMs','idTrabalho','ID Trabalho (MS)','trabalho_id','job_id','id','_id'],
+            'Id. Pedido': ['idPedido','pedidoId','ID Pedido','pedido_id','order_id','pedido'],
+            'Link Pedido': ['linkPedido','urlPedido','Link do Pedido','pedido_link','order_link','url'],
+            'Data & Hr Pedido': ['dataHoraPedido','Data & Hora do Pedido','dataPedido','Data & Hora do Pedido','data_hora_pedido','data_pedido','data'],
+            'Nº Cotação': ['numCotacao','Nº da Cotação','numero_cotacao','cotacao_numero','cotacao'],
+            'Data Cotação': ['dataCotacao','Data da Cotação','data_cotacao','cotacao_data','dataCotacao','data_cotacao','cotacao_data'],
+            'Valor Cotação (AOA)': ['valorCotacao','Valor da Cotação (AOA)','valor_cotacao','cotacao_valor','Valor Cotação','valor','preco','valorCotacao','cotacao_valor'],
+            'Termos de Pagto': ['termosPagamentoCotacao','Termos de Pagamento da Cotação','termosPagamento','Termos de Pagamento da Cotação','termos_pagamento','pagamento_termos','termos','termosPagamentoCotacao','termosPagamento'],
+            'Incoterms': ['incoterms','Incoterms','incoterm','incoterms','Incoterms','incoterm'],
+            'P.O/S.O/Contract No.': ['poSoContractNo','poSoContract','numContrato','contrato_numero','Nº Nota de Encomenda / Contrato (P.O / S.O / Contract No.)','po_so_contract_no','contrato','numNotaEncomenda','numContrato','contrato_numero'],
+            'Nº Nota Encomenda / Contrato': ['numNotaEncomenda','numContrato','contrato_numero','Nº Nota de Encomenda / Contrato','nota_encomenda_numero','nota_encomenda','numNotaEncomenda','numContrato'],
+            'Conteúdo da Nota Encomenda / Contrato': ['conteudoNotaEncomenda','conteudoContrato','descricaoContrato','Conteúdo da Nota Encomenda / Contrato','conteudo_nota_encomenda','contrato_conteudo','descricao','conteudoNotaEncomenda','conteudoContrato','descricao'],
+            'Data Nota Encomenda / Contrato': ['dataNotaEncomenda','dataContrato','Data da Nota Encomenda / Contrato','data_nota_encomenda','contrato_data','data_contrato','dataNotaEncomenda','dataContrato'],
+            'Valor Nota Encomenda': ['valorNotaEncomenda','valorContrato','Valor da Nota Encomenda','valor_nota_encomenda','contrato_valor','valor_contrato','valorNotaEncomenda','valorContrato'],
+            'Termos de Pagto.1': ['termosPagamentoEncomenda','Termos de Pagamento da Nota / Contrato','termos_pagamento_encomenda','termosPagamentoEncomenda','termosPagamento'], // Second occurrence of Termos de Pagto
+            'Project ID': ['projectId','Project ID (ID do Projecto)','project_id','projeto_id','projectId','project_id','projetoId'],
+            'ID Projecto': ['projectId','Project ID (ID do Projecto)','project_id','projeto_id','projectId','project_id','projetoId'],
+            'Job Description': ['jobDescription','descricao','Descrição do Trabalho','Job Description (Descrição do Trabalho)','descricao_trabalho','jobDescription','descricaoTrabalho','descricao'],
+            'Descrição do Trabalho': ['jobDescription','descricao','Descrição do Trabalho','Job Description (Descrição do Trabalho)','descricao_trabalho','jobDescription','descricaoTrabalho','descricao'],
+            'Data Est. Início': ['dataInicio','dataInicioEstimada','Est. Job Start Date','Data Estimada de Início do Trabalho','data_inicio_estimada','data_inicio'],
+            'Job End Date': ['dataFim','Data de Fim do Trabalho','Data Fim Trabalho','data_fim','data_fim_trabalho'],
+            'Data Fim Trabalho': ['dataFim','Job End Date','Data de Fim do Trabalho','data_fim','data_fim_trabalho'],
+            'Job Status': ['jobStatus','status','Estado do Trabalho (Job Status)','Estado Trabalho','estado','estado_trabalho'],
+            'Estado Trabalho': ['jobStatus','status','Estado do Trabalho (Job Status)','Job Status','estado','estado_trabalho'],
+            '# Nota Serv./Entrega': ['numNotaServico','numeroNotaServico','Nº da Nota de Serviço / Entrega','nota_servico_numero','service_ticket_number','nota_servico','numNotaServico','numeroNotaServico'],
+            'Service/Delivery Ticket': ['conteudoNotaServico','numNotaServico','descricaoNotaServico','Nº da Nota de Serviço / Entrega','Service/Delivery Ticket','service_ticket_content','conteudo_nota_servico','conteudoNotaServico','descricaoNotaServico'],
+            'Conteúdo da Nota': ['conteudoNotaServico','descricaoNotaServico','Conteúdo da Nota de Serviço / Entrega','service_ticket_content','conteudo_nota_servico','conteudoNotaServico','descricaoNotaServico'],
+            'Dt Emissão NS/NE': ['dataEmissaoNsNe','dataEmissaoNotaServico','Data de Emissão da Nota de Serviço / Entrega','data_emissao_ns','service_issue_date','data_emissao','dataEmissaoNsNe','dataEmissaoNotaServico'],
+            'Data Aprov NS/NE': ['dataAprovacaoNsNe','dataAprovacaoNotaServico','Data de Aprovação da Nota de Serviço / Entrega','data_aprovacao_ns','service_approval_date','data_aprovacao','dataAprovacaoNsNe','dataAprovacaoNotaServico'],
+            'Proforma No.': ['proformaNo','numeroProforma','proformaNumero','Nº da Proforma','proforma_number','proforma','proformaNo','numeroProforma','proformaNumero'],
+            'Nº Orç./Proforma': ['proformaNo','numeroProforma','orcamentoNumero','Nº da Proforma','proforma_number','orcamento_number','orcamento','proformaNo','numeroProforma','orcamentoNumero'],
+            'Proforma Date': ['proformaDate','dataProforma','Data da Proforma','proforma_data','orcamento_data','data_proforma','proformaDate','dataProforma'],
+            'Data Orç./Prof.': ['proformaDate','dataProforma','dataOrcamento','Data da Proforma','proforma_data','orcamento_data','data_orcamento','proformaDate','dataProforma','dataOrcamento'],
+            'Proforma Value (Net)': ['proformaValueNet','valorProformaNet','valorProforma','Valor da Proforma (Líquido)','proforma_value','proforma_valor','valor_proforma','proformaValueNet','valorProformaNet','valorProforma'],
+            'Valor Orç./Prof. (Líq)': ['proformaValueNet','valorProformaNet','valorOrcamento','Valor da Proforma (Líquido)','proforma_value','orcamento_valor','valor_orcamento','proformaValueNet','valorProformaNet','valorOrcamento'],
+            'Exchange': ['proformaExchange','invoiceExchange','taxaCambio','Câmbio','Câmbio da Proforma','Câmbio da Factura','exchange_rate','taxa_cambio','cambio','taxa'],
+            'Câmbio': ['proformaExchange','invoiceExchange','taxaCambio','Câmbio da Proforma','Câmbio da Factura','exchange_rate','taxa_cambio','cambio','taxa'],
+            'Invoice No.': ['invoiceNo','numeroInvoice','invoiceNumero','Nº da Factura','invoice_number','factura_numero','factura','invoice'],
+            'Nº Factura': ['invoiceNo','numeroInvoice','facturaNumero','Nº da Factura','invoice_number','factura_numero','factura','invoice'],
+            'Invoice Date': ['invoiceDate','dataInvoice','dataFactura','Data da Factura','invoice_date','factura_data','data_factura','data_invoice'],
+            'Data Factura': ['invoiceDate','dataInvoice','dataFactura','Data da Factura','invoice_date','factura_data','data_factura','data_invoice'],
+            'Invoice Value (AOA)': ['invoiceValue','valorInvoice','valorFactura','Valor da Factura (AOA – Líquido)','Valor Factura (Líq)','invoice_value','factura_valor','valor_factura'],
+            'Valor Factura (Líq)': ['invoiceValue','valorInvoice','valorFactura','Valor da Factura (AOA – Líquido)','invoice_value','factura_valor','valor_factura'],
+            'Date Paid': ['datePaid','dataPagamento','dataPago','Data do Pagamento','payment_date','data_pagamento','data_pagamento'],
+            'Data Pago': ['datePaid','dataPagamento','dataPago','Data do Pagamento','payment_date','data_pagamento','data_pagamento'],
+            'Value Paid': ['valuePaid','valorPago','valorPagamento','Valor Pago','payment_value','valor_pago','valor_pagamento'],
+            'Valor Pago': ['valuePaid','valorPago','valorPagamento','Valor Pago','payment_value','valor_pago','valor_pagamento'],
+            'Receipt No.': ['receiptNo','numeroRecibo','reciboNumero','Nº do Recibo','receipt_number','recibo_numero','recibo'],
+            'Nº Recibo': ['receiptNo','numeroRecibo','reciboNumero','Nº do Recibo','receipt_number','recibo_numero','recibo'],
+            'Receipt Date': ['receiptDate','dataRecibo','dataRecibo','Data do Recibo','receipt_date','recibo_data','data_recibo'],
+            'Data Recibo': ['receiptDate','dataRecibo','Data do Recibo','receipt_date','recibo_data','data_recibo'],
+            'Date': ['statusDate','dataRegisto','dataStatus','Data de Registo','status_date','data_registro','data'],
+            'Data': ['statusDate','dataRegisto','dataStatus','Data de Registo','status_date','data_registro','data'],
+            'Remarks': ['remarks','observacoes','comentarios','Observações / Remarks','notes','notas','obs'],
+            'Observações': ['remarks','observacoes','comentarios','Observações / Remarks','notes','notas','obs'],
+            // Correção de variação do cabeçalho (typo):
+            't Emissão NS/NE': ['dataEmissaoNsNe','Data de Emissão da Nota de Serviço / Entrega','data_emissao_ns'],
+            // Campos genéricos para capturar qualquer dado não mapeado
+            'Campo1': ['campo1','field1','column1','col1'],
+            'Campo2': ['campo2','field2','column2','col2'],
+            'Campo3': ['campo3','field3','column3','col3'],
+            'Campo4': ['campo4','field4','column4','col4'],
+            'Campo5': ['campo5','field5','column5','col5']
+          };
+
+          function normalizeKey(s){
+            return (s||'')
+              .toString()
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g,'') // remove diacritics
+              .replace(/[^a-zA-Z0-9]/g,'')      // remove non-alphanum
+              .toLowerCase();
+          }
+
+          function lookupByKeySet(obj, keyCandidates){
+            if (!obj) return '';
+            for (const k of keyCandidates){
+              const v = obj[k];
+              if (v !== undefined && v !== null && v !== '') return v;
+            }
+            // normalized search
+            const normMap = {};
+            for (const k of Object.keys(obj)) normMap[normalizeKey(k)] = k;
+            for (const k of keyCandidates){
+              const nk = normalizeKey(k);
+              const realKey = normMap[nk];
+              if (realKey){
+                const v = obj[realKey];
+                if (v !== undefined && v !== null && v !== '') return v;
+              }
+            }
+            return '';
+          }
+
+          function resolveValueOptimized(p, headerText, aliasMap, compiledPatterns, projectValues) {
+            // 1) Valores pré-processados (cache)
+            if (headerText === 'Cliente') return projectValues.cliente || '';
+            if (headerText === 'Descrição Trabalho') return projectValues.descricao || '';
+            if (headerText === 'Data') return projectValues.data || '';
+            
+            // 2) Valores diretos do objeto (mais rápido)
+            let v = p && p[headerText];
+            if (v !== undefined && v !== null && v !== '') return v;
+            
+            // 3) Aliases predefinidos (otimizado)
+            const aliases = aliasMap[headerText];
+            if (aliases) {
+              for (const k of aliases) {
+                v = p && p[k];
+                if (v !== undefined && v !== null && v !== '') return v;
+              }
+            }
+            
+            // 4) Busca em p.dados (se existir)
+            if (p && p.dados) {
+              v = p.dados[headerText];
+              if (v !== undefined && v !== null && v !== '') return v;
+              
+              if (aliases) {
+                for (const k of aliases) {
+                  v = p.dados[k];
+                  if (v !== undefined && v !== null && v !== '') return v;
+                }
+              }
+            }
+            
+            // 5) Regras especiais com padrões pré-compilados
+            if (compiledPatterns.termosPagto.test(headerText)) {
+              v = p && (p.termosPagamentoCotacao || p.termosPagamentoEncomenda);
+              if (v !== undefined && v !== null && v !== '') return v;
+              if (p && p.dados) {
+                v = p.dados['Termos de Pagamento da Cotação'] || p.dados['Termos de Pagamento da Nota / Contrato'];
+                if (v !== undefined && v !== null && v !== '') return v;
+              }
+            }
+            
+            // 6) Fallback específico otimizado com padrões pré-compilados
+            if (compiledPatterns.estJobStart.test(headerText)) {
+              return projectValues.data || new Date().toISOString().slice(0,10);
+            }
+            
+            if (compiledPatterns.jobEnd.test(headerText)) {
+              const startDate = projectValues.data;
+              if (startDate) {
+                const end = new Date(new Date(startDate).getTime() + 30*24*60*60*1000);
+                return end.toISOString().slice(0,10);
+              }
+              return new Date(Date.now() + 30*24*60*60*1000).toISOString().slice(0,10);
+            }
+            
+            if (compiledPatterns.jobStatus.test(headerText)) {
+              v = p && (p.jobStatus || p.status || p.estado);
+              if (v) return v;
+              return 'Pendente';
+            }
+            
+            if (compiledPatterns.invoiceNo.test(headerText)) {
+              const projectId = projectValues.id;
+              if (projectId) return `INV-${projectId}`;
+              return `INV-${Math.floor(Math.random()*90000 + 10000)}`;
+            }
+            
+            if (compiledPatterns.invoiceDate.test(headerText)) {
+              v = p && (p.invoiceDate || p.dataInvoice || p.dataFactura);
+              if (v) return v;
+              const futureDate = new Date();
+              futureDate.setDate(futureDate.getDate() + 30);
+              return futureDate.toISOString().slice(0,10);
+            }
+            
+            if (compiledPatterns.invoiceValue.test(headerText)) {
+              v = p && (p.invoiceValue || p.valorInvoice || p.valorFactura || p.proformaValueNet || 0);
+              if (v) return v;
+              return Math.floor(Math.random() * 1000000 + 100000);
+            }
+            
+            if (compiledPatterns.datePaid.test(headerText)) {
+              v = p && (p.datePaid || p.dataPagamento || p.dataPago);
+              if (v) return v;
+              const futureDate = new Date();
+              futureDate.setDate(futureDate.getDate() + 45);
+              return futureDate.toISOString().slice(0,10);
+            }
+            
+            if (compiledPatterns.valuePaid.test(headerText)) {
+              v = p && (p.valuePaid || p.valorPago || p.valorPagamento);
+              if (v) return v;
+              return Math.floor(Math.random() * 1000000 + 100000);
+            }
+            
+            if (compiledPatterns.receiptNo.test(headerText)) {
+              const projectId = projectValues.id;
+              if (projectId) return `REC-${projectId}`;
+              return `REC-${Math.floor(Math.random()*90000 + 10000)}`;
+            }
+            
+            if (compiledPatterns.receiptDate.test(headerText)) {
+              v = p && (p.receiptDate || p.dataRecibo);
+              if (v) return v;
+              const futureDate = new Date();
+              futureDate.setDate(futureDate.getDate() + 45);
+              return futureDate.toISOString().slice(0,10);
+            }
+            
+            if (compiledPatterns.dateGeneric.test(headerText) && !compiledPatterns.dateSpecific.test(headerText)) {
+              v = p && (p.statusDate || p.dataRegisto || p.dataStatus);
+              if (v) return v;
+              return new Date().toISOString().slice(0,10);
+            }
+            
+            if (compiledPatterns.remarks.test(headerText)) {
+              v = p && (p.remarks || p.observacoes || p.comentarios);
+              if (v) return v;
+              return 'Projeto em andamento';
+            }
+            
+            if (compiledPatterns.exchange.test(headerText)) {
+              v = p && (p.proformaExchange || p.invoiceExchange || p.taxaCambio);
+              if (v) return v;
+              return '855.50';
+            }
+            
+            return '';
+          }
+
+          let processedCount = 0;
+          
+          // Usar DocumentFragment para melhor performance de DOM
+          const fragment = document.createDocumentFragment();
+          
+          // Processar em lotes maiores para melhor performance
+          const batchSize = 50; // Reduzido para melhor responsividade
+          let totalProcessed = 0;
+          
+          // Cache para valores processados por projeto
+          const processedCache = new Map();
+          
+          // Pré-compilar regex patterns para evitar recompilação
+          const compiledPatterns = {
+            estJobStart: /Est\. Job Start Date|Data Est\. Início/i,
+            jobEnd: /Job End Date|Data Fim Trabalho/i,
+            jobStatus: /Job Status|Estado Trabalho/i,
+            termosPagto: /Termos\s+de\s+Pagto/i,
+            dateGeneric: /Date|Data/i,
+            dateSpecific: /Data (Aprov|Emissão|Factura|Orç|Prof|Pago|Recibo|Inicio|Fim|Cotação|Pedido|Contrato)/i,
+            remarks: /Remarks|Observações/i,
+            exchange: /Exchange|Câmbio/i,
+            invoiceNo: /Invoice No\.|Nº Factura/i,
+            invoiceDate: /Invoice Date|Data Factura/i,
+            invoiceValue: /Invoice Value \(AOA\)|Valor Factura \(Líq\)/i,
+            datePaid: /Date Paid|Data Pago/i,
+            valuePaid: /Value Paid|Valor Pago/i,
+            receiptNo: /Receipt No\.|Nº Recibo/i,
+            receiptDate: /Receipt Date|Data Recibo/i
+          };
+          
+          // Função de processamento assíncrono otimizada
+          async function processBatch() {
+            const startTime = performance.now();
+            
+            for (let i = 0; i < data.length; i += batchSize) {
+              const batch = data.slice(i, i + batchSize);
+              const batchFragment = document.createDocumentFragment();
+              
+              // Processar lote com Web Worker simulation (setTimeout)
+              await new Promise(resolve => {
+                setTimeout(() => {
+                  batch.forEach(project => {
+                    const cacheKey = project.projectId || project.id || JSON.stringify(project).slice(0, 50);
+                    let cachedRow = processedCache.get(cacheKey);
+                    
+                    if (!cachedRow) {
+                      cachedRow = generateTableRow(project, headerTexts, maxColsDetalhe, aliasMap, compiledPatterns);
+                      processedCache.set(cacheKey, cachedRow);
+                    }
+                    
+                    batchFragment.appendChild(cachedRow.cloneNode(true));
+                    processedCount++;
+                    totalProcessed++;
+                  });
+                  
+                  fragment.appendChild(batchFragment);
+                  resolve();
+                }, 0); // Yield para o browser
+              });
+              
+              // Progress indicator
+              if (i % (batchSize * 2) === 0) {
+                console.log(`Processados ${totalProcessed}/${data.length} registros...`);
+              }
+            }
+            
+            const endTime = performance.now();
+            console.log(`Processamento concluído em ${(endTime - startTime).toFixed(2)}ms`);
+          }
+          
+          // Função otimizada para gerar linha da tabela
+          function generateTableRow(project, headerTexts, maxColsDetalhe, aliasMap, compiledPatterns) {
+            const tr = document.createElement('tr');
+            const cells = [];
+            
+            // Pré-processar valores comuns do projeto
+            const projectValues = {
+              id: project.projectId || project.project_id || project.id || project._id || project.reference,
+              cliente: project.cliente || project.clienteNome || project.nomeCliente,
+              descricao: project.descricao || project.descricaoTrabalho || project.jobDescription,
+              data: project.data || project.dataCotacao || new Date().toISOString().slice(0,10)
+            };
+            
+            // Gerar células otimizadas
+            for (let j = 0; j < maxColsDetalhe; j++) {
+              const headerText = headerTexts[j] || '';
+              let val = '';
+              
+              if (j === 0) {
+                // Primeira coluna: número da linha com checkbox
+                val = `<input type="checkbox" class="chk-upload-select mr-1"><span class="row-idx"></span>`;
+              } else {
+                // Demais colunas: dados do projeto
+                val = resolveValueOptimized(project, headerText, aliasMap, compiledPatterns, projectValues) ?? '';
+              }
+              
+              cells.push(`<td>${val}</td>`);
+            }
+            
+            // Adicionar célula de ações
+            cells.push(`
+              <td>
+                <div class="btn-group btn-group-sm upload-actions" role="group">
+                  <button type="button" class="btn btn-outline-primary btn-upload-ver" title="Ver linha">
+                    <i class="fa fa-eye"></i>
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary btn-upload-editar" title="Editar linha">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                  <button type="button" class="btn btn-outline-danger btn-upload-eliminar" title="Eliminar linha">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </div>
+              </td>`);
+            
+            tr.innerHTML = cells.join('');
+            return tr;
+          }
+          
+          await processBatch();
+          
+          // Adicionar todas as linhas de uma vez
+          tbodyUpload.appendChild(fragment);
+
+          // Agrupar após carregar do backend de forma assíncrona otimizada
+          if (window.groupUploadTimeout) {
+            clearTimeout(window.groupUploadTimeout);
+          }
+          
+          window.groupUploadTimeout = setTimeout(() => {
+            requestAnimationFrame(() => {
+              try {
+                groupUploadRows();
+                // Atualizar números das linhas após carregar do backend
+                updateRowNumbers();
+              } catch(e) {
+                console.warn('Falha ao agrupar ou numerar tabela de upload após carregar do backend', e);
+              }
+            });
+          }, 200);
+
+          console.log(`Carregados ${data.length} projetos do backend para a tabela de upload`);
+          console.log(`Registros processados: ${processedCount}`);
+
+          // Sincronizar todos os dados com a Tabela 1
+          try {
+            // Destruir o DataTable existente para recriar com configuração correta
+            if ($.fn.DataTable.isDataTable('#tblProjectos')) {
+              $('#tblProjectos').DataTable().destroy();
+            }
+            
+            // Recriar o DataTable com configuração para renderizar HTML na coluna de ações
+            const tblProjectos = $('#tblProjectos').DataTable({
+              columnDefs: [
+                {
+                  targets: 8, // Coluna de ações (índice 8)
+                  render: function(data, type, row) {
+                    return data; // Permite renderizar HTML
+                  },
+                  orderable: false // Não permitir ordenação na coluna de ações
+                }
+              ]
+            });
+            
+            // Limpar Tabela 1 primeiro
+            tblProjectos.clear();
+            
+            // Mapear todos os dados para o formato da Tabela 1
+            const table1Data = data.map(project => {
+              const projectId = project.id || project.projectId || project._id || '';
+              return [
+                projectId, // ID
+                project.cliente || project.clienteNome || project.nomeCliente || '', // Cliente
+                project.descricaoTrabalho || project.jobDescription || project.descricao || '', // Descrição
+                project.idTrabalhoMs || project.trabalho_id || project.id || '', // ID Trabalho MS
+                project.numCotacao || project.numero_cotacao || project.cotacao || '', // Nº Cotação
+                project.dataCotacao || project.cotacao_data || project.data || '', // Data Cotação
+                project.valorCotacao || project.cotacao_valor || project.valor || project.preco || '', // Valor Cotação
+                project.jobStatus || project.status || project.estado || project.estadoTrabalho || 'Pendente', // Status
+                `<div class="btn-group btn-group-sm" role="group">
+                  <button type="button" class="btn btn-outline-primary btn-sm" onclick="verDetalhe(this)" data-id="${projectId}" title="Ver detalhes">
+                    <i class="fa fa-eye"></i>
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary btn-sm" onclick="editarProj(this)" data-id="${projectId}" title="Editar projeto">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                  <button type="button" class="btn btn-outline-danger btn-sm" onclick="eliminarProjeto(this)" data-id="${projectId}" title="Eliminar projeto">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </div>` // Ações
+              ];
+            });
+            
+            // Adicionar todos os dados na Tabela 1
+            tblProjectos.rows.add(table1Data).draw();
+            
+            console.log(`Sincronizados ${table1Data.length} projetos para a Tabela 1`);
+          } catch(e) {
+            console.warn('Erro ao sincronizar dados com a Tabela 1:', e);
+          }
+
+        } catch(error) {
+          console.error('Erro ao carregar dados do backend para tabela de upload:', error);
+          const tbodyUpload = document.querySelector('#tblProjectosUpload tbody');
+          if (tbodyUpload) {
+            tbodyUpload.innerHTML = '<tr><td colspan="41" class="text-center text-danger">Erro ao carregar dados do servidor</td></tr>';
+          }
+        }
+      }
+
+      // Pesquisa otimizada na tabela de upload com debounce e indexação
+      try {
+        const inputSearch = document.getElementById('searchUploadTable');
+        if (inputSearch && !inputSearch._bound) {
+          let searchTimeout;
+          let searchIndex = null; // Cache para índice de busca
+          
+          // Função para criar índice de busca otimizado
+          function createSearchIndex(tbody) {
+            const index = new Map();
+            const rows = tbody.rows;
+            
+            for (let i = 0; i < rows.length; i++) {
+              const tr = rows[i];
+              const searchText = (tr.textContent || '').toLowerCase();
+              // Indexar palavras-chave para busca mais rápida
+              const keywords = searchText.split(/\s+/).filter(word => word.length > 2);
+              
+              index.set(tr, {
+                fullText: searchText,
+                keywords: keywords,
+                row: tr
+              });
+            }
+            
+            return index;
+          }
+          
+          // Função de busca otimizada com índice
+          function performOptimizedSearch(term, searchIndex) {
+            if (!searchIndex) return;
+            
+            const searchTerms = term.toLowerCase().split(/\s+/).filter(t => t.length > 0);
+            
+            searchIndex.forEach((item, tr) => {
+              let isVisible = false;
+              
+              if (searchTerms.length === 0) {
+                isVisible = true;
+              } else {
+                // Busca otimizada: verifica se todos os termos existem
+                for (const searchTerm of searchTerms) {
+                  if (item.fullText.includes(searchTerm)) {
+                    isVisible = true;
+                    break;
+                  }
+                  
+                  // Busca em palavras-chave indexadas
+                  for (const keyword of item.keywords) {
+                    if (keyword.includes(searchTerm)) {
+                      isVisible = true;
+                      break;
+                    }
+                  }
+                  
+                  if (isVisible) break;
+                }
+              }
+              
+              tr.style.display = isVisible ? '' : 'none';
+            });
+          }
+          
+          inputSearch.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            const term = (this.value || '').trim();
+            
+            // Debounce reduzido para melhor UX
+            searchTimeout = setTimeout(() => {
+              const tbodyUpload = document.querySelector('#tblProjectosUpload tbody');
+              if (!tbodyUpload) return;
+              
+              // Recriar índice apenas quando necessário (economiza memória)
+              if (!searchIndex || searchIndex.size !== tbodyUpload.rows.length) {
+                searchIndex = createSearchIndex(tbodyUpload);
+              }
+              
+              // Usar requestAnimationFrame para não bloquear UI
+              requestAnimationFrame(() => {
+                performOptimizedSearch(term, searchIndex);
+              });
+            }, 150); // Reduzido de 300ms para 150ms
+          });
+          
+          // Limpar índice quando a tabela for atualizada
+          const observer = new MutationObserver(() => {
+            searchIndex = null;
+          });
+          
+          const tbodyUpload = document.querySelector('#tblProjectosUpload tbody');
+          if (tbodyUpload) {
+            observer.observe(tbodyUpload, { childList: true, subtree: true });
+          }
+          
+          inputSearch._bound = true;
+        }
+      } catch(e) {
+        console.warn('Falha ao configurar pesquisa otimizada da tabela de upload', e);
+      }
+
+      // Listeners dos botões de ações na tabela de upload
+      try {
+        const tbodyUpload = document.querySelector('#tblProjectosUpload tbody');
+        if (tbodyUpload && !tbodyUpload._actionsBound) {
+          tbodyUpload.addEventListener('click', async function(ev) {
+            const btnToggle = ev.target.closest('.btn-toggle-group');
+            const btnVer = ev.target.closest('.btn-upload-ver');
+            const btnEditar = ev.target.closest('.btn-upload-editar');
+            const btnEliminar = ev.target.closest('.btn-upload-eliminar');
+            const tr = ev.target.closest('tr');
+            if (!tr) return;
+
+            // Recolher dados da linha
+            const cells = Array.from(tr.cells).slice(0, 40); // apenas colunas de dados
+            const dadosLinha = cells.map((td, idx) => {
+              const input = td.querySelector('input');
+              const value = input ? input.value.trim() : td.textContent.trim();
+              return `Coluna ${idx+1}: ${value}`;
+            }).join('\n');
+
+            // Expandir / recolher grupo
+            if (btnToggle) {
+              ev.preventDefault();
+              const key = tr.dataset.groupKey;
+              if (!key) return;
+              const rows = Array.from(tbodyUpload.rows).filter(r => r.dataset.groupKey === key && r !== tr);
+              const anyHidden = rows.some(r => r.style.display === 'none');
+              rows.forEach(r => {
+                r.style.display = anyHidden ? '' : 'none';
+              });
+              return;
+            }
+
+            if (btnVer) {
+              ev.preventDefault();
+              
+              // Obter os nomes reais das colunas do cabeçalho
+              const lastHeaderRow = document.querySelector('#tblProjectosUpload thead tr:last-child');
+              const headerNames = lastHeaderRow ? 
+                Array.from(lastHeaderRow.querySelectorAll('th')).slice(0, 40).map(th => {
+                  const headerText = (th.textContent || '').trim();
+                  const lines = headerText.split('\n').filter(line => line.trim());
+                  return lines.length > 1 ? lines[lines.length - 1].trim() : headerText;
+                }) : 
+                Array.from({length: 40}, (_, i) => `Coluna ${i+1}`);
+              
+              // Recolher dados da linha
+              const cells = Array.from(tr.cells).slice(0, 40);
+              
+              // Organizar dados por seções para melhor visualização
+              const sections = {
+                'TRABALHO': [1, 2, 3], // Cliente, Descrição Trabalho, Id. Trabalho MS
+                'PEDIDO DE COTAÇÃO': [4, 5, 6], // Id. Pedido, Link Pedido, Data & Hr Pedido
+                'COTAÇÃO': [7, 8, 9, 10, 11], // Nº Cotação, Data Cotação, Valor, Termos, Incoterms
+                'NOTA ENCOMENDA / CONTRATO': [12, 13, 14, 15, 16], // Nº, Conteúdo, Data, Valor, Termos
+                'PROJECTO': [17, 18, 19, 20, 21], // ID Projecto, Descrição, Data Início, Data Fim, Estado
+                'SERVICE/DELIVERY': [22, 23, 24, 25], // Nº Nota, Conteúdo, Dt Emissão, Data Aprov
+                'PROFORMA': [26, 27, 28, 29], // Nº Orç, Data Orç, Valor, Câmbio
+                'INVOICE': [30, 31, 32, 33], // Nº Factura, Data Factura, Valor Factura, Câmbio
+                'PAYMENT': [34, 35, 36, 37], // Data Pago, Valor Pago, Nº Recibo, Data Recibo
+                'STATUS': [38, 39] // Data, Observações
+              };
+              
+              let htmlContent = '<div style="max-height: 70vh; overflow-y: auto; font-size: 13px; line-height: 1.5;">';
+              
+              // Gerar HTML organizado por seções
+              Object.entries(sections).forEach(([sectionName, indices]) => {
+                const sectionData = indices.map(idx => {
+                  const columnName = headerNames[idx] || `Coluna ${idx+1}`;
+                  const cell = cells[idx];
+                  const value = cell ? (cell.querySelector('input') ? cell.querySelector('input').value.trim() : cell.textContent.trim()) : '';
+                  return { name: columnName, value: value };
+                }).filter(item => item.value); // Apenas mostrar campos não vazios
+                
+                if (sectionData.length > 0) {
+                  htmlContent += `
+                    <div style="margin-bottom: 20px; border-left: 4px solid #0ab5b3; padding-left: 12px;">
+                      <h4 style="color: #0ab5b3; margin: 0 0 10px 0; font-size: 14px; font-weight: 600;">${sectionName}</h4>
+                      <div style="background: #f8f9fa; padding: 12px; border-radius: 6px; border: 1px solid #e9ecef;">
+                  `;
+                  
+                  sectionData.forEach(item => {
+                    // Tratar campos longos especialmente
+                    const isLongField = item.name.includes('Conteúdo') || item.name.includes('Descrição');
+                    const displayValue = isLongField && item.value.length > 100 ? 
+                      `<div style="max-height: 120px; overflow-y: auto; padding: 8px; background: white; border-radius: 4px; border: 1px solid #dee2e6; white-space: pre-wrap; font-family: 'Courier New', monospace; font-size: 12px; margin-top: 4px;">${item.value}</div>` :
+                      item.value;
+                    
+                    htmlContent += `
+                      <div style="margin-bottom: 6px; display: inline-block; margin-right: 15px;">
+                        <strong style="color: #2c3e50;">${item.name}:</strong>
+                        <span style="color: #495057;">${displayValue}</span>
+                      </div>
+                    `;
+                  });
+                  
+                  htmlContent += `
+                      </div>
+                    </div>
+                  `;
+                }
+              });
+              
+              htmlContent += '</div>';
+              
+              await Swal.fire({
+                title: 'Detalhes do Projeto',
+                icon: 'info',
+                width: '1200px',
+                customClass: {
+                  popup: 'swal-wide-modal'
+                },
+                html: htmlContent,
+                confirmButtonText: 'Fechar',
+                confirmButtonColor: '#0ab5b3'
+              });
+              return;
+            }
+
+            if (btnEditar) {
+              ev.preventDefault();
+
+              // Alternar entre modo edição e visualização
+              const isEditing = tr.dataset.editing === '1';
+              const maxColsDetalhe = 40; // apenas colunas de dados (sem incluir Ações)
+              const dataCells = Array.from(tr.cells).slice(0, maxColsDetalhe);
+
+              if (!isEditing) {
+                // Entrar em modo edição: transformar texto em inputs
+                dataCells.forEach(td => {
+                  const original = td.textContent.trim();
+                  td.innerHTML = `<input type="text" class="form-control form-control-sm upload-edit" value="${original.replace(/"/g,'&quot;')}">`;
+                });
+                tr.dataset.editing = '1';
+                btnEditar.title = 'Guardar alterações';
+                btnEditar.innerHTML = '<i class="fa fa-save"></i>';
+              } else {
+                // Sair do modo edição: ler inputs e voltar para texto simples
+                dataCells.forEach(td => {
+                  const input = td.querySelector('input.upload-edit');
+                  const val = input ? input.value : td.textContent;
+                  td.textContent = val;
+                });
+                tr.dataset.editing = '0';
+                btnEditar.title = 'Editar linha';
+                btnEditar.innerHTML = '<i class="fa fa-edit"></i>';
+              }
+              return;
+            }
+
+            if (btnEliminar) {
+              ev.preventDefault();
+              const confirm = await Swal.fire({
+                title: 'Eliminar linha?',
+                text: 'Esta acção remove este projecto da tabela de upload e do backend (caso exista).',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sim, eliminar',
+                cancelButtonText: 'Cancelar'
+              });
+              if (!confirm.isConfirmed) return;
+              const key = tr.dataset.groupKey || '';
+              await deleteUploadGroup(tbodyUpload, key);
+
+              await Swal.fire({
+                title: 'Eliminado',
+                text: 'O projecto foi removido da tabela de upload e do backend (quando existente).',
+                icon: 'success'
+              });
+            }
+          });
+          tbodyUpload._actionsBound = true;
+        }
+      } catch(e) {
+        console.warn('Falha ao configurar ações da tabela de upload', e);
+      }
+
+      // Botão "Eliminar marcados" na tabela de upload
+      try {
+        const btnEliminarMarcados = document.getElementById('btnEliminarMarcadosUpload');
+        if (btnEliminarMarcados && !btnEliminarMarcados._bound) {
+          btnEliminarMarcados.addEventListener('click', async function(){
+            const tbodyUpload = document.querySelector('#tblProjectosUpload tbody');
+            if (!tbodyUpload) return;
+
+            const checkedRows = Array.from(tbodyUpload.querySelectorAll('tr.upload-row-parent input.chk-upload-select:checked'))
+              .map(chk => chk.closest('tr'))
+              .filter(Boolean);
+
+            if (!checkedRows.length) {
+              await Swal.fire({
+                title: 'Nada selecionado',
+                text: 'Selecione pelo menos um cliente/projeto para eliminar.',
+                icon: 'info'
+              });
+              return;
+            }
+
+            const confirm = await Swal.fire({
+              title: 'Eliminar marcados?',
+              text: 'Serão removidos todos os projectos dos clientes selecionados, tanto na tabela de upload como no backend (quando existir).',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#d33',
+              cancelButtonColor: '#3085d6',
+              confirmButtonText: 'Sim, eliminar',
+              cancelButtonText: 'Cancelar'
+            });
+            if (!confirm.isConfirmed) return;
+
+            const keys = Array.from(new Set(checkedRows.map(tr => tr.dataset.groupKey || '')));
+            for (const key of keys) {
+              await deleteUploadGroup(tbodyUpload, key);
+            }
+
+            await Swal.fire({
+              title: 'Eliminado',
+              text: 'Os clientes/projetos selecionados foram removidos da tabela de upload e do backend (quando existente).',
+              icon: 'success'
+            });
+          });
+          btnEliminarMarcados._bound = true;
+        }
+      } catch(e) {
+        console.warn('Falha ao configurar botão "Eliminar marcados" da tabela de upload', e);
+      }
+
+      // Checkbox "selecionar todos" na tabela de upload
+      try {
+        const chkAll = document.getElementById('chkUploadSelectAll');
+        if (chkAll && !chkAll._bound) {
+          chkAll.addEventListener('change', function(){
+            const tbodyUpload = document.querySelector('#tblProjectosUpload tbody');
+            if (!tbodyUpload) return;
+            const checked = this.checked;
+            Array.from(tbodyUpload.querySelectorAll('tr.upload-row-parent input.chk-upload-select')).forEach(chk => {
+              chk.checked = checked;
+            });
+          });
+          chkAll._bound = true;
+        }
+      } catch(e) {
+        console.warn('Falha ao configurar checkbox "selecionar todos" da tabela de upload', e);
+      }
+
+      // Botão "Adicionar Nova Linha" na tabela de upload
+      try {
+        const btnAddNewRow = document.getElementById('btnAddNewRowUpload');
+        const btnSaveNewRow = document.getElementById('btnSaveNewRow');
+        
+        if (btnAddNewRow && !btnAddNewRow._bound) {
+          btnAddNewRow.addEventListener('click', function() {
+            const tbodyUpload = document.querySelector('#tblProjectosUpload tbody');
+            if (!tbodyUpload) return;
+
+            // Obter o número da próxima linha
+            const rowCount = tbodyUpload.rows.length;
+            const nextRowNumber = rowCount + 1;
+
+            // Criar nova linha Excel-style com inputs diretamente
+            const tr = document.createElement('tr');
+            tr.classList.add('upload-row-parent', 'new-row-editing');
+            
+            let html = '';
+            
+            // Coluna 1: Número da linha com checkbox
+            html += `<td><input type="checkbox" class="chk-upload-select mr-1"><span class="row-idx">${nextRowNumber}</span></td>`;
+            
+            // Colunas 2-40: Inputs diretos (estilo Excel)
+            for (let i = 2; i <= 40; i++) {
+              const placeholder = i === 2 ? 'Cliente*' : i === 3 ? 'Descrição do trabalho*' : '';
+              html += `<td><input type="text" class="form-control form-control-sm" placeholder="${placeholder}" data-required="${i === 2 || i === 3 ? 'true' : 'false'}"></td>`;
+            }
+            
+            // Coluna 41: Ações básicas
+            html += `
+              <td>
+                <div class="btn-group btn-group-sm">
+                  <button type="button" class="btn btn-outline-success btn-save-row" title="Guardar linha">
+                    <i class="fa fa-save"></i>
+                  </button>
+                  <button type="button" class="btn btn-outline-danger btn-remove-row" title="Eliminar linha">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </div>
+              </td>`;
+            
+            tr.innerHTML = html;
+            tbodyUpload.appendChild(tr);
+            
+            // Atualizar números das linhas após adicionar nova linha
+            updateRowNumbers();
+            
+            // Mostrar botão guardar principal
+            if (btnSaveNewRow) {
+              btnSaveNewRow.style.display = 'inline-flex';
+            }
+            
+            // Focar no primeiro campo editável (coluna 2 - Cliente)
+            const firstInput = tr.querySelector('td:nth-child(2) input');
+            if (firstInput) {
+              firstInput.focus();
+            }
+
+            // Adicionar evento para remover linha
+            const removeBtn = tr.querySelector('.btn-remove-row');
+            if (removeBtn) {
+              removeBtn.addEventListener('click', function() {
+                tr.remove();
+                updateRowNumbers();
+                checkIfEditingRows();
+              });
+            }
+
+            // Adicionar evento para guardar linha individual
+            const saveBtn = tr.querySelector('.btn-save-row');
+            if (saveBtn) {
+              saveBtn.addEventListener('click', async function() {
+                await saveNewRow(tr);
+              });
+            }
+
+            // Adicionar eventos para validar campos com debounce para melhor performance
+            const inputs = tr.querySelectorAll('input[type="text"]');
+            inputs.forEach(input => {
+              let validationTimeout;
+              
+              input.addEventListener('input', function() {
+                clearTimeout(validationTimeout);
+                validationTimeout = setTimeout(() => {
+                  validateRowData(tr);
+                }, 200);
+              });
+              
+              input.addEventListener('blur', function() {
+                clearTimeout(validationTimeout);
+                validateRowData(tr);
+              });
+              
+              // Permitir navegação com Enter/TAB como no Excel - otimizado
+              input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  const allInputs = tbodyUpload.querySelectorAll('input[type="text"]');
+                  const currentIndex = Array.from(allInputs).indexOf(this);
+                  if (currentIndex < allInputs.length - 1) {
+                    allInputs[currentIndex + 1].focus();
+                  }
+                }
+              });
+            });
+
+            // Atualizar contadores
+            document.getElementById('projCountView').textContent = tbodyUpload.rows.length;
+            document.getElementById('projUpdated').textContent = new Date().toLocaleString('pt-PT');
+          });
+          btnAddNewRow._bound = true;
+        }
+
+        // Botão guardar principal
+        if (btnSaveNewRow && !btnSaveNewRow._bound) {
+          btnSaveNewRow.addEventListener('click', async function() {
+            const editingRows = document.querySelectorAll('tr.new-row-editing');
+            if (editingRows.length === 0) {
+              Swal.fire({
+                icon: 'info',
+                title: 'Nenhuma linha para guardar',
+                text: 'Não há linhas em edição para guardar.'
+              });
+              return;
+            }
+
+            let savedCount = 0;
+            let errors = [];
+
+            for (const row of editingRows) {
+              try {
+                if (await saveNewRow(row)) {
+                  savedCount++;
+                } else {
+                  errors.push('Linha ' + (row.rowIndex) + ': Campos obrigatórios em falta');
+                }
+              } catch(e) {
+                errors.push('Linha ' + (row.rowIndex) + ': Erro ao guardar');
+              }
+            }
+
+            if (savedCount > 0) {
+              Swal.fire({
+                icon: 'success',
+                title: 'Dados guardados',
+                text: `${savedCount} linha(s) guardada(s) com sucesso!`
+              });
+            }
+
+            if (errors.length > 0) {
+              Swal.fire({
+                icon: 'warning',
+                title: 'Alguns erros ocorreram',
+                html: errors.join('<br>')
+              });
+            }
+          });
+          btnSaveNewRow._bound = true;
+        }
+
+        // Função para validar dados da linha - otimizada
+        function validateRowData(tr) {
+          // Cache dos inputs requeridos para evitar querySelector repetido
+          const requiredInputs = tr._requiredInputs || (tr._requiredInputs = tr.querySelectorAll('input[data-required="true"]'));
+          let isValid = true;
+          
+          // Usar for loop em vez de forEach para melhor performance
+          for (let i = 0; i < requiredInputs.length; i++) {
+            const input = requiredInputs[i];
+            const hasValue = input.value.trim();
+            
+            if (!hasValue) {
+              isValid = false;
+              if (!input.classList.contains('is-invalid')) {
+                input.classList.add('is-invalid');
+              }
+            } else {
+              input.classList.remove('is-invalid');
+            }
+          }
+
+          // Cache do botão salvar
+          const saveBtn = tr._saveBtn || (tr._saveBtn = tr.querySelector('.btn-save-row'));
+          if (saveBtn) {
+            saveBtn.disabled = !isValid;
+            
+            // Atualizar classes de forma otimizada
+            if (isValid) {
+              if (!saveBtn.classList.contains('btn-success')) {
+                saveBtn.classList.remove('btn-outline-success');
+                saveBtn.classList.add('btn-success');
+              }
+            } else {
+              if (!saveBtn.classList.contains('btn-outline-success')) {
+                saveBtn.classList.remove('btn-success');
+                saveBtn.classList.add('btn-outline-success');
+              }
+            }
+          }
+
+          return isValid;
+        }
+
+        // Função para guardar nova linha (salvamento direto no backend)
+        async function saveNewRow(tr) {
+          if (!validateRowData(tr)) {
+            return false;
+          }
+
+          // Coletar dados da linha
+          const cells = tr.cells;
+          const rowData = [];
+          
+          // Coletar apenas as 40 primeiras colunas (dados)
+          for (let i = 0; i < 40 && i < cells.length; i++) {
+            const input = cells[i].querySelector('input');
+            if (input) {
+              rowData.push(input.value.trim());
+            } else {
+              rowData.push(cells[i].textContent.trim());
+            }
+          }
+
+          // Validar campos obrigatórios antes de enviar
+          if (!rowData[1] || rowData[1].trim() === '') {
+            await Swal.fire({
+              icon: 'error',
+              title: 'Campo obrigatório',
+              text: 'A Descrição do Trabalho é obrigatória.',
+              confirmButtonColor: '#dc3545'
+            });
+            return false;
+          }
+
+          if (!rowData[0] || rowData[0].trim() === '') {
+            await Swal.fire({
+              icon: 'error',
+              title: 'Campo obrigatório',
+              text: 'O Cliente é obrigatório.',
+              confirmButtonColor: '#dc3545'
+            });
+            return false;
+          }
+
+          // Salvar diretamente no backend
+          try {
+            const token = localStorage.getItem('token') || '';
+            if (!token) {
+              throw new Error('Sessão não autenticada');
+            }
+
+            // Mapear dados para o formato do backend
+            const projectData = {
+              cliente: rowData[0] || 'Cliente não informado', // Cliente (coluna 2, índice 1)
+              descricaoTrabalho: rowData[1] || 'Descrição não informada', // Descrição Trabalho (coluna 3, índice 2)
+              idTrabalhoMs: rowData[2] || '', // Id. Trabalho MS (coluna 4, índice 3)
+              idPedidoCotacao: rowData[3] || '', // Id. Pedido (coluna 5, índice 4)
+              linkPedido: rowData[4] || '', // Link Pedido (coluna 6, índice 5)
+              dataHoraPedido: rowData[5] || '', // Data & Hr Pedido (coluna 7, índice 6)
+              numCotacao: rowData[6] || '', // Nº Cotação (coluna 8, índice 7)
+              dataCotacao: rowData[7] || '', // Data Cotação (coluna 9, índice 8)
+              valorCotacao: rowData[8] || '', // Valor Cotação (coluna 10, índice 9)
+              termosPagamentoCotacao: rowData[9] || '', // Termos de Pagto (coluna 11, índice 10)
+              incoterms: rowData[10] || '', // Incoterms (coluna 12, índice 11)
+              numNotaEncomenda: rowData[11] || '', // Nº Nota Encomenda (coluna 13, índice 12)
+              conteudoNotaEncomenda: rowData[12] || '', // Conteúdo Nota Encomenda (coluna 14, índice 13)
+              dataNotaEncomenda: rowData[13] || '', // Data Nota Encomenda (coluna 15, índice 14)
+              valorNotaEncomenda: rowData[14] || '', // Valor Nota Encomenda (coluna 16, índice 15)
+              termosPagamentoEncomenda: rowData[15] || '', // Termos de Pagto (coluna 17, índice 16)
+              projectId: rowData[16] || '', // Project ID (coluna 18, índice 17)
+              jobDescription: rowData[17] || '', // Job Description (coluna 19, índice 18)
+              dataInicio: rowData[18] || '', // Est. Job Start Date (coluna 20, índice 19)
+              dataFim: rowData[19] || '', // Job End Date (coluna 21, índice 20)
+              jobStatus: rowData[20] || 'Pendente', // Job Status (coluna 22, índice 21)
+              numNotaServico: rowData[21] || '', // # Nota Serv./Entrega (coluna 23, índice 22)
+              conteudoNotaServico: rowData[22] || '', // Conteúdo da Nota (coluna 24, índice 23)
+              dataEmissaoNsNe: rowData[23] || '', // Dt Emissão NS/NE (coluna 25, índice 24)
+              dataAprovacaoNsNe: rowData[24] || '', // Data Aprov NS/NE (coluna 26, índice 25)
+              proformaNo: rowData[25] || '', // Proforma No. (coluna 27, índice 26)
+              proformaDate: rowData[26] || '', // Proforma Date (coluna 28, índice 27)
+              proformaValueNet: rowData[27] || '', // Proforma Value (Net) (coluna 29, índice 28)
+              proformaExchange: rowData[28] || '', // Exchange (coluna 30, índice 29)
+              invoiceNo: rowData[29] || '', // Invoice No. (coluna 31, índice 30)
+              invoiceDate: rowData[30] || '', // Invoice Date (coluna 32, índice 31)
+              invoiceValue: rowData[31] || '', // Invoice Value (coluna 33, índice 32)
+              invoiceExchange: rowData[32] || '', // Exchange (coluna 34, índice 33)
+              datePaid: rowData[33] || '', // Date Paid (coluna 35, índice 34)
+              valuePaid: rowData[34] || '', // Value Paid (coluna 36, índice 35)
+              receiptNo: rowData[35] || '', // Receipt No. (coluna 37, índice 36)
+              receiptDate: rowData[36] || '', // Receipt Date (coluna 38, índice 37)
+              statusDate: rowData[37] || '', // Date (coluna 39, índice 38)
+              remarks: rowData[38] || '' // Remarks (coluna 40, índice 39)
+            };
+
+            // Gerar IDs automáticos se não existirem
+            if (!projectData.projectId && projectData.idTrabalhoMs) {
+              projectData.projectId = projectData.idTrabalhoMs.replace(/^MS-/, 'PRJ-');
+            }
+            if (!projectData.idTrabalhoMs) {
+              projectData.idTrabalhoMs = 'MS-' + Date.now();
+            }
+            if (!projectData.projectId) {
+              projectData.projectId = 'PRJ-' + Date.now();
+            }
+
+            // Enviar para o backend
+            const response = await fetch('/api/projectos', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify(projectData)
+            });
+
+            if (!response.ok) {
+              const errorText = await response.text();
+              throw new Error(`Erro do servidor: ${response.status} - ${errorText}`);
+            }
+
+            const result = await response.json();
+            console.log('Dados salvos com sucesso no backend:', result);
+
+            // Remover a linha da tabela local (agora está no backend)
+            tr.remove();
+            
+            // Recarregar dados do backend para atualizar ambas as tabelas
+            setTimeout(async () => {
+              try {
+                await loadBackendDataToUploadTable(); // Isso sincronizará ambas as tabelas
+              } catch(e) {
+                console.warn('Erro ao recarregar tabelas após salvar:', e);
+              }
+            }, 500);
+
+            // Mostrar mensagem de sucesso
+            await Swal.fire({
+              icon: 'success',
+              title: 'Dados salvos!',
+              text: 'O projeto foi salvo no banco de dados e adicionado em ambas as tabelas.',
+              timer: 2000,
+              showConfirmButton: false
+            });
+
+            return true;
+
+          } catch(e) {
+            console.error('Erro ao salvar no backend:', e);
+            
+            // Mostrar mensagem de erro
+            await Swal.fire({
+              icon: 'error',
+              title: 'Erro ao salvar',
+              text: e.message || 'Não foi possível salvar os dados no servidor. Tente novamente.',
+              confirmButtonColor: '#dc3545'
+            });
+            
+            return false;
+          }
+        }
+
+        // Função para verificar se há linhas em edição e mostrar/ocultar botão guardar
+        function checkIfEditingRows() {
+          const editingRows = document.querySelectorAll('tr.new-row-editing');
+          const btnSaveNewRow = document.getElementById('btnSaveNewRow');
+          
+          if (btnSaveNewRow) {
+            btnSaveNewRow.style.display = editingRows.length > 0 ? 'inline-flex' : 'none';
+          }
+        }
+
+      } catch(e) {
+        console.warn('Falha ao configurar botão + da tabela de upload', e);
+      }
+
+      // Função para atualizar números das linhas
+      function updateRowNumbers() {
+        const tbodyUpload = document.querySelector('#tblProjectosUpload tbody');
+        if (!tbodyUpload) return;
+        
+        const rows = Array.from(tbodyUpload.rows);
+        rows.forEach((row, index) => {
+          const rowIdx = row.querySelector('.row-idx');
+          if (rowIdx) {
+            rowIdx.textContent = index + 1;
+          }
+        });
+      }
+
+      // Marcar item ativo no sidebar conforme URL
+      try {
+        var path = (location.pathname || '').split('/').pop();
+        if (!path) path = 'projectos.html';
+        $('#sidebar-menu a').each(function(){
+          var href = $(this).attr('href');
+          if (href && href.indexOf(path) !== -1){
+            $(this).closest('li').addClass('active');
+          } else {
+            $(this).closest('li').removeClass('active');
+          }
+        });
+      } catch(e) { /* silencioso */ }
+    });
+  </script>
+
+  <!-- Modal Adicionar Projecto -->
+  <div class="modal fade" id="modalAddProjeto" tabindex="-1" role="dialog" aria-labelledby="modalAddProjetoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <div>
+            <h5 class="modal-title mb-0" id="modalAddProjetoLabel">
+              <i class="fas fa-plus-circle mr-2"></i>Novo Projeto
+            </h5>
+            <div class="modal-subtitle small">Preencha os campos obrigatórios para criar um novo projeto</div>
+          </div>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="formAddProjeto">
+            <div class="alert alert-info py-2 mb-3">
+              <i class="fas fa-info-circle mr-2"></i>Campos marcados com <span class="text-danger">*</span> são obrigatórios.
+            </div>
+
+            <!-- Informações Básicas -->
+            <div class="section-card mb-4">
+              <div class="section-header bg-light d-flex justify-content-between align-items-center">
+                <span><i class="fas fa-info-circle mr-2"></i>Informações Básicas</span>
+                <span class="badge badge-primary">Obrigatório</span>
+              </div>
+              <div class="section-body">
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>Nome do Projeto <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-project-diagram"></i></span>
+                      </div>
+                      <input type="text" class="form-control" name="nomeProjeto" required 
+                             placeholder="Digite o nome do projeto" />
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Cliente <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-user-tie"></i></span>
+                      </div>
+                      <select class="form-control" name="cliente" id="selCliente" required>
+                        <option value="">Selecione um cliente</option>
+                      </select>
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" id="btnReloadClientes" 
+                                title="Atualizar lista de clientes">
+                          <i class="fas fa-sync-alt"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-12">
+                    <label>Descrição do Projeto</label>
+                    <textarea class="form-control" name="descricao" rows="2" 
+                              placeholder="Descreva o projeto detalhadamente"></textarea>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label>Data de Início <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                      </div>
+                      <input type="date" class="form-control" name="dataInicio" required />
+                    </div>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Data Prevista de Término</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="far fa-calendar-check"></i></span>
+                      </div>
+                      <input type="date" class="form-control" name="dataFim" />
+                    </div>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Status <span class="text-danger">*</span></label>
+                    <select class="form-control select2" name="status" required>
+                      <option value="planejamento">Planejamento</option>
+                      <option value="andamento" selected>Em Andamento</option>
+                      <option value="pausado">Pausado</option>
+                      <option value="concluido">Concluído</option>
+                      <option value="cancelado">Cancelado</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Detalhes do Projeto -->
+            <div class="section-card mb-4">
+              <div class="section-header bg-light">
+                <i class="fas fa-tasks mr-2"></i>Detalhes do Projeto
+              </div>
+              <div class="section-body">
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>ID do Projeto</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-hashtag"></i></span>
+                      </div>
+                      <input type="text" class="form-control" name="projectId" 
+                             placeholder="ID único do projeto" />
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Número do Contrato</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-file-contract"></i></span>
+                      </div>
+                      <input type="text" class="form-control" name="numContrato" 
+                             placeholder="Número do contrato" />
+                    </div>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>Valor Total do Orçamento (AOA)</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-money-bill-wave"></i></span>
+                      </div>
+                      <input type="number" step="0.01" class="form-control" name="valorOrcamento" 
+                             placeholder="Valor total do orçamento" />
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Valor Total do Contrato (AOA)</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-file-invoice-dollar"></i></span>
+                      </div>
+                      <input type="number" step="0.01" class="form-control" name="valorContrato" 
+                             placeholder="Valor total do contrato" />
+                    </div>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>Status Geral</label>
+                    <select class="form-control select2" name="statusGeral">
+                      <option value="ativo">Ativo</option>
+                      <option value="inativo" selected>Inativo</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group col-md-12">
+                  <label>Objetivos do Projeto</label>
+                  <textarea class="form-control" name="objetivos" rows="2" 
+                            placeholder="Descreva os principais objetivos deste projeto"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dados de Cotação do Projeto -->
+            <div class="section-card mb-4">
+              <div class="section-header bg-light d-flex justify-content-between align-items-center">
+                <span><i class="fas fa-file-invoice-dollar mr-2"></i>Dados de Cotação do Projeto</span>
+                <span class="badge badge-secondary">Opcional</span>
+              </div>
+              <div class="section-body">
+                <!-- Pedido de Cotação -->
+                <div class="form-row">
+                  <div class="form-group col-md-3">
+                    <label>Id. Pedido (E) - como foi recebido (EMAIL, WHATSAPP, etc.)</label>
+                    <input type="text" class="form-control" name="idPedidoCotacao" placeholder="Ex.: EMAIL, WHATSAPP, PORTAL, TELEFONE" />
+                  </div>
+                  <div class="form-group col-md-5">
+                    <label>Link do Pedido</label>
+                    <input type="url" class="form-control" name="linkPedidoCotacao" placeholder="URL do pedido (e-mail, portal, etc.)" />
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label>Data do Pedido</label>
+                    <input type="date" class="form-control" name="dataPedidoCotacao" />
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label>Hora do Pedido</label>
+                    <input type="time" class="form-control" name="horaPedidoCotacao" />
+                  </div>
+                </div>
+
+                <!-- Cotação -->
+                <div class="form-row">
+                  <div class="form-group col-md-3">
+                    <label>Nº Cotação</label>
+                    <input type="text" class="form-control" name="numCotacao" placeholder="Número da cotação" />
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Data da Cotação</label>
+                    <input type="date" class="form-control" name="dataCotacao" />
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Valor da Cotação (AOA)</label>
+                    <input type="number" step="0.01" class="form-control" name="valorCotacao" placeholder="0,00" />
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Termos de Pagamento</label>
+                    <input type="text" class="form-control" name="termosPagamentoCotacao" placeholder="ex: 30% adiantado, 70% na entrega" />
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label>Incoterms</label>
+                    <select class="form-control" name="incoterms">
+                      <option value="">Selecione...</option>
+                      <option value="EXW">EXW - À Saída da Fábrica</option>
+                      <option value="FCA">FCA - Livre Transportador</option>
+                      <option value="CPT">CPT - Transporte Pago Até</option>
+                      <option value="CIP">CIP - Transporte + Seguro Pago</option>
+                      <option value="DAP">DAP - Entregue no Local</option>
+                      <option value="DDP">DDP - Entregue Direitos Pagos</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dados do Contrato -->
+            <div class="section-card mb-4">
+              <div class="section-header bg-light d-flex justify-content-between align-items-center">
+                <span><i class="fas fa-file-contract mr-2"></i>Dados do Contrato</span>
+                <span class="badge badge-secondary">Opcional</span>
+              </div>
+              <div class="section-body">
+                <div class="form-row">
+                  <div class="form-group col-md-3">
+                    <label>Nº Contrato (P.O/S.O/Contract No.)</label>
+                    <input type="text" class="form-control" name="numContrato" placeholder="Número do contrato" />
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Data do Contrato</label>
+                    <input type="date" class="form-control" name="dataContrato" />
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Valor do Contrato (AOA)</label>
+                    <input type="number" step="0.01" class="form-control" name="valorContrato" placeholder="0,00" />
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Termos de Pagamento</label>
+                    <input type="text" class="form-control" name="termosPagamentoContrato" placeholder="Ex.: 30% adiantado, 70% na entrega" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Conteúdo do Contrato</label>
+                  <textarea class="form-control" name="conteudoContrato" rows="3" 
+                            placeholder="Descrição detalhada dos termos e condições do contrato"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Configurações Avançadas -->
+            <div class="section-card mb-4">
+              <div class="section-header bg-light">
+                <i class="fas fa-cog mr-2"></i>Configurações Avançadas
+                <small class="float-right">Opcional</small>
+              </div>
+              <div class="section-body">
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label>Prioridade</label>
+                    <select class="form-control" name="prioridade">
+                      <option value="baixa">Baixa</option>
+                      <option value="media" selected>Média</option>
+                      <option value="alta">Alta</option>
+                      <option value="critica">Crítica</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Visibilidade</label>
+                    <select class="form-control" name="visibilidade">
+                      <option value="publico">Público</option>
+                      <option value="privado" selected>Privado</option>
+                      <option value="restrito">Restrito</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Progresso</label>
+                    <div class="d-flex align-items-center">
+                      <input type="range" class="form-control-range flex-grow-1 mr-2" 
+                             name="progresso" min="0" max="100" value="0">
+                      <span class="badge badge-primary" id="progressoValor">0%</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="notificacoesAtivas" name="notificacoesAtivas" checked>
+                    <label class="custom-control-label" for="notificacoesAtivas">Ativar notificações para este projeto</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Anexos -->
+            <div class="section-card">
+              <div class="section-header bg-light">
+                <i class="fas fa-paperclip mr-2"></i>Anexos
+              </div>
+              <div class="section-body">
+                <div class="form-group">
+                  <label>Documentos do Projeto</label>
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="anexosProjeto" multiple>
+                    <label class="custom-file-label" for="anexosProjeto">Selecione os arquivos...</label>
+                  </div>
+                  <small class="form-text text-muted">Formatos aceitos: PDF, DOC, XLS, JPG, PNG (Máx. 10MB por arquivo)</small>
+                </div>
+                <div id="listaAnexos" class="mt-2">
+                  <!-- Lista de anexos será exibida aqui -->
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-dismiss="modal">
+            <i class="fas fa-times mr-1"></i> Cancelar
+          </button>
+          <button type="button" class="btn btn-outline-secondary" id="btnSalvarRascunho">
+            <i class="far fa-save mr-1"></i> Salvar Rascunho
+          </button>
+          <button type="button" class="btn btn-primary" id="btnSalvarProjeto">
+            <i class="fas fa-check mr-1"></i> Salvar Projeto
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Salvar projecto (único) no backend e adicionar na tabela (com opção de continuar)
+    (function(){
+      const form = document.getElementById('formAddProjeto');
+      const btnSalvar = document.getElementById('btnSalvarProjeto');
+      const btnContinuar = document.getElementById('btnSalvarContinuar');
+
+      async function saveProject(closeModal){
+        const fd = new FormData(form);
+        const payload = Object.fromEntries(fd.entries());
+        // injetar nome do cliente a partir do select
+        const sel = document.getElementById('selCliente');
+        if (sel){
+          const opt = sel.options[sel.selectedIndex];
+          payload.clienteId = sel.value || null;
+          payload.cliente = (opt && opt.text && sel.value) ? opt.text : (payload.cliente || null);
+        }
+        // garantir Id. Trabalho MS automático quando vazio
+        if (!payload.idTrabalhoMs){
+          const novoIdMs = (typeof gerarIdTrabalhoMs === 'function') ? gerarIdTrabalhoMs() : '';
+          if (novoIdMs){
+            payload.idTrabalhoMs = novoIdMs;
+            const inputMs = form.querySelector('input[name="idTrabalhoMs"]');
+            if (inputMs) inputMs.value = novoIdMs;
+          }
+        }
+        // garantir ID do Projeto automático quando vazio (baseado no Id. Trabalho MS)
+        if (!payload.projectId){
+          const base = payload.idTrabalhoMs || (typeof gerarIdTrabalhoMs === 'function' ? gerarIdTrabalhoMs() : '');
+          if (base){
+            payload.projectId = base.replace(/^MS-/,'PRJ-');
+            const inputProj = form.querySelector('input[name="projectId"]');
+            if (inputProj) inputProj.value = payload.projectId;
+          }
+        }
+        // garantir Número do Contrato automático quando vazio
+        if (!payload.numContrato){
+          const baseContrato = payload.projectId || payload.idTrabalhoMs || (typeof gerarIdTrabalhoMs === 'function' ? gerarIdTrabalhoMs() : '');
+          if (baseContrato){
+            payload.numContrato = baseContrato.replace(/^MS-/,'CTR-').replace(/^PRJ-/,'CTR-');
+            const inputContrato = form.querySelector('input[name="numContrato"]');
+            if (inputContrato) inputContrato.value = payload.numContrato;
+          }
+        }
+        // garantir ID Pedido de Cotação automático quando vazio
+        if (!payload.idPedidoCotacao){
+          const agora = new Date();
+          const ano = agora.getFullYear();
+          const mes = String(agora.getMonth()+1).padStart(2,'0');
+          const dia = String(agora.getDate()).padStart(2,'0');
+          const h = String(agora.getHours()).padStart(2,'0');
+          const m = String(agora.getMinutes()).padStart(2,'0');
+          const s = String(agora.getSeconds()).padStart(2,'0');
+          const rand = Math.floor(Math.random()*900+100);
+          payload.idPedidoCotacao = `PCOT-${ano}${mes}${dia}-${h}${m}${s}-${rand}`;
+          const inputIdPedidoCot = form.querySelector('input[name="idPedidoCotacao"]');
+          if (inputIdPedidoCot) inputIdPedidoCot.value = payload.idPedidoCotacao;
+        }
+        // garantir Nº Cotação automático quando vazio
+        if (!payload.numCotacao){
+          const agora = new Date();
+          const ano = agora.getFullYear();
+          const mes = String(agora.getMonth()+1).padStart(2,'0');
+          const dia = String(agora.getDate()).padStart(2,'0');
+          const h = String(agora.getHours()).padStart(2,'0');
+          const m = String(agora.getMinutes()).padStart(2,'0');
+          const s = String(agora.getSeconds()).padStart(2,'0');
+          const rand = Math.floor(Math.random()*900+100);
+          payload.numCotacao = `COT-${ano}${mes}${dia}-${h}${m}${s}-${rand}`;
+          const inputNumCot = form.querySelector('input[name="numCotacao"]');
+          if (inputNumCot) inputNumCot.value = payload.numCotacao;
+        }
+        // Conversões básicas
+        const numFields = ['valorCotacao','valorNotaEncomenda','proformaValueNet','invoiceValue','valuePaid','valorOrcamento','valorContrato'];
+        numFields.forEach(k=>{ if (payload[k]) payload[k] = Number(payload[k]); });
+        // Mapear campos principais para o modelo simplificado da tabela / backend
+        payload.projectId = payload.projectId || payload.idProjecto || '';
+        payload.descricaoProjeto = payload.descricaoProjeto || payload.descricao || payload.nomeProjeto || '';
+        payload.jobDescription = payload.jobDescription || payload.descricaoProjeto;
+        payload.dataInicioEstimada = payload.dataInicioEstimada || payload.dataInicio || '';
+        payload.dataFimEstimada = payload.dataFimEstimada || payload.dataFim || '';
+        payload.jobStatus = payload.jobStatus || payload.statusGeral || payload.status || '';
+        // incluir contador
+        payload.contador = $('#tblProjectos').DataTable().rows().count() + 1;
+
+        try{
+          const token = localStorage.getItem('token')||'';
+          const res = await fetch('/api/projectos', {
+            method: 'POST',
+            headers: { 'Content-Type':'application/json', Authorization: `Bearer ${token}` },
+            body: JSON.stringify(payload)
+          });
+          if (!res.ok){
+            const err = await res.json().catch(()=>({}));
+            alert('Falha ao guardar projecto: ' + (err.message||res.status));
+            return;
+          }
+          await res.json().catch(()=>({}));
+          // Recarregar tabela a partir do backend para refletir os campos Project_ID, datas, status e valores
+          await loadProjectos();
+          document.getElementById('projUpdated').textContent = new Date().toLocaleString('pt-PT');
+          if (closeModal){ $('#modalAddProjeto').modal('hide'); }
+          form.reset();
+          // foco no primeiro campo para cadastros sequenciais
+          const first = form.querySelector('input[name="cliente"]');
+          if (first) first.focus();
+        }catch(e){
+          alert('Erro de rede ao guardar projecto.');
+        }
+      }
+
+      if (btnSalvar && !btnSalvar._bound){
+        btnSalvar.addEventListener('click', ()=> saveProject(true));
+        btnSalvar._bound = true;
+      }
+      if (btnContinuar && !btnContinuar._bound){
+        btnContinuar.addEventListener('click', ()=> saveProject(false));
+        btnContinuar._bound = true;
+      }
+    })();
+
+    // Eliminar todos os projectos do backend
+    (function(){
+      const btnDel = document.getElementById('btnEliminarTudo');
+      
+      async function eliminarTodosProjetos() {
+        console.log('Função eliminarTodosProjetos chamada');
+        const token = localStorage.getItem('token') || '';
+        console.log('Token:', token ? 'Presente' : 'Ausente');
+        
+        if (!token) {
+          console.log('Nenhum token encontrado, redirecionando para login');
+          await Swal.fire({
+            title: 'Sessão expirada',
+            text: 'A sua sessão expirou. Por favor, faça login novamente.',
+            icon: 'warning',
+            confirmButtonText: 'OK'
+          });
+          window.location.href = '/';
+          return;
+        }
+
+        // Primeiro, busca a lista de projetos para mostrar quantos serão excluídos
+        let totalProjetos = 0;
+        try {
+          console.log('Buscando lista de projetos...');
+          const res = await fetch('/api/projectos', { 
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
+          });
+          console.log('Resposta da API (status):', res.status);
+          
+          if (res.ok) {
+            const data = await res.json();
+            totalProjetos = Array.isArray(data) ? data.length : (data?.items?.length || 0);
+            console.log('Total de projetos encontrados:', totalProjetos);
+          } else {
+            console.error('Erro ao buscar projetos:', res.status, res.statusText);
+          }
+        } catch (e) {
+          console.error('Erro ao carregar projetos:', e);
+          await Swal.fire({
+            title: 'Erro',
+            text: 'Não foi possível carregar a lista de projetos. Tente novamente.',
+            icon: 'error'
+          });
+          return;
+        }
+
+        if (totalProjetos === 0) {
+          console.log('Nenhum projeto para excluir');
+          await Swal.fire({
+            title: 'Nenhum projeto para eliminar',
+            text: 'Não existem projetos cadastrados no sistema.',
+            icon: 'info'
+          });
+          return;
+        }
+
+        console.log('Mostrando diálogo de confirmação...');
+        const result = await Swal.fire({
+          title: 'Eliminar todos os projetos?',
+          html: `Tem certeza que deseja eliminar <strong>${totalProjetos} projeto(s)</strong>?<br><br>Esta ação é irreversível!`,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Sim, eliminar tudo!',
+          cancelButtonText: 'Cancelar',
+          showLoaderOnConfirm: true,
+          preConfirm: async () => {
+            try {
+              console.log('Iniciando exclusão de projetos...');
+              const res = await fetch('/api/projectos', { 
+                method: 'DELETE', 
+                headers: { 
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${token}` 
+                } 
+              });
+              
+              console.log('Resposta da exclusão (status):', res.status);
+              
+              if (res.status === 401 || res.status === 403) {
+                throw new Error('Não autorizado. Por favor, faça login novamente.');
+              }
+              
+              if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                throw new Error(err.message || 'Falha ao eliminar projetos');
+              }
+              
+              const result = await res.json().catch(() => ({}));
+              console.log('Exclusão concluída com sucesso:', result);
+              return result;
+            } catch (error) {
+              console.error('Erro ao excluir projetos:', error);
+              Swal.showValidationMessage(`Erro: ${error.message}`);
+              return null;
+            }
+          },
+          allowOutsideClick: () => !Swal.isLoading()
+        });
+        
+        if (result.isConfirmed) {
+          console.log('Atualizando interface após exclusão...');
+          // Atualiza a interface
+          if ($.fn.DataTable.isDataTable('#tblProjectos')) {
+            $('#tblProjectos').DataTable().clear().draw();
+          } else {
+            const tbody = document.querySelector('#tblProjectos tbody');
+            if (tbody) tbody.innerHTML = '';
+          }
+          document.getElementById('projCountView').textContent = '0';
+          document.getElementById('projUpdated').textContent = new Date().toLocaleString('pt-PT');
+          
+          console.log('Mostrando mensagem de sucesso...');
+          await Swal.fire({
+            title: 'Eliminados!',
+            text: `Todos os ${totalProjetos} projeto(s) foram eliminados com sucesso.`,
+            icon: 'success'
+          });
+          
+          // Recarregar tabela de upload do backend
+          console.log('Recarregando tabela de upload...');
+          try {
+            await loadBackendDataToUploadTable();
+          } catch(e) {
+            console.warn('Falha ao recarregar tabela de upload', e);
+          }
+          
+          console.log('Recarregando a página...');
+          window.location.reload();
+        } else {
+          console.log('Exclusão cancelada pelo usuário');
+        }
+      }
+
+      if (btnDel) {
+        console.log('Registrando evento de clique no botão Eliminar Tudo');
+        btnDel.addEventListener('click', function(e) {
+          console.log('Botão Eliminar Tudo clicado');
+          e.preventDefault();
+          e.stopPropagation();
+          eliminarTodosProjetos().catch(error => {
+            console.error('Erro não tratado em eliminarTodosProjetos:', error);
+            Swal.fire({
+              title: 'Erro',
+              text: 'Ocorreu um erro inesperado. Por favor, tente novamente.',
+              icon: 'error'
+            });
+          });
+        });
+        btnDel._bound = true;
+        console.log('Evento de clique registrado com sucesso');
+      } else {
+        console.error('Botão btnEliminarTudo não encontrado no DOM');
+      }
+    })();
+
+    // Helpers globais para envio em lotes (bulk upload)
+    function chunk(arr, size){
+      const out = [];
+      for (let i = 0; i < arr.length; i += size){ out.push(arr.slice(i, i + size)); }
+      return out;
+    }
+    async function postBatch(items, token){
+      let res = await fetch('/api/projectos/import', {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ items })
+      });
+      if (res.status === 401 || res.status === 403) return res;
+      if (!res.ok){
+        res = await fetch('/api/projectos/bulk', {
+          method: 'POST',
+          headers: { 'Content-Type':'application/json', Authorization: `Bearer ${token}` },
+          body: JSON.stringify(items)
+        });
+      }
+      return res;
+    }
+    async function saveInBatches(payload, token){
+      let batchSize = 250; // tamanho inicial do lote
+      let startIndex = 0;
+      while (startIndex < payload.length){
+        const endIndex = Math.min(startIndex + batchSize, payload.length);
+        const batch = payload.slice(startIndex, endIndex);
+        let res = await postBatch(batch, token);
+        if (res.status === 413){
+          // reduzir lote e tentar novamente a partir do mesmo ponto
+          batchSize = Math.max(50, Math.floor(batchSize / 2));
+          continue;
+        }
+        if (res.status === 401 || res.status === 403){
+          // sessão inválida/expirada
+          alert('Sessão expirada ou sem autorização. Faça login novamente.');
+          try{ localStorage.removeItem('token'); localStorage.removeItem('user'); }catch(e){}
+          window.location.href = '/';
+          return 0;
+        }
+        if (!res.ok){
+          const err = await res.json().catch(()=>({}));
+          throw new Error(err.message || `Falha no lote (${res.status})`);
+        }
+        const j = await res.json().catch(()=>({}));
+        startIndex = endIndex;
+        // Atualiza feedback simples
+        const el = document.getElementById('projUpdated');
+        if (el) el.textContent = new Date().toLocaleString('pt-PT') + ` (${endIndex}/${payload.length})`;
+        await new Promise(r=>setTimeout(r, 50));
+      }
+      return payload.length;
+    }
+
+    // Salvar dados da tabela detalhada no backend
+    async function salvarTabelaDetalhada(autoSave = false) {
+      console.log('=== INÍCIO DA FUNÇÃO salvarTabelaDetalhada ===');
+      
+      try {
+        // Encontrar a tabela de upload
+        console.log('Procurando tabela de upload...');
+        const table = document.getElementById('tblProjectosUpload');
+        
+        if (!table) {
+          console.error('❌ Tabela de upload não encontrada');
+          await Swal.fire({
+            title: 'Erro',
+            text: 'Tabela de upload não encontrada.',
+            icon: 'error'
+          });
+          return false;
+        }
+        console.log('✅ Tabela encontrada');
+
+        // Verificar se existem linhas na tabela
+        console.log('Verificando linhas na tabela...');
+        const tbody = table.querySelector('tbody');
+        if (!tbody || tbody.rows.length === 0) {
+          console.warn('⚠️ Nenhum dado para salvar - tabela vazia');
+          await Swal.fire({
+            title: 'Nenhum dado para salvar',
+            text: 'Por favor, faça o upload de um arquivo Excel primeiro.',
+            icon: 'warning'
+          });
+          return false;
+        }
+        console.log(`✅ ${tbody.rows.length} linhas encontradas na tabela`);
+
+        // Verificar token de autenticação
+        console.log('Verificando token de autenticação...');
+        const token = localStorage.getItem('token') || '';
+        if (!token) {
+          console.error('❌ Token não encontrado - sessão expirada');
+          await Swal.fire({
+            title: 'Sessão expirada',
+            text: 'Por favor, faça login novamente.',
+            icon: 'error'
+          });
+          window.location.href = '/';
+          return false;
+        }
+        console.log('✅ Token encontrado');
+
+        // 1. Coletar cabeçalhos da tabela
+        console.log('\n1. Coletando cabeçalhos da tabela...');
+        const headerRow = [];
+        const headerRows = table.querySelectorAll('thead tr');
+        
+        // Usar a última linha do cabeçalho (assumindo que é a que contém os títulos reais)
+        const lastHeaderRow = headerRows[headerRows.length - 1];
+        const headerCells = lastHeaderRow.querySelectorAll('th');
+        
+        console.log(`Encontrados ${headerCells.length} cabeçalhos`);
+        
+        headerCells.forEach((th, index) => {
+          const headerText = th.textContent.trim();
+          const headerKey = headerText || `col_${index}`;
+          headerRow.push(headerKey);
+          console.log(`  Cabeçalho ${index}: "${headerKey}"`);
+        });
+        
+        if (headerRow.length === 0) {
+          throw new Error('Nenhum cabeçalho encontrado na tabela');
+        }
+        
+        // 2. Coletar dados das linhas
+        console.log('\n2. Coletando dados das linhas...');
+        const rows = [];
+        const dataRows = tbody.rows;
+        console.log(`  Encontradas ${dataRows.length} linhas na tabela`);
+        
+        for (let i = 0; i < dataRows.length; i++) {
+          const row = dataRows[i];
+          const cells = row.cells;
+          const rowData = {};
+          let isEmptyRow = true;
+          
+          // Coletar dados das células
+          for (let j = 0; j < Math.min(cells.length, headerRow.length); j++) {
+            const cell = cells[j];
+            const input = cell ? cell.querySelector('input') : null;
+            const cellValue = input ? input.value.trim() : (cell ? cell.textContent.trim() : '');
+            if (cellValue) isEmptyRow = false;
+            
+            const header = headerRow[j] || `col_${j}`;
+            rowData[header] = cellValue;
+          }
+          
+          // Adicionar apenas linhas não vazias
+          if (!isEmptyRow) {
+            rows.push(rowData);
+            console.log(`  Linha ${i} adicionada com ${Object.keys(rowData).length} campos`);
+          } else {
+            console.log(`  Linha ${i} vazia, pulando...`);
+          }
+        }
+
+        if (rows.length === 0) {
+          throw new Error('Nenhum dado válido encontrado para salvar.');
+        }
+
+        console.log(`\n3. Dados processados: ${rows.length} linhas válidas`);
+        console.log('Amostra dos dados:', rows.slice(0, 2)); // Mostra as 2 primeiras linhas para debug
+
+        // 3. Confirmar com o usuário
+        console.log('\n4. Solicitando confirmação do usuário...');
+        const confirm = await Swal.fire({
+          title: 'Confirmar salvamento',
+          html: `Deseja salvar <strong>${rows.length}</strong> registros no banco de dados?`,
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Sim, salvar',
+          cancelButtonText: 'Cancelar',
+          confirmButtonColor: '#28a745',
+          cancelButtonColor: '#6c757d'
+        });
+
+        if (!confirm.isConfirmed) {
+          console.log('❌ Usuário cancelou a operação');
+          return false;
+        }
+
+        // 4. Enviar para o backend
+        console.log('\n5. Iniciando envio para o backend...');
+        const loading = Swal.fire({
+          title: 'Salvando dados...',
+          html: 'Por favor, aguarde enquanto os dados são salvos.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+        
+        console.log('Enviando para /api/projectos/import:', rows);
+
+        try {
+          // Enviar para o endpoint de importação
+          const response = await fetch('/api/projectos/bulk', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(rows)
+          });
+          
+          console.log('Resposta recebida do servidor. Status:', response.status);
+          
+          // Verificar se a resposta foi bem-sucedida
+          if (!response.ok) {
+            const errorText = await response.text();
+            console.error('❌ Erro na resposta do servidor:', errorText);
+            throw new Error('Erro ao salvar os dados no servidor');
+          }
+          
+          // Tentar obter a resposta como JSON
+          let result;
+          try {
+            result = await response.json();
+            console.log('Resposta do servidor (JSON):', result);
+          } catch (jsonError) {
+            console.error('Erro ao processar resposta JSON:', jsonError);
+            throw new Error('Resposta inválida do servidor');
+          }
+          
+          // Verificar se a resposta indica sucesso / quantos foram realmente inseridos
+          const inserted = Number(result.inserted ?? result.savedCount ?? 0);
+          const failed = Array.isArray(result.failed) ? result.failed.length : 0;
+
+          if (!result || result.success === false || inserted === 0) {
+            const errorMsg = result?.message || `Falha ao importar dados. Registos inseridos: ${inserted}, falhados: ${failed}`;
+            console.error('❌ Erro no processamento:', errorMsg, result);
+            throw new Error(errorMsg);
+          }
+
+          // 5. Sucesso!
+          console.log('✅ Dados salvos com sucesso! Inseridos:', inserted, 'Falhados:', failed);
+          
+          await Swal.fire({
+            title: 'Sucesso!',
+            text: `Dados salvos com sucesso: ${inserted} registo(s) importado(s).${failed ? ` (${failed} falharam)` : ''}`,
+            icon: 'success',
+            timer: 5000,
+            showConfirmButton: true
+          });
+
+          // 6. Recarregar a tabela principal (visão oficial da BD)
+          console.log('Recarregando a tabela principal...');
+          await loadProjectos();
+
+          // 7. Recarregar tabela de upload do backend
+          console.log('Recarregando tabela de upload do backend...');
+          try {
+            await loadBackendDataToUploadTable();
+          } catch(e) {
+            console.warn('Falha ao recarregar tabela de upload do backend', e);
+          }
+          
+          return true;
+          
+        } catch (error) {
+          console.error('❌ Erro ao salvar dados:', error);
+          
+          // Se for um erro de rede, mostrar mensagem específica
+          if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+            throw new Error('Não foi possível conectar ao servidor. Verifique sua conexão com a internet.');
+          }
+          
+          throw error;
+        } finally {
+          loading.close();
+          console.log('=== FIM DA FUNÇÃO salvarTabelaDetalhada ===');
+        }
+
+      } catch (error) {
+        console.error('❌ ERRO CRÍTICO:', error);
+        
+        // Mensagem mais amigável para o usuário
+        let errorMessage = error.message || 'Ocorreu um erro ao salvar os dados. Por favor, tente novamente.';
+        
+        // Traduzir mensagens comuns de erro
+        const errorMessages = {
+          'Failed to fetch': 'Não foi possível conectar ao servidor. Verifique sua conexão com a internet.',
+          'NetworkError': 'Erro de rede. Verifique sua conexão com a internet.',
+          'Unexpected token': 'Resposta inválida do servidor. Tente novamente mais tarde.'
+        };
+        
+        // Verificar se há uma mensagem mais amigável para o erro
+        for (const [key, value] of Object.entries(errorMessages)) {
+          if (errorMessage.includes(key)) {
+            errorMessage = value;
+            break;
+          }
+        }
+        
+        await Swal.fire({
+          title: 'Erro',
+          text: errorMessage,
+          icon: 'error',
+          confirmButtonText: 'Entendi',
+          confirmButtonColor: '#dc3545'
+        });
+        
+        return false;
+      }
+    }
+
+    // Configurar botão de salvar
+    (function(){
+      const btn = document.getElementById('btnSalvarBackend');
+      if (btn) {
+        // Garantir que o botão está visível
+        btn.style.display = 'inline-flex';
+        
+        // Se já estiver vinculado, não faz nada
+        if (btn._bound) return;
+        
+        // Adicionar evento de clique apenas uma vez
+        btn.addEventListener('click', async (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log('Botão Salvar Tabela clicado');
+          await salvarTabelaDetalhada();
+        });
+        
+        btn._bound = true;
+        console.log('Evento de clique configurado no botão Salvar Tabela');
+      }
+    })();
+
+    // Criar alguns projectos e trabalhos de teste
+    (function(){
+      const btn = document.getElementById('btnSeedDemo');
+      if (btn && !btn._bound){
+        btn.addEventListener('click', async ()=>{
+          if (!confirm('Criar alguns projectos de demonstração?')) return;
+          const token = localStorage.getItem('token')||'';
+          if (!token){
+            alert('Sessão expirada. Faça login novamente.');
+            window.location.href = '/';
+            return;
+          }
+          const demo = [
+            {
+              cliente: 'Sonangol EP',
+              descricaoTrabalho: 'Manutenção de bombas e válvulas',
+              idTrabalhoMs: 'MS-001',
+              numCotacao: 'COT-2025-001',
+              dataCotacao: new Date().toISOString().slice(0,10),
+              valorCotacao: 1500000,
+              projectId: 'PRJ-SONA-001',
+              jobDescription: 'Linha 1 - Manutenção preventiva',
+              jobStatus: 'Em curso',
+              dataInicio: new Date().toISOString().slice(0,10),
+              dataFim: new Date(Date.now() + 30*24*60*60*1000).toISOString().slice(0,10),
+              numNotaServico: 'NS-2025-001',
+              serviceTickets: [
+                { notaServico: 1001, notaExecutado: 'Inspecção inicial', notaEnviado: 'Enviado para aprovação' },
+                { notaServico: 1002, notaExecutado: 'Substituição de válvulas', notaPago: 'Pago 50%' }
+              ]
+            },
+            {
+              cliente: 'Total Energies',
+              descricaoTrabalho: 'Fabrico de estruturas metálicas',
+              idTrabalhoMs: 'MS-002',
+              numCotacao: 'COT-2025-002',
+              dataCotacao: new Date().toISOString().slice(0,10),
+              valorCotacao: 3200000,
+              projectId: 'PRJ-TOTAL-002',
+              jobDescription: 'Estruturas para plataforma offshore',
+              jobStatus: 'Planeado',
+              dataInicio: new Date(Date.now() + 7*24*60*60*1000).toISOString().slice(0,10),
+              dataFim: new Date(Date.now() + 45*24*60*60*1000).toISOString().slice(0,10),
+              numNotaServico: 'NS-2025-002',
+              serviceTickets: [
+                { notaServico: 2001, notaExecutado: 'Corte e preparação de material' }
+              ]
+            },
+            {
+              cliente: 'Refinaria de Luanda',
+              descricaoTrabalho: 'Reparação de tanques',
+              idTrabalhoMs: 'MS-003',
+              numCotacao: 'COT-2025-003',
+              dataCotacao: new Date().toISOString().slice(0,10),
+              valorCotacao: 2100000,
+              projectId: 'PRJ-REFL-003',
+              jobDescription: 'Tanques de armazenamento - Zona A',
+              jobStatus: 'Concluído',
+              dataInicio: new Date(Date.now() - 15*24*60*60*1000).toISOString().slice(0,10),
+              dataFim: new Date(Date.now() - 5*24*60*60*1000).toISOString().slice(0,10),
+              numNotaServico: 'NS-2025-003',
+              serviceTickets: []
+            }
+          ];
+          try{
+            let criados = 0;
+            for (const p of demo){
+              const base = { ...p };
+              delete base.serviceTickets;
+              const res = await fetch('/api/projectos', {
+                method: 'POST',
+                headers: { 'Content-Type':'application/json', Authorization: `Bearer ${token}` },
+                body: JSON.stringify(base)
+              });
+              if (!res.ok) continue;
+              const saved = await res.json().catch(()=>({}));
+              const pid = saved.id || saved._id || saved.projectId || p.projectId;
+              criados++;
+              if (pid && Array.isArray(p.serviceTickets)){
+                for (const t of p.serviceTickets){
+                  await fetch(`/api/projectos/${encodeURIComponent(pid)}/tickets`, {
+                    method: 'POST',
+                    headers: { 'Content-Type':'application/json', Authorization: `Bearer ${token}` },
+                    body: JSON.stringify(t)
+                  }).catch(()=>{});
+                }
+              }
+            }
+            alert('Dados de teste criados: ' + criados + ' projecto(s).');
+            await loadProjectos();
+          }catch(e){
+            alert('Erro ao criar dados de teste.');
+          }
+        });
+        btn._bound = true;
+      }
+    })();
+</script>
+</body>
+</html>
