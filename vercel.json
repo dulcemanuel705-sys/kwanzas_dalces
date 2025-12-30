@@ -10,6 +10,9 @@
     { "src": "/api/(.*)", "dest": "/api/index.js" },
     { "src": "/(.*)", "dest": "/public/$1" }
   ],
-  "env": { "NODE_ENV": "production" }
+  "env": {
+    "NODE_ENV": "production"
+  }
 }
+
 
