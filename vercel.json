@@ -1,11 +1,17 @@
 {
-  "version": 2,
-  "env": { "NODE_ENV": "production" },
-  "functions": {
-    "api/index.js": { "maxDuration": 30 }
-  },
-  "routes": [
-    { "src": "/(.*)", "dest": "/api/index.js" }
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "crons": [
+    {
+      "path": "/api/every-minute",
+      "schedule": "* * * * *"
+    },
+    {
+      "path": "/api/every-hour",
+      "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/every-day",
+      "schedule": "0 0 * * *"
+    }
   ]
 }
-
